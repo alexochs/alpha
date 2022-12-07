@@ -1,5 +1,5 @@
 import { CheckCircleIcon, EmailIcon } from "@chakra-ui/icons";
-import { Box, Text, Button, Center, Divider, Flex, Heading, Image, Stack, Icon, HStack } from "@chakra-ui/react";
+import { Box, Text, Button, Center, Divider, Flex, Heading, Image, Stack, Icon, HStack, Link } from "@chakra-ui/react";
 import { useState } from "react";
 import MasteryChecklist from "../components/MasteryChecklist";
 import { useAccount, useConnect, useDisconnect, useEnsName } from 'wagmi'
@@ -8,9 +8,15 @@ import { GrCycle } from "react-icons/gr";
 import DayCycle from "../components/DayCycle";
 import { GiCycle, GiMeditation, GiShinyApple, GiWeightLiftingUp } from "react-icons/gi";
 import { BsJournalText } from "react-icons/bs";
+import { MdOutlineForum } from "react-icons/md";
+import { BiNews } from "react-icons/bi";
+import { FaUsers } from "react-icons/fa";
+import { IoShareSocialSharp } from "react-icons/io5";
 import Head from "next/head";
 
 export default function AppPage() {
+    const allowList = ["0x6f32277C4c5Ae58EF634226E05fB47e1993C3cA2"];
+
     const CATEGORY_TIME = 0;
     const COMPONENT_MASTERY_CHECKLIST = 0;
     const COMPONENT_DAY_CYCLE = 1;
@@ -23,6 +29,12 @@ export default function AppPage() {
     const COMPONENT_DIET = 4;
     const COMPONENT_EXERCISE = 5;
 
+    const CATEGORY_NETWORK = 6;
+    const COMPONENT_NEWS_TICKER = 7;
+    const COMPONENT_FORUM = 8;
+    const COMPONENT_MEMBERS = 9;
+    const COMPONENT_SOCIAL_MEDIA = 10;
+
     const [category, setCategory] = useState(CATEGORY_TIME);
     const [component, setComponent] = useState(COMPONENT_MASTERY_CHECKLIST);
 
@@ -30,6 +42,9 @@ export default function AppPage() {
     const { data: ensName } = useEnsName({ address })
     const { connect } = useConnect({connector: new InjectedConnector()});
     const { disconnect } = useDisconnect();
+
+    const hearts = ["💜", "💙", "💚", "💛"];
+    const heartIndex = Math.floor(Math.random() * 4);
 
     function NotConnected() {
         return (
@@ -44,6 +59,24 @@ export default function AppPage() {
                 variant="solid"
                 colorScheme={"blackAlpha"}>
                     <Text fontSize="2xl">CONNECT</Text>
+                </Button>
+            </Center>
+        );
+    }
+
+    function NotInAllowList() {
+        return (
+            <Center h="100vh" w="100vw" bg="gray.100" color="gray.800" flexDir="column">
+                <Heading fontSize="6xl" fontStyle={"italic"} letterSpacing={"0.5rem"}>YOU ARE NOT A MEMBER</Heading>
+                <Box py="2rem"/>
+                <Button
+                onClick={() => connect()}
+                size="lg" 
+                letterSpacing={"0.1rem"} 
+                rounded="full" 
+                variant="solid"
+                colorScheme={"blackAlpha"}>
+                    <Text fontSize="2xl">BECOME A MEMBER</Text>
                 </Button>
             </Center>
         );
@@ -122,6 +155,48 @@ export default function AppPage() {
                 </Stack>
             )
         }
+        else if (category === CATEGORY_NETWORK) {
+            return (
+                <Stack spacing="2rem">
+                    <Button 
+                    onClick={() => setComponent(COMPONENT_FORUM)}
+                    colorScheme='red'
+                    variant={component === COMPONENT_FORUM ? 'solid' : 'ghost'}
+                    size="lg"
+                    rounded="full"
+                    leftIcon={<Icon as={MdOutlineForum} boxSize="1.5rem" />}>
+                        <Text fontSize="xl">Forum</Text>
+                    </Button>
+                    <Button
+                    onClick={() => setComponent(COMPONENT_NEWS_TICKER)} 
+                    colorScheme='red'
+                    variant={component === COMPONENT_NEWS_TICKER ? 'solid' : 'ghost'}
+                    size="lg"
+                    rounded="full"
+                    leftIcon={<Icon as={BiNews} boxSize="1.5rem" />}>
+                        <Text fontSize="xl">News Ticker</Text>
+                    </Button>
+                    <Button
+                    onClick={() => setComponent(COMPONENT_SOCIAL_MEDIA)} 
+                    colorScheme='red'
+                    variant={component === COMPONENT_SOCIAL_MEDIA ? 'solid' : 'ghost'}
+                    size="lg"
+                    rounded="full"
+                    leftIcon={<Icon as={IoShareSocialSharp} boxSize="1.5rem" />}>
+                        <Text fontSize="xl">Social Media</Text>
+                    </Button>
+                    <Button
+                    onClick={() => setComponent(COMPONENT_MEMBERS)} 
+                    colorScheme='red'
+                    variant={component === COMPONENT_MEMBERS ? 'solid' : 'ghost'}
+                    size="lg"
+                    rounded="full"
+                    leftIcon={<Icon as={FaUsers} boxSize="1.5rem" />}>
+                        <Text fontSize="xl">Members</Text>
+                    </Button>
+                </Stack>
+            )
+        }
         else {
             return (
                 <Text>COMING SOON</Text>
@@ -142,7 +217,7 @@ export default function AppPage() {
 
     function Connected() {
         return (
-            <Flex h="100vh" w="100vw" bg="gray.100" color="gray.800">
+            <Flex h="100vh" w="100vw" bg="gray.100" color="gray.800" overflow={"hidden"}>
                 <Box w="25vw" bg="white">
                     <Center h="25vh" w="100%" p="1rem">
                         <Image src="/logo.svg" alt="Logo" maxH="90%" />
@@ -207,19 +282,33 @@ export default function AppPage() {
                                 w="5vw">
                                     HEALTH
                                 </Button>
+                                <Button
+                                onClick={() => setCategory(CATEGORY_NETWORK)}
+                                size="sm" 
+                                fontWeight={"bold"}  
+                                rounded="full" 
+                                colorScheme={"red"} 
+                                variant={category === CATEGORY_NETWORK ? "solid" : "outline"}
+                                w="6vw">
+                                    NETWORK
+                                </Button>
                             </HStack>
                         </Stack>
                     </Center>
                     <Divider/>
-                    <Center h="50vh">
+                    <Center h="45vh">
                         <CategoryComponents/>
+                    </Center>
+                    <Divider/>
+                    <Center h="5vh">
+                        <Link href="https://alexochs.de" target="_blank">
+                            <Text fontSize="xs">Made with {hearts[heartIndex]} by Alex Ochs</Text>
+                        </Link>
                     </Center>
                 </Box>
                 <Divider orientation="vertical" />
-                <Box w="75vw">
-                    <Center h="100%">
-                        <Content/>
-                    </Center>
+                <Box w="75vw" h="100vh" py="2rem" px="1rem" overflow={"scroll"}>
+                    <Content/>
                 </Box>
             </Flex>
         );
@@ -227,10 +316,10 @@ export default function AppPage() {
 
     return (
         <>
-            <Head>
-                <title>ALPHA - {component}</title>
-            </Head>
-            {isConnected ? <Connected/> : <NotConnected/>}
+            {isConnected ? (
+                allowList.includes(address as string) ? <Connected/> : <NotInAllowList/>
+            ) : 
+            <NotConnected/>}
         </>
     );
 }

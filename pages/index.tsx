@@ -5,9 +5,6 @@ import Link from "next/link";
 export default function HomePage() {
   return (
     <>
-      <Head>
-        <title>ALPHA - MASTER YOURSELF</title>
-      </Head>
       <Center h="100vh" w="100vw" flexDir="column">
         <Stack spacing="1rem" align="center">
           <Heading fontSize="9xl" color="gray.800" letterSpacing={"0.5rem"} fontStyle="italic">MASTER YOURSELF</Heading>

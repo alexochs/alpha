@@ -6,6 +6,7 @@ import { getDefaultProvider } from 'ethers'
 
 import '@fontsource/space-grotesk/700.css';
 import '@fontsource/space-grotesk/400.css';
+import Head from 'next/head';
 
 export default function App({ Component, pageProps }: AppProps) {
   const client = createClient({
@@ -23,6 +24,10 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider theme={theme}>
       <WagmiConfig client={client}>
+        <Head>
+          <title>ALPHA - MASTER YOURSELF</title>
+          <link rel="favicon" href="/public/logo.svg" />
+        </Head>
         <Component {...pageProps} />
       </WagmiConfig>
     </ChakraProvider>
