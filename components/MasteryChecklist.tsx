@@ -4,7 +4,7 @@ import { ChangeEvent, useState } from "react";
 export default function MasteryChecklist() {
     const [tasks, setTasks] = useState<any[]>([]);
     const [newTaskName, setNewTaskName] = useState("");
-    const [invalidTaskName, setInalidTaskName] = useState(false);
+    const [invalidTaskName, setInvalidTaskName] = useState(false);
     const [newTaskDifficulty, setNewTaskDifficulty] = useState(1);
     const [newTaskImportance, setNewTaskImportance] = useState(1);
 
