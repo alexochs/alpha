@@ -26,7 +26,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <WagmiConfig client={client}>
         <Head>
           <title>ALPHA - MASTER YOURSELF</title>
-          <link rel="favicon" href="/public/logo.svg" />
+          <link rel="favicon" href="/public/logo.png" />
         </Head>
         <Component {...pageProps} />
       </WagmiConfig>

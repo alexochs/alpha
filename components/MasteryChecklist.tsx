@@ -1,34 +1,125 @@
-import { Box, Center, Flex, Heading, HStack, Text, Input, Select, Stack, Link, Button } from "@chakra-ui/react";
-import { ChangeEvent, useState } from "react";
+import { Box, Center, Flex, Heading, HStack, Text, Input, Select, Stack, Link, Button, TableContainer, Table, Thead, Tr, Th, Tbody, Td, Checkbox } from "@chakra-ui/react";
+import { ChangeEvent, useEffect, useState } from "react";
 
-export default function MasteryChecklist() {
+export default function MasteryChecklist({address}: any) {
+    const [date, setDate] = useState(new Date(new Date().setHours(0, 0, 0, 0)));
+    const [dateString, setDateString] = useState(date.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" }));
+
     const [tasks, setTasks] = useState<any[]>([]);
+
     const [newTaskName, setNewTaskName] = useState("");
     const [invalidTaskName, setInvalidTaskName] = useState(false);
+
     const [newTaskDifficulty, setNewTaskDifficulty] = useState(1);
     const [newTaskImportance, setNewTaskImportance] = useState(1);
 
-    function addTask() {
+    useEffect(() => {
+        readTasks();
+    }, []);
+
+    function today() {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        setDate(today);
+        setDateString(today.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" }));
+    }
+
+    function nextDay() {
+        const next = new Date(date.getTime() + 86400000);
+        next.setHours(0, 0, 0, 0);
+
+        setDate(new Date(date.getTime() + 86400000));
+        setDateString(new Date(date.getTime() + 86400000).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" }));
+    }
+
+    function previousDay() {
+        const prev = new Date(date.getTime() - 86400000);
+        prev.setHours(0, 0, 0, 0);
+
+        setDate(new Date(date.getTime() - 86400000));
+        setDateString(new Date(date.getTime() - 86400000).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" }));
+    }
+
+    async function addTask() {
         if (!newTaskName) 
         {
             setInvalidTaskName(true);
             return;
         }
+
         const newTask = {
+            id: null,
+            date: date,
             name: newTaskName,
             difficulty: newTaskDifficulty,
             importance: newTaskImportance,
+            completed: false,
         };
 
-        setTasks([...tasks, newTask]);
+        const res = await fetch(`/api/mastery-checklist/create-task?address=${address}&date=${date.getTime()}&name=${newTask.name}&difficulty=${newTask.difficulty}&importance=${newTask.importance}&completed=${newTask.completed}`);
+        const data = await res.json();
+
+        if (!data || !data.success) {
+            alert("Failed to add task");
+            return;
+        }
+
+        setInvalidTaskName(false);
+        //setTasks([...tasks, newTask]);
 
         setNewTaskName("");
         setNewTaskDifficulty(1);
         setNewTaskImportance(1);
+
+        await readTasks();
     }
 
-    function deleteTask(toDelete: number) {
-        setTasks(tasks.filter((task, index) => index !== toDelete));
+    async function readTasks() {
+        const res = await fetch(`/api/mastery-checklist/read-tasks?address=${address}`);
+        const data = await res.json();
+
+        if (!data) {
+            alert("Failed to get tasks by address");
+            return;
+        }
+
+        console.log(data);
+        setTasks(data.map((task: any) => {
+            return {
+                id: task.id,
+                date: task.date,
+                name: task.name,
+                difficulty: task.difficulty,
+                importance: task.importance,
+                completed: task.completed,
+            }
+        }));
+    }
+
+    async function updateTaskCompletion(task: any) {
+        const res = await fetch(`/api/mastery-checklist/update-task?taskId=${task.id}&completed=${!task.completed}`);
+        const data = await res.json();
+
+        if (!data || !data.success) {
+            alert("Failed to update task");
+            return;
+        }
+
+        await readTasks();
+    }
+
+    async function deleteTask(taskId: number) {
+        const res = await fetch(`/api/mastery-checklist/remove-task?taskId=${taskId}`);
+        const data = await res.json();
+
+        if (!data || !data.success) {
+            alert("Failed to remove task");
+            return;
+        }
+
+        await readTasks();
+        //setTasks(tasks.filter((task) => task.id !== toDelete));
     }
 
     return (
@@ -42,74 +133,108 @@ export default function MasteryChecklist() {
                     </Link>
                 </Flex>
                 <Box py="2rem" />
-                <Stack spacing="1rem">
-                    <Text fontSize="3xl" fontWeight={"bold"} letterSpacing="0.1rem">Set your tasks</Text>
-                    <HStack spacing="1rem">
-                        <Flex flexDir="column">
-                            <Text>Task</Text>
-                            <Input
-                            value={newTaskName}
-                            onChange={(e) => setNewTaskName(e.target.value)}
-                            isInvalid={invalidTaskName}
-                            variant='outline'
-                            placeholder='Another one'/>
-                        </Flex>
-                        <Flex flexDir="column">
-                            <Center>
-                                <Text>Difficulty&nbsp;</Text>
-                                <Text fontSize="xs">(13 = easy)</Text>
-                            </Center>
-                            <Select
-                            value={newTaskDifficulty}
-                            onChange={(e) => setNewTaskDifficulty(parseInt(e.target.value))}>
-                                <option value={1}>1</option>
-                                <option value={3}>3</option>
-                                <option value={5}>5</option>
-                                <option value={8}>8</option>
-                                <option value={13}>13</option>
-                            </Select>
-                        </Flex>
-                        <Flex flexDir="column">
-                            <Center>
-                                <Text>Importance&nbsp;</Text>
-                                <Text fontSize="xs">(13 = high)</Text>
-                            </Center>
-                            <Select
-                            value={newTaskImportance}
-                            onChange={(e) => setNewTaskImportance(parseInt(e.target.value))}>
-                                <option value={1}>1</option>
-                                <option value={3}>3</option>
-                                <option value={5}>5</option>
-                                <option value={8}>8</option>
-                                <option value={13}>13</option>
-                            </Select>
-                        </Flex>
-                    </HStack>
-                    <Button
-                    onClick={addTask}
-                    colorScheme="yellow">
-                        Add Task
-                    </Button>
-                </Stack>
+                <HStack spacing="4rem">
+                    <Stack spacing="1rem">
+                        <Text fontSize="3xl" fontWeight={"bold"} letterSpacing="0.1rem">Date</Text>
+                        <Stack spacing="0.5rem">
+                            <Text width="16rem">{dateString}</Text>
+                            <HStack spacing="1rem">
+                                <Button onClick={previousDay}>
+                                    {"<"}
+                                </Button>
+                                <Button onClick={today}>
+                                    Today
+                                </Button>
+                                <Button onClick={nextDay}>
+                                    {">"}
+                                </Button>
+                            </HStack>
+                        </Stack>
+                    </Stack>
+
+                    <Stack spacing="1rem">
+                        <Text fontSize="3xl" fontWeight={"bold"} letterSpacing="0.1rem">New task</Text>
+                        <HStack spacing="1rem">
+                            <Flex flexDir="column">
+                                <Text>Task</Text>
+                                <Input
+                                value={newTaskName}
+                                onChange={(e) => setNewTaskName(e.target.value)}
+                                isInvalid={invalidTaskName}
+                                variant='outline'
+                                placeholder='Describe your task'/>
+                            </Flex>
+                            <Flex flexDir="column">
+                                <Center>
+                                    <Text>Difficulty&nbsp;</Text>
+                                </Center>
+                                <Select
+                                value={newTaskDifficulty}
+                                onChange={(e) => setNewTaskDifficulty(parseInt(e.target.value))}>
+                                    <option value={1}>1</option>
+                                    <option value={3}>3</option>
+                                    <option value={5}>5</option>
+                                    <option value={8}>8</option>
+                                    <option value={13}>13</option>
+                                </Select>
+                            </Flex>
+                            <Flex flexDir="column">
+                                <Center>
+                                    <Text>Importance&nbsp;</Text>
+                                </Center>
+                                <Select
+                                value={newTaskImportance}
+                                onChange={(e) => setNewTaskImportance(parseInt(e.target.value))}>
+                                    <option value={1}>1</option>
+                                    <option value={3}>3</option>
+                                    <option value={5}>5</option>
+                                    <option value={8}>8</option>
+                                    <option value={13}>13</option>
+                                </Select>
+                            </Flex>
+                        </HStack>
+                        <Button
+                        onClick={addTask}
+                        colorScheme="yellow">
+                            Add Task
+                        </Button>
+                    </Stack>
+                </HStack>
                 <Box py="2rem" />
                 <Stack spacing="1rem">
-                    <Text fontSize="3xl" fontWeight={"bold"} letterSpacing="0.1rem">Today&apos;s Mastery Checklist</Text>
-                    {tasks.sort((a: any, b: any) => (b.difficulty + b.importance) - (a.difficulty + a.importance)).map((task, index) => (
-                        <HStack key={index} spacing="1rem" justify={"space-around"}>
-                            <Text>{task.name}</Text>
-                            <Text>{task.difficulty}</Text>
-                            <Text>{task.importance}</Text>
-                            <Text fontWeight={"bold"}>{task.difficulty + task.importance}</Text>
-                            <Button
-                            onClick={() => deleteTask(index)}
-                            colorScheme={"red"}
-                            size="xs" 
-                            variant="ghost"
-                            rounded="full">
-                                Delete
-                            </Button>
-                        </HStack>
-                    ))}
+                    <Text fontSize="3xl" fontWeight={"bold"} letterSpacing="0.1rem">Mastery Checklist</Text>
+                    <TableContainer>
+                        <Table variant='simple'>
+                            <Thead>
+                            <Tr>
+                                <Th>Task</Th>
+                                <Th isNumeric>Difficulty</Th>
+                                <Th isNumeric>Importance</Th>
+                                <Th isNumeric fontWeight={"bold"}>Score</Th>
+                                <Th isNumeric fontWeight={"bold"}>Completed</Th>
+                                <Th/>
+                            </Tr>
+                            </Thead>
+                            <Tbody>
+                                {tasks.filter((task: any) => task.date === date.getTime()).sort((a: any, b: any) => (b.difficulty + b.importance) - (a.difficulty + a.importance)).map((task, index) => (
+                                    <Tr key={index}>
+                                        <Td>{task.name}</Td>
+                                        <Td isNumeric>{task.difficulty}</Td>
+                                        <Td isNumeric>{task.importance}</Td>
+                                        <Td isNumeric fontWeight={"bold"}>{task.difficulty + task.importance}</Td>
+                                        <Td>
+                                            <Checkbox onChange={() => updateTaskCompletion(task)} isChecked={task.completed} colorScheme="yellow"/>
+                                        </Td>
+                                        <Td>
+                                            <Button onClick={() => deleteTask(task.id)} colorScheme="red" size="xs" variant="ghost">
+                                                Delete
+                                            </Button>
+                                        </Td>
+                                    </Tr>
+                                ))}
+                            </Tbody>
+                        </Table>
+                    </TableContainer>
                 </Stack>
             </Center>
         </Stack>

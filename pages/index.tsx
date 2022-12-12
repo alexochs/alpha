@@ -8,10 +8,10 @@ export default function HomePage() {
       <Center h="100vh" w="100vw" flexDir="column">
         <Stack spacing="1rem" align="center">
           <Heading fontSize="9xl" color="gray.800" letterSpacing={"0.5rem"} fontStyle="italic">MASTER YOURSELF</Heading>
-          <Image src="/logo.svg" alt="Logo" />
+          <Image src="/logo.png" alt="Logo" h="60vh"/>
           <Link href="/app">
-            <Button p="2rem" letterSpacing={"0.1rem"} rounded="full">
-              <Text fontSize="4xl">JOIN THE MOVEMENT</Text>
+            <Button mt="2rem" p="2rem" letterSpacing={"0.1rem"} rounded="full">
+              <Text fontSize="4xl">BEGIN YOUR JOURNEY</Text>
             </Button>
           </Link>
         </Stack>

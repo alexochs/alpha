@@ -207,11 +207,11 @@ export default function AppPage() {
     function Content() {
         switch (component) {
             case COMPONENT_MASTERY_CHECKLIST:
-                return <MasteryChecklist/>;
+                return <MasteryChecklist address={address}/>;
             case COMPONENT_DAY_CYCLE:
                 return <DayCycle/>;
             default:
-                return <Text>Feature 2</Text>;
+                return <Text>Oops, something went wrong!</Text>;
         }
     }
 
@@ -219,11 +219,11 @@ export default function AppPage() {
         return (
             <Flex h="100vh" w="100vw" bg="gray.100" color="gray.800" overflow={"hidden"}>
                 <Box w="25vw" bg="white">
-                    <Center h="25vh" w="100%" p="1rem">
-                        <Image src="/logo.svg" alt="Logo" maxH="90%" />
-                        <Center flexDir="column">
-                            <Heading ml="-1rem" fontSize="5xl" letterSpacing={"0.5rem"} fontStyle="italic">ALPHA</Heading>
-                            <Text fontStyle="italic" letterSpacing={"0.1rem"}>MASTER YOURSELF</Text>
+                    <Center h="25vh" w="100%" py="1rem">
+                        <Image src="/logo.png" alt="Logo" maxH="80%" />
+                        <Center pl="1rem" flexDir="column">
+                            <Heading fontSize="6xl" letterSpacing={"0.5rem"}>ALPHA</Heading>
+                            <Text fontSize="xl" letterSpacing={"0.1rem"}>MASTER YOURSELF</Text>
                         </Center>
                     </Center>
                     <Divider/>
