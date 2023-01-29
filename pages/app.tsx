@@ -69,15 +69,16 @@ export default function AppPage() {
             <Center h="100vh" w="100vw" bg="gray.100" color="gray.800" flexDir="column">
                 <Heading fontSize="6xl" fontStyle={"italic"} letterSpacing={"0.5rem"}>YOU ARE NOT A MEMBER</Heading>
                 <Box py="2rem"/>
-                <Button
-                onClick={() => connect()}
-                size="lg" 
-                letterSpacing={"0.1rem"} 
-                rounded="full" 
-                variant="solid"
-                colorScheme={"blackAlpha"}>
-                    <Text fontSize="2xl">BECOME A MEMBER</Text>
-                </Button>
+                <Link href="https://alexochs.de" target={"_blank"}>
+                    <Button
+                    size="lg" 
+                    letterSpacing={"0.1rem"} 
+                    rounded="full" 
+                    variant="solid"
+                    colorScheme={"blackAlpha"}>
+                        <Text fontSize="2xl">BECOME A MEMBER</Text>
+                    </Button>
+                </Link>
             </Center>
         );
     }
