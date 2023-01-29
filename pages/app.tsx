@@ -3,7 +3,7 @@ import { Box, Text, Button, Center, Divider, Flex, Heading, Image, Stack, Icon, 
 import { useState } from "react";
 import MasteryChecklist from "../components/MasteryChecklist";
 import { useAccount, useConnect, useDisconnect, useEnsName } from 'wagmi'
-import { InjectedConnector } from 'wagmi/connectors/injected'
+import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { GrCycle } from "react-icons/gr";
 import DayCycle from "../components/DayCycle";
 import { GiCycle, GiMeditation, GiShinyApple, GiWeightLiftingUp } from "react-icons/gi";
@@ -40,7 +40,7 @@ export default function AppPage() {
 
     const { address, isConnected } = useAccount();
     const { data: ensName } = useEnsName({ address })
-    const { connect } = useConnect({connector: new InjectedConnector()});
+    const { connect } = useConnect({connector: new MetaMaskConnector()});
     const { disconnect } = useDisconnect();
 
     const hearts = ["💜", "💙", "💚", "💛"];
