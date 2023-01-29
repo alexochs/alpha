@@ -1,4 +1,4 @@
-import { Box, Center, Flex, Heading, HStack, Text, Input, Select, Stack, Link, Button, TableContainer, Table, Thead, Tr, Th, Tbody, Td, Checkbox } from "@chakra-ui/react";
+import { Box, Center, Flex, Heading, HStack, Text, Input, Select, Stack, Link, Button, TableContainer, Table, Thead, Tr, Th, Tbody, Td, Checkbox, Divider } from "@chakra-ui/react";
 import { ChangeEvent, useEffect, useState } from "react";
 
 export default function MasteryChecklist({address}: any) {
@@ -139,13 +139,13 @@ export default function MasteryChecklist({address}: any) {
                         <Stack spacing="0.5rem">
                             <Text width="16rem">{dateString}</Text>
                             <HStack spacing="1rem">
-                                <Button onClick={previousDay}>
+                                <Button onClick={previousDay} rounded="full">
                                     {"<"}
                                 </Button>
-                                <Button onClick={today}>
+                                <Button onClick={today} rounded="full">
                                     Today
                                 </Button>
-                                <Button onClick={nextDay}>
+                                <Button onClick={nextDay} rounded="full">
                                     {">"}
                                 </Button>
                             </HStack>
@@ -162,7 +162,8 @@ export default function MasteryChecklist({address}: any) {
                                 onChange={(e) => setNewTaskName(e.target.value)}
                                 isInvalid={invalidTaskName}
                                 variant='outline'
-                                placeholder='Describe your task'/>
+                                placeholder='Describe your task'
+                                rounded="full"/>
                             </Flex>
                             <Flex flexDir="column">
                                 <Center>
@@ -170,7 +171,8 @@ export default function MasteryChecklist({address}: any) {
                                 </Center>
                                 <Select
                                 value={newTaskDifficulty}
-                                onChange={(e) => setNewTaskDifficulty(parseInt(e.target.value))}>
+                                onChange={(e) => setNewTaskDifficulty(parseInt(e.target.value))}
+                                rounded="full">
                                     <option value={1}>1</option>
                                     <option value={3}>3</option>
                                     <option value={5}>5</option>
@@ -184,7 +186,8 @@ export default function MasteryChecklist({address}: any) {
                                 </Center>
                                 <Select
                                 value={newTaskImportance}
-                                onChange={(e) => setNewTaskImportance(parseInt(e.target.value))}>
+                                onChange={(e) => setNewTaskImportance(parseInt(e.target.value))}
+                                rounded="full">
                                     <option value={1}>1</option>
                                     <option value={3}>3</option>
                                     <option value={5}>5</option>
@@ -195,7 +198,8 @@ export default function MasteryChecklist({address}: any) {
                         </HStack>
                         <Button
                         onClick={addTask}
-                        colorScheme="yellow">
+                        colorScheme="yellow"
+                        rounded="full">
                             Add Task
                         </Button>
                     </Stack>
@@ -203,8 +207,8 @@ export default function MasteryChecklist({address}: any) {
                 <Box py="2rem" />
                 <Stack spacing="1rem">
                     <Text fontSize="3xl" fontWeight={"bold"} letterSpacing="0.1rem">Mastery Checklist</Text>
-                    <TableContainer>
-                        <Table variant='simple'>
+                    <TableContainer fontSize="xl">
+                        <Table variant="striped" colorScheme="blackAlpha">
                             <Thead>
                             <Tr>
                                 <Th>Task</Th>
@@ -223,11 +227,21 @@ export default function MasteryChecklist({address}: any) {
                                         <Td isNumeric>{task.importance}</Td>
                                         <Td isNumeric fontWeight={"bold"}>{task.difficulty + task.importance}</Td>
                                         <Td>
-                                            <Checkbox onChange={() => updateTaskCompletion(task)} isChecked={task.completed} colorScheme="yellow"/>
+                                            <Checkbox 
+                                            onChange={() => updateTaskCompletion(task)}
+                                            isChecked={task.completed} 
+                                            colorScheme="yellow"
+                                            size="lg"
+                                            />
                                         </Td>
                                         <Td>
-                                            <Button onClick={() => deleteTask(task.id)} colorScheme="red" size="xs" variant="ghost">
-                                                Delete
+                                            <Button
+                                            onClick={() => deleteTask(task.id)}
+                                            colorScheme="red"
+                                            size="xs"
+                                            variant="ghost"
+                                            rounded="full">
+                                                x
                                             </Button>
                                         </Td>
                                     </Tr>
