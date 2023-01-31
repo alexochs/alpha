@@ -25,7 +25,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <ChakraProvider theme={theme}>
       <WagmiConfig client={client}>
         <Head>
-          <title>MASTER YOURSELF</title>
+          <title>Master Yourself</title>
           <link rel="favicon" href="/public/logo.png" />
         </Head>
         <Component {...pageProps} />
