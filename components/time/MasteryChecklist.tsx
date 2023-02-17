@@ -202,7 +202,9 @@ export default function MasteryChecklist({ profileId }: any) {
                         <Text>Luke Belmar&apos;s Mastery Checklist</Text>
                     </Link>
                 </Flex>
+
                 <Box py="2rem" />
+
                 <HStack spacing="4rem">
                     <Stack spacing="1rem">
                         <Text
@@ -234,7 +236,7 @@ export default function MasteryChecklist({ profileId }: any) {
                             fontWeight={"bold"}
                             letterSpacing="0.1rem"
                         >
-                            New task
+                            Create a task
                         </Text>
                         <HStack spacing="1rem">
                             <Flex flexDir="column">

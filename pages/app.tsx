@@ -14,9 +14,9 @@ import {
     Link,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import MasteryChecklist from "../components/MasteryChecklist";
+import MasteryChecklist from "../components/time/MasteryChecklist";
 import { GrCycle } from "react-icons/gr";
-import DayCycle from "../components/DayCycle";
+import HabitTracker from "../components/time/HabitTracker";
 import {
     GiCycle,
     GiMeditation,
@@ -74,7 +74,7 @@ export default function AppPage({ initialSession, user }: any) {
 
     const CATEGORY_TIME = 0;
     const COMPONENT_MASTERY_CHECKLIST = 0;
-    const COMPONENT_DAY_CYCLE = 1;
+    const COMPONENT_HABIT_TRACKER = 1;
 
     const CATEGORY_MIND = 1;
     const COMPONENT_MEDITATE = 2;
@@ -84,7 +84,7 @@ export default function AppPage({ initialSession, user }: any) {
     const COMPONENT_DIET = 4;
     const COMPONENT_EXERCISE = 5;
 
-    const CATEGORY_NETWORK = 6;
+    const CATEGORY_NETWORK = 3;
     const COMPONENT_NEWS_TICKER = 7;
     const COMPONENT_FORUM = 8;
     const COMPONENT_MEMBERS = 9;
@@ -93,43 +93,7 @@ export default function AppPage({ initialSession, user }: any) {
     const [category, setCategory] = useState(CATEGORY_TIME);
     const [component, setComponent] = useState(COMPONENT_MASTERY_CHECKLIST);
 
-    const hearts = ["💜", "💙", "💚", "💛"];
-    const heartIndex = Math.floor(Math.random() * 4);
-
-    function NotInAllowList() {
-        return (
-            <Center
-                h="100vh"
-                w="100vw"
-                bg="gray.100"
-                color="gray.800"
-                flexDir="column"
-            >
-                <Heading
-                    fontSize="6xl"
-                    fontStyle={"italic"}
-                    letterSpacing={"0.5rem"}
-                >
-                    YOU ARE NOT A MEMBER
-                </Heading>
-                <Box py="2rem" />
-                <Link
-                    href="https://buy.stripe.com/cN27vv5Kl85b6TmfYY"
-                    target={"_blank"}
-                >
-                    <Button
-                        size="lg"
-                        letterSpacing={"0.1rem"}
-                        rounded="full"
-                        variant="solid"
-                        colorScheme={"blackAlpha"}
-                    >
-                        <Text fontSize="2xl">BECOME A MEMBER</Text>
-                    </Button>
-                </Link>
-            </Center>
-        );
-    }
+    const hearts = ["💛", "💙", "💚", "❤️"];
 
     function CategoryComponents() {
         if (category === CATEGORY_TIME) {
@@ -152,10 +116,10 @@ export default function AppPage({ initialSession, user }: any) {
                         <Text fontSize="xl">Mastery Checklist</Text>
                     </Button>
                     <Button
-                        onClick={() => setComponent(COMPONENT_DAY_CYCLE)}
+                        onClick={() => setComponent(COMPONENT_HABIT_TRACKER)}
                         colorScheme="yellow"
                         variant={
-                            component === COMPONENT_DAY_CYCLE
+                            component === COMPONENT_HABIT_TRACKER
                                 ? "solid"
                                 : "ghost"
                         }
@@ -163,7 +127,7 @@ export default function AppPage({ initialSession, user }: any) {
                         rounded="full"
                         leftIcon={<Icon as={GiCycle} boxSize="1.5rem" />}
                     >
-                        <Text fontSize="xl">Day Cycle</Text>
+                        <Text fontSize="xl">Habit Tracker</Text>
                     </Button>
                 </Stack>
             );
@@ -295,8 +259,8 @@ export default function AppPage({ initialSession, user }: any) {
         switch (component) {
             case COMPONENT_MASTERY_CHECKLIST:
                 return <MasteryChecklist profileId={user.id} />;
-            case COMPONENT_DAY_CYCLE:
-                return <DayCycle />;
+            case COMPONENT_HABIT_TRACKER:
+                return <HabitTracker />;
             default:
                 return <Text>Oops, something went wrong!</Text>;
         }
@@ -315,15 +279,16 @@ export default function AppPage({ initialSession, user }: any) {
                     <Center h="25vh" w="100%" py="1rem">
                         <Image src="/logo.png" alt="Logo" maxH="80%" />
                         <Center pl="1rem" flexDir="column">
-                            <Heading fontSize="6xl" letterSpacing={"0.5rem"}>
-                                ALPHA
+                            <Heading fontSize="4xl" letterSpacing={"0.5rem"}>
+                                MASTER
+                                <br />
+                                YOURSELF
                             </Heading>
-                            <Text fontSize="xl" letterSpacing={"0.1rem"}>
-                                MASTER YOURSELF
-                            </Text>
                         </Center>
                     </Center>
+
                     <Divider />
+
                     <Center h="10vh" w="100%" p="1rem" flexDirection={"column"}>
                         <Button
                             fontSize="sm"
@@ -334,7 +299,9 @@ export default function AppPage({ initialSession, user }: any) {
                             {user.email}
                         </Button>
                     </Center>
+
                     <Divider />
+
                     <Center h="15vh" w="100%" p="1rem" flexDirection={"column"}>
                         <Stack spacing="0.5rem">
                             <Center>
@@ -406,15 +373,18 @@ export default function AppPage({ initialSession, user }: any) {
                             </HStack>
                         </Stack>
                     </Center>
+
                     <Divider />
+
                     <Center h="45vh">
                         <CategoryComponents />
                     </Center>
                     <Divider />
+
                     <Center h="5vh">
                         <Link href="https://alexochs.de" target="_blank">
                             <Text fontSize="xs">
-                                Made with {hearts[heartIndex]} by Alex Ochs
+                                Made with {hearts[category]} by Alex Ochs
                             </Text>
                         </Link>
                     </Center>

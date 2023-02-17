@@ -1,4 +1,4 @@
-import { Box, Button, Center, Heading } from "@chakra-ui/react";
+import { Box, Text, Button, Center, Heading, Link } from "@chakra-ui/react";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { Auth, ThemeSupa } from "@supabase/auth-ui-react";
 import { useRouter } from "next/router";
@@ -17,6 +17,22 @@ export default function SignInPage() {
             >
                 ACCESS DENIED
             </Heading>
+
+            <Link
+                href="https://buy.stripe.com/cN27vv5Kl85b6TmfYY"
+                target={"_blank"}
+            >
+                <Button
+                    size="lg"
+                    letterSpacing={"0.1rem"}
+                    rounded="full"
+                    variant="solid"
+                    colorScheme={"blackAlpha"}
+                >
+                    <Text fontSize="2xl">BECOME A MEMBER</Text>
+                </Button>
+            </Link>
+
             <Button
                 mt="1rem"
                 rounded="full"
