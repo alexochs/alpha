@@ -33,6 +33,7 @@ import { Auth, ThemeSupa } from "@supabase/auth-ui-react";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/router";
+import DatePicker from "../components/DatePicker";
 
 export async function getServerSideProps(context: any) {
     const supabase = createServerSupabaseClient(context);
@@ -71,6 +72,8 @@ export async function getServerSideProps(context: any) {
 export default function AppPage({ initialSession, user }: any) {
     const router = useRouter();
     const supabase = useSupabaseClient();
+
+    const [date, setDate] = useState(new Date(new Date().setHours(0, 0, 0, 0)));
 
     const CATEGORY_TIME = 0;
     const COMPONENT_MASTERY_CHECKLIST = 0;
@@ -260,7 +263,7 @@ export default function AppPage({ initialSession, user }: any) {
             case COMPONENT_MASTERY_CHECKLIST:
                 return <MasteryChecklist profileId={user.id} />;
             case COMPONENT_HABIT_TRACKER:
-                return <HabitTracker />;
+                return <HabitTracker profileId={user.id} date={date} />;
             default:
                 return <Text>Oops, something went wrong!</Text>;
         }
@@ -276,25 +279,34 @@ export default function AppPage({ initialSession, user }: any) {
                 overflow={"hidden"}
             >
                 <Box w="25vw" bg="white">
-                    <Center h="25vh" w="100%" py="1rem">
-                        <Image src="/logo.png" alt="Logo" maxH="80%" />
-                        <Center pl="1rem" flexDir="column">
-                            <Heading fontSize="4xl" letterSpacing={"0.5rem"}>
-                                MASTER
-                                <br />
-                                YOURSELF
-                            </Heading>
-                        </Center>
+                    <Center w="100%" py="2rem" flexDir={"column"}>
+                        <Heading
+                            fontSize="4xl"
+                            letterSpacing={"0.5rem"}
+                            pb="1rem"
+                        >
+                            MASTER
+                            <br />
+                            YOURSELF
+                        </Heading>
+                        <DatePicker date={date} setDate={setDate} />
                     </Center>
 
                     <Divider />
 
-                    <Center h="10vh" w="100%" p="1rem" flexDirection={"column"}>
+                    <Center
+                        h="10vh"
+                        w="100%"
+                        p="2rem"
+                        px="1rem"
+                        flexDirection={"column"}
+                    >
                         <Button
                             fontSize="sm"
                             variant="ghost"
                             rounded="full"
                             onClick={() => router.push(`/profiles/${user.id}`)}
+                            p="1rem"
                         >
                             {user.email}
                         </Button>
