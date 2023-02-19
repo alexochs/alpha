@@ -20,7 +20,7 @@ export async function getServerSideProps(context: any) {
         };
     }
 
-    const allowList = ["mail@alexochs.de"];
+    const allowList = ["mail@alexochs.de", "maltestarck02@gmail.com"];
     if (!allowList.includes(session.user.email!)) {
         return {
             redirect: {

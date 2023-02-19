@@ -51,7 +51,7 @@ export async function getServerSideProps(context: any) {
         };
     }
 
-    const allowList = ["mail@alexochs.de"];
+    const allowList = ["mail@alexochs.de", "maltestarck02@gmail.com"];
     if (!allowList.includes(session.user.email!)) {
         return {
             redirect: {
@@ -261,7 +261,7 @@ export default function AppPage({ initialSession, user }: any) {
     function Content() {
         switch (component) {
             case COMPONENT_MASTERY_CHECKLIST:
-                return <MasteryChecklist profileId={user.id} />;
+                return <MasteryChecklist profileId={user.id} date={date} />;
             case COMPONENT_HABIT_TRACKER:
                 return <HabitTracker profileId={user.id} date={date} />;
             default:

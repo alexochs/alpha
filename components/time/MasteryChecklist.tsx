@@ -19,20 +19,11 @@ import {
     Td,
     Checkbox,
     Divider,
+    VStack,
 } from "@chakra-ui/react";
 import { ChangeEvent, useEffect, useState } from "react";
 
-export default function MasteryChecklist({ profileId }: any) {
-    const [date, setDate] = useState(new Date(new Date().setHours(0, 0, 0, 0)));
-    const [dateString, setDateString] = useState(
-        date.toLocaleDateString("en-US", {
-            weekday: "long",
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-        })
-    );
-
+export default function MasteryChecklist({ profileId, date }: any) {
     const [tasks, setTasks] = useState<any[]>([]);
 
     const [newTaskName, setNewTaskName] = useState("");
@@ -44,51 +35,6 @@ export default function MasteryChecklist({ profileId }: any) {
     useEffect(() => {
         readTasks();
     }, []);
-
-    function today() {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-
-        setDate(today);
-        setDateString(
-            today.toLocaleDateString("en-US", {
-                weekday: "long",
-                month: "long",
-                day: "numeric",
-                year: "numeric",
-            })
-        );
-    }
-
-    function nextDay() {
-        const next = new Date(date.getTime() + 86400000);
-        next.setHours(0, 0, 0, 0);
-
-        setDate(new Date(date.getTime() + 86400000));
-        setDateString(
-            new Date(date.getTime() + 86400000).toLocaleDateString("en-US", {
-                weekday: "long",
-                month: "long",
-                day: "numeric",
-                year: "numeric",
-            })
-        );
-    }
-
-    function previousDay() {
-        const prev = new Date(date.getTime() - 86400000);
-        prev.setHours(0, 0, 0, 0);
-
-        setDate(new Date(date.getTime() - 86400000));
-        setDateString(
-            new Date(date.getTime() - 86400000).toLocaleDateString("en-US", {
-                weekday: "long",
-                month: "long",
-                day: "numeric",
-                year: "numeric",
-            })
-        );
-    }
 
     async function addTask() {
         if (!newTaskName) {
@@ -205,54 +151,28 @@ export default function MasteryChecklist({ profileId }: any) {
 
                 <Box py="2rem" />
 
-                <HStack spacing="4rem">
-                    <Stack spacing="1rem">
-                        <Text
-                            fontSize="3xl"
-                            fontWeight={"bold"}
-                            letterSpacing="0.1rem"
-                        >
-                            Date
-                        </Text>
-                        <Stack spacing="0.5rem">
-                            <Text width="16rem">{dateString}</Text>
-                            <HStack spacing="1rem">
-                                <Button onClick={previousDay} rounded="full">
-                                    {"<"}
-                                </Button>
-                                <Button onClick={today} rounded="full">
-                                    Today
-                                </Button>
-                                <Button onClick={nextDay} rounded="full">
-                                    {">"}
-                                </Button>
-                            </HStack>
-                        </Stack>
-                    </Stack>
-
-                    <Stack spacing="1rem">
-                        <Text
-                            fontSize="3xl"
-                            fontWeight={"bold"}
-                            letterSpacing="0.1rem"
-                        >
-                            Create a task
-                        </Text>
+                <Stack spacing="1rem">
+                    <Text
+                        fontSize="3xl"
+                        fontWeight={"bold"}
+                        letterSpacing="0.1rem"
+                    >
+                        Create a task
+                    </Text>
+                    <Stack spacing="1rem" w="32rem">
+                        <Flex flexDir="column">
+                            <Text>Task</Text>
+                            <Input
+                                value={newTaskName}
+                                onChange={(e) => setNewTaskName(e.target.value)}
+                                isInvalid={invalidTaskName}
+                                variant="outline"
+                                placeholder="Describe your task"
+                                rounded="full"
+                            />
+                        </Flex>
                         <HStack spacing="1rem">
-                            <Flex flexDir="column">
-                                <Text>Task</Text>
-                                <Input
-                                    value={newTaskName}
-                                    onChange={(e) =>
-                                        setNewTaskName(e.target.value)
-                                    }
-                                    isInvalid={invalidTaskName}
-                                    variant="outline"
-                                    placeholder="Describe your task"
-                                    rounded="full"
-                                />
-                            </Flex>
-                            <Flex flexDir="column">
+                            <Flex flexDir="column" w="16rem">
                                 <Center>
                                     <Text>Difficulty&nbsp;</Text>
                                 </Center>
@@ -272,7 +192,8 @@ export default function MasteryChecklist({ profileId }: any) {
                                     <option value={13}>13</option>
                                 </Select>
                             </Flex>
-                            <Flex flexDir="column">
+
+                            <Flex flexDir="column" w="16rem">
                                 <Center>
                                     <Text>Importance&nbsp;</Text>
                                 </Center>
@@ -293,16 +214,18 @@ export default function MasteryChecklist({ profileId }: any) {
                                 </Select>
                             </Flex>
                         </HStack>
-                        <Button
-                            onClick={addTask}
-                            colorScheme="yellow"
-                            rounded="full"
-                        >
-                            Add Task
-                        </Button>
                     </Stack>
-                </HStack>
+                    <Button
+                        onClick={addTask}
+                        colorScheme="yellow"
+                        rounded="full"
+                    >
+                        Add task
+                    </Button>
+                </Stack>
+
                 <Box py="2rem" />
+
                 <Stack spacing="1rem">
                     <Text
                         fontSize="3xl"

@@ -261,7 +261,7 @@ export default function HabitTracker({ profileId, date }: any) {
                         colorScheme="yellow"
                         rounded="full"
                     >
-                        Add to your Habit
+                        Add to your habits
                     </Button>
                 </Stack>
 
