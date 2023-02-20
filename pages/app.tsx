@@ -1,6 +1,7 @@
-import { CheckCircleIcon, EmailIcon } from "@chakra-ui/icons";
+import { CheckCircleIcon, EmailIcon, SearchIcon } from "@chakra-ui/icons";
 import {
     Box,
+    MenuButton,
     Text,
     Button,
     Center,
@@ -12,6 +13,17 @@ import {
     Icon,
     HStack,
     Link,
+    useMediaQuery,
+    IconButton,
+    Popover,
+    PopoverTrigger,
+    PopoverArrow,
+    PopoverContent,
+    PopoverCloseButton,
+    PopoverBody,
+    MenuList,
+    MenuItem,
+    Menu,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import MasteryChecklist from "../components/time/MasteryChecklist";
@@ -23,6 +35,7 @@ import {
     GiShinyApple,
     GiWeightLiftingUp,
 } from "react-icons/gi";
+import { AiFillClockCircle, AiOutlineClockCircle } from "react-icons/ai";
 import { BsJournalText } from "react-icons/bs";
 import { MdOutlineForum } from "react-icons/md";
 import { BiNews } from "react-icons/bi";
@@ -34,6 +47,7 @@ import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/router";
 import DatePicker from "../components/DatePicker";
+import CategoryComponents from "../components/CategoryComponents";
 
 export async function getServerSideProps(context: any) {
     const supabase = createServerSupabaseClient(context);
@@ -73,6 +87,8 @@ export default function AppPage({ initialSession, user }: any) {
     const router = useRouter();
     const supabase = useSupabaseClient();
 
+    const isMobile = useMediaQuery("(max-width: 600px)")[0];
+
     const [date, setDate] = useState(new Date(new Date().setHours(0, 0, 0, 0)));
 
     const CATEGORY_TIME = 0;
@@ -98,170 +114,16 @@ export default function AppPage({ initialSession, user }: any) {
 
     const hearts = ["💛", "💙", "💚", "❤️"];
 
-    function CategoryComponents() {
-        if (category === CATEGORY_TIME) {
-            return (
-                <Stack spacing="2rem">
-                    <Button
-                        onClick={() =>
-                            setComponent(COMPONENT_MASTERY_CHECKLIST)
-                        }
-                        colorScheme="yellow"
-                        variant={
-                            component === COMPONENT_MASTERY_CHECKLIST
-                                ? "solid"
-                                : "ghost"
-                        }
-                        size="lg"
-                        rounded="full"
-                        leftIcon={<CheckCircleIcon boxSize="1.5rem" />}
-                    >
-                        <Text fontSize="xl">Mastery Checklist</Text>
-                    </Button>
-                    <Button
-                        onClick={() => setComponent(COMPONENT_HABIT_TRACKER)}
-                        colorScheme="yellow"
-                        variant={
-                            component === COMPONENT_HABIT_TRACKER
-                                ? "solid"
-                                : "ghost"
-                        }
-                        size="lg"
-                        rounded="full"
-                        leftIcon={<Icon as={GiCycle} boxSize="1.5rem" />}
-                    >
-                        <Text fontSize="xl">Habit Tracker</Text>
-                    </Button>
-                </Stack>
-            );
-        } else if (category === CATEGORY_MIND) {
-            return (
-                <Stack spacing="2rem">
-                    <Button
-                        onClick={() => setComponent(COMPONENT_MEDITATE)}
-                        colorScheme="blue"
-                        variant={
-                            component === COMPONENT_MEDITATE ? "solid" : "ghost"
-                        }
-                        size="lg"
-                        rounded="full"
-                        leftIcon={<Icon as={GiMeditation} boxSize="1.5rem" />}
-                    >
-                        <Text fontSize="xl">Meditate</Text>
-                    </Button>
-                    <Button
-                        onClick={() => setComponent(COMPONENT_JOURNAL)}
-                        colorScheme="blue"
-                        variant={
-                            component === COMPONENT_JOURNAL ? "solid" : "ghost"
-                        }
-                        size="lg"
-                        rounded="full"
-                        leftIcon={<Icon as={BsJournalText} boxSize="1.5rem" />}
-                    >
-                        <Text fontSize="xl">Journal</Text>
-                    </Button>
-                </Stack>
-            );
-        } else if (category === CATEGORY_HEALTH) {
-            return (
-                <Stack spacing="2rem">
-                    <Button
-                        onClick={() => setComponent(COMPONENT_DIET)}
-                        colorScheme="green"
-                        variant={
-                            component === COMPONENT_DIET ? "solid" : "ghost"
-                        }
-                        size="lg"
-                        rounded="full"
-                        leftIcon={<Icon as={GiShinyApple} boxSize="1.5rem" />}
-                    >
-                        <Text fontSize="xl">Diet</Text>
-                    </Button>
-                    <Button
-                        onClick={() => setComponent(COMPONENT_EXERCISE)}
-                        colorScheme="green"
-                        variant={
-                            component === COMPONENT_EXERCISE ? "solid" : "ghost"
-                        }
-                        size="lg"
-                        rounded="full"
-                        leftIcon={
-                            <Icon as={GiWeightLiftingUp} boxSize="1.5rem" />
-                        }
-                    >
-                        <Text fontSize="xl">Exercise</Text>
-                    </Button>
-                </Stack>
-            );
-        } else if (category === CATEGORY_NETWORK) {
-            return (
-                <Stack spacing="2rem">
-                    <Button
-                        onClick={() => setComponent(COMPONENT_FORUM)}
-                        colorScheme="red"
-                        variant={
-                            component === COMPONENT_FORUM ? "solid" : "ghost"
-                        }
-                        size="lg"
-                        rounded="full"
-                        leftIcon={<Icon as={MdOutlineForum} boxSize="1.5rem" />}
-                    >
-                        <Text fontSize="xl">Forum</Text>
-                    </Button>
-                    <Button
-                        onClick={() => setComponent(COMPONENT_NEWS_TICKER)}
-                        colorScheme="red"
-                        variant={
-                            component === COMPONENT_NEWS_TICKER
-                                ? "solid"
-                                : "ghost"
-                        }
-                        size="lg"
-                        rounded="full"
-                        leftIcon={<Icon as={BiNews} boxSize="1.5rem" />}
-                    >
-                        <Text fontSize="xl">News Ticker</Text>
-                    </Button>
-                    <Button
-                        onClick={() => setComponent(COMPONENT_SOCIAL_MEDIA)}
-                        colorScheme="red"
-                        variant={
-                            component === COMPONENT_SOCIAL_MEDIA
-                                ? "solid"
-                                : "ghost"
-                        }
-                        size="lg"
-                        rounded="full"
-                        leftIcon={
-                            <Icon as={IoShareSocialSharp} boxSize="1.5rem" />
-                        }
-                    >
-                        <Text fontSize="xl">Social Media</Text>
-                    </Button>
-                    <Button
-                        onClick={() => setComponent(COMPONENT_MEMBERS)}
-                        colorScheme="red"
-                        variant={
-                            component === COMPONENT_MEMBERS ? "solid" : "ghost"
-                        }
-                        size="lg"
-                        rounded="full"
-                        leftIcon={<Icon as={FaUsers} boxSize="1.5rem" />}
-                    >
-                        <Text fontSize="xl">Members</Text>
-                    </Button>
-                </Stack>
-            );
-        } else {
-            return <Text>COMING SOON</Text>;
-        }
-    }
-
-    function Content() {
+    function Content(isMobile: any) {
         switch (component) {
             case COMPONENT_MASTERY_CHECKLIST:
-                return <MasteryChecklist profileId={user.id} date={date} />;
+                return (
+                    <MasteryChecklist
+                        profileId={user.id}
+                        date={date}
+                        isMobile={isMobile}
+                    />
+                );
             case COMPONENT_HABIT_TRACKER:
                 return <HabitTracker profileId={user.id} date={date} />;
             default:
@@ -269,7 +131,7 @@ export default function AppPage({ initialSession, user }: any) {
         }
     }
 
-    function Connected() {
+    function Desktop() {
         return (
             <Flex
                 h="100vh"
@@ -389,7 +251,12 @@ export default function AppPage({ initialSession, user }: any) {
                     <Divider />
 
                     <Center h="45vh">
-                        <CategoryComponents />
+                        <CategoryComponents
+                            category={category}
+                            setCategory={setCategory}
+                            component={component}
+                            setComponent={setComponent}
+                        />
                     </Center>
                     <Divider />
 
@@ -409,5 +276,119 @@ export default function AppPage({ initialSession, user }: any) {
         );
     }
 
-    return <>{user ? <Connected /> : <Text>not connected</Text>}</>;
+    function Mobile() {
+        return (
+            <Box maxW="100vw" color="gray.700">
+                <Center
+                    position="fixed"
+                    top="0"
+                    w="100vw"
+                    minH="4rem"
+                    flexDir="column"
+                    pt="1rem"
+                    borderBottom={"1px solid rgb(0, 0, 0, 0.2)"}
+                    bg="white"
+                >
+                    <Heading fontSize="lg" letterSpacing={"0.5rem"}>
+                        MASTER YOURSELF
+                    </Heading>
+
+                    <Box color="gray">
+                        <DatePicker date={date} setDate={setDate} />
+                    </Box>
+                </Center>
+
+                <Box pt="6rem" bg="gray.100" minH="100vh">
+                    <Content isMobile={isMobile} />
+                </Box>
+
+                <Box>
+                    <Flex
+                        position="fixed"
+                        bottom="0"
+                        minH="5vh"
+                        borderTop="1px solid rgb(0, 0, 0, 0.2)"
+                        w="100vw"
+                        bg="white"
+                        p=".5rem"
+                        justifyContent="space-evenly"
+                    >
+                        <Center>
+                            <Menu>
+                                <MenuButton
+                                    w="2rem"
+                                    h="2rem"
+                                    aria-label="time"
+                                    as={AiOutlineClockCircle}
+                                    color="blackAlpha.600"
+                                    onClick={() => setCategory(CATEGORY_TIME)}
+                                ></MenuButton>
+                                <MenuList>
+                                    <MenuItem>Download</MenuItem>
+                                    <MenuItem>Create a Copy</MenuItem>
+                                    <MenuItem>Mark as Draft</MenuItem>
+                                    <MenuItem>Delete</MenuItem>
+                                    <MenuItem>Attend a Workshop</MenuItem>
+                                </MenuList>
+                            </Menu>
+                            <Popover placement="top-start">
+                                <PopoverTrigger>
+                                    <Icon
+                                        w="2rem"
+                                        h="2rem"
+                                        aria-label="time"
+                                        as={AiOutlineClockCircle}
+                                        color="blackAlpha.600"
+                                        onClick={() =>
+                                            setCategory(CATEGORY_TIME)
+                                        }
+                                    />
+                                </PopoverTrigger>
+                                <PopoverContent>
+                                    <PopoverArrow />
+                                    <PopoverCloseButton />
+                                    <PopoverBody>
+                                        Are you sure you want to have that
+                                        milkshake?
+                                    </PopoverBody>
+                                </PopoverContent>
+                            </Popover>
+                        </Center>
+
+                        <IconButton
+                            colorScheme="yellow"
+                            aria-label="time"
+                            icon={<AiOutlineClockCircle />}
+                        />
+
+                        <IconButton
+                            colorScheme="yellow"
+                            aria-label="time"
+                            icon={<AiOutlineClockCircle />}
+                        />
+
+                        <IconButton
+                            colorScheme="yellow"
+                            aria-label="time"
+                            icon={<AiOutlineClockCircle />}
+                        />
+                    </Flex>
+                </Box>
+            </Box>
+        );
+    }
+
+    return (
+        <>
+            {user ? (
+                isMobile ? (
+                    <Mobile />
+                ) : (
+                    <Desktop />
+                )
+            ) : (
+                <Text>not connected</Text>
+            )}
+        </>
+    );
 }

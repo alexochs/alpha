@@ -9,8 +9,9 @@ export default function SignInPage() {
     const supabase = useSupabaseClient();
 
     return (
-        <Center h="100vh" w="100vw" flexDir="column">
+        <Center h="100vh" flexDir="column">
             <Heading
+                textAlign={"center"}
                 fontSize="6xl"
                 fontStyle={"italic"}
                 letterSpacing={"0.5rem"}
@@ -21,20 +22,23 @@ export default function SignInPage() {
             <Link
                 href="https://buy.stripe.com/cN27vv5Kl85b6TmfYY"
                 target={"_blank"}
+                pt="2rem"
             >
                 <Button
                     size="lg"
                     letterSpacing={"0.1rem"}
                     rounded="full"
                     variant="solid"
-                    colorScheme={"blackAlpha"}
+                    colorScheme={"yellow"}
                 >
                     <Text fontSize="2xl">BECOME A MEMBER</Text>
                 </Button>
             </Link>
 
             <Button
-                mt="1rem"
+                colorScheme={"red"}
+                variant="ghost"
+                mt="6rem"
                 rounded="full"
                 onClick={async () => {
                     await supabase.auth.signOut();
