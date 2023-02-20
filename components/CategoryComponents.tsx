@@ -17,6 +17,7 @@ export default function CategoryComponents({
     setComponent,
     category,
     setCategory,
+    onClose,
 }: any) {
     const CATEGORY_TIME = 0;
     const COMPONENT_MASTERY_CHECKLIST = 0;
@@ -40,7 +41,11 @@ export default function CategoryComponents({
         return (
             <Stack spacing="2rem">
                 <Button
-                    onClick={() => setComponent(COMPONENT_MASTERY_CHECKLIST)}
+                    onClick={() => {
+                        setCategory(CATEGORY_TIME);
+                        setComponent(COMPONENT_MASTERY_CHECKLIST);
+                        onClose();
+                    }}
                     colorScheme="yellow"
                     variant={
                         component === COMPONENT_MASTERY_CHECKLIST
@@ -54,7 +59,11 @@ export default function CategoryComponents({
                     <Text fontSize="xl">Mastery Checklist</Text>
                 </Button>
                 <Button
-                    onClick={() => setComponent(COMPONENT_HABIT_TRACKER)}
+                    onClick={() => {
+                        setCategory(CATEGORY_TIME);
+                        setComponent(COMPONENT_HABIT_TRACKER);
+                        onClose();
+                    }}
                     colorScheme="yellow"
                     variant={
                         component === COMPONENT_HABIT_TRACKER
@@ -73,6 +82,7 @@ export default function CategoryComponents({
         return (
             <Stack spacing="2rem">
                 <Button
+                    isDisabled={true}
                     onClick={() => setComponent(COMPONENT_MEDITATE)}
                     colorScheme="blue"
                     variant={
@@ -85,6 +95,7 @@ export default function CategoryComponents({
                     <Text fontSize="xl">Meditate</Text>
                 </Button>
                 <Button
+                    isDisabled={true}
                     onClick={() => setComponent(COMPONENT_JOURNAL)}
                     colorScheme="blue"
                     variant={
@@ -102,6 +113,7 @@ export default function CategoryComponents({
         return (
             <Stack spacing="2rem">
                 <Button
+                    isDisabled={true}
                     onClick={() => setComponent(COMPONENT_DIET)}
                     colorScheme="green"
                     variant={component === COMPONENT_DIET ? "solid" : "ghost"}
@@ -112,6 +124,7 @@ export default function CategoryComponents({
                     <Text fontSize="xl">Diet</Text>
                 </Button>
                 <Button
+                    isDisabled={true}
                     onClick={() => setComponent(COMPONENT_EXERCISE)}
                     colorScheme="green"
                     variant={
@@ -129,6 +142,7 @@ export default function CategoryComponents({
         return (
             <Stack spacing="2rem">
                 <Button
+                    isDisabled={true}
                     onClick={() => setComponent(COMPONENT_FORUM)}
                     colorScheme="red"
                     variant={component === COMPONENT_FORUM ? "solid" : "ghost"}
@@ -139,6 +153,7 @@ export default function CategoryComponents({
                     <Text fontSize="xl">Forum</Text>
                 </Button>
                 <Button
+                    isDisabled={true}
                     onClick={() => setComponent(COMPONENT_NEWS_TICKER)}
                     colorScheme="red"
                     variant={
@@ -151,6 +166,7 @@ export default function CategoryComponents({
                     <Text fontSize="xl">News Ticker</Text>
                 </Button>
                 <Button
+                    isDisabled={true}
                     onClick={() => setComponent(COMPONENT_SOCIAL_MEDIA)}
                     colorScheme="red"
                     variant={
@@ -163,6 +179,7 @@ export default function CategoryComponents({
                     <Text fontSize="xl">Social Media</Text>
                 </Button>
                 <Button
+                    isDisabled={true}
                     onClick={() => setComponent(COMPONENT_MEMBERS)}
                     colorScheme="red"
                     variant={

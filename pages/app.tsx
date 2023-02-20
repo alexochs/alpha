@@ -24,6 +24,13 @@ import {
     MenuList,
     MenuItem,
     Menu,
+    Drawer,
+    DrawerOverlay,
+    DrawerContent,
+    DrawerHeader,
+    DrawerBody,
+    useDisclosure,
+    VStack,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import MasteryChecklist from "../components/time/MasteryChecklist";
@@ -35,11 +42,16 @@ import {
     GiShinyApple,
     GiWeightLiftingUp,
 } from "react-icons/gi";
-import { AiFillClockCircle, AiOutlineClockCircle } from "react-icons/ai";
-import { BsJournalText } from "react-icons/bs";
+import {
+    AiFillClockCircle,
+    AiFillHeart,
+    AiOutlineClockCircle,
+    AiOutlineHeart,
+} from "react-icons/ai";
+import { BsJournalText, BsPeople, BsPeopleFill } from "react-icons/bs";
 import { MdOutlineForum } from "react-icons/md";
-import { BiNews } from "react-icons/bi";
-import { FaUsers } from "react-icons/fa";
+import { BiBrain, BiNews } from "react-icons/bi";
+import { FaBrain, FaUsers } from "react-icons/fa";
 import { IoShareSocialSharp } from "react-icons/io5";
 import Head from "next/head";
 import { Auth, ThemeSupa } from "@supabase/auth-ui-react";
@@ -84,6 +96,8 @@ export async function getServerSideProps(context: any) {
 }
 
 export default function AppPage({ initialSession, user }: any) {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
     const router = useRouter();
     const supabase = useSupabaseClient();
 
@@ -314,65 +328,114 @@ export default function AppPage({ initialSession, user }: any) {
                         justifyContent="space-evenly"
                     >
                         <Center>
-                            <Menu>
-                                <MenuButton
-                                    w="2rem"
-                                    h="2rem"
-                                    aria-label="time"
-                                    as={AiOutlineClockCircle}
-                                    color="blackAlpha.600"
-                                    onClick={() => setCategory(CATEGORY_TIME)}
-                                ></MenuButton>
-                                <MenuList>
-                                    <MenuItem>Download</MenuItem>
-                                    <MenuItem>Create a Copy</MenuItem>
-                                    <MenuItem>Mark as Draft</MenuItem>
-                                    <MenuItem>Delete</MenuItem>
-                                    <MenuItem>Attend a Workshop</MenuItem>
-                                </MenuList>
-                            </Menu>
-                            <Popover placement="top-start">
-                                <PopoverTrigger>
-                                    <Icon
-                                        w="2rem"
-                                        h="2rem"
-                                        aria-label="time"
-                                        as={AiOutlineClockCircle}
-                                        color="blackAlpha.600"
-                                        onClick={() =>
-                                            setCategory(CATEGORY_TIME)
-                                        }
-                                    />
-                                </PopoverTrigger>
-                                <PopoverContent>
-                                    <PopoverArrow />
-                                    <PopoverCloseButton />
-                                    <PopoverBody>
-                                        Are you sure you want to have that
-                                        milkshake?
-                                    </PopoverBody>
-                                </PopoverContent>
-                            </Popover>
+                            <Icon
+                                w="2rem"
+                                h="2rem"
+                                aria-label="time"
+                                as={
+                                    category === CATEGORY_TIME
+                                        ? AiFillClockCircle
+                                        : AiOutlineClockCircle
+                                }
+                                color={
+                                    category === CATEGORY_TIME
+                                        ? "yellow.400"
+                                        : "blackAlpha.600"
+                                }
+                                onClick={() => {
+                                    setCategory(CATEGORY_TIME);
+                                    onOpen();
+                                }}
+                            />
                         </Center>
 
-                        <IconButton
-                            colorScheme="yellow"
-                            aria-label="time"
-                            icon={<AiOutlineClockCircle />}
-                        />
+                        <Center>
+                            <Icon
+                                w="2rem"
+                                h="2rem"
+                                aria-label="time"
+                                as={
+                                    category === CATEGORY_MIND
+                                        ? FaBrain
+                                        : BiBrain
+                                }
+                                color={
+                                    category === CATEGORY_MIND
+                                        ? "blue.400"
+                                        : "blackAlpha.600"
+                                }
+                                onClick={() => {
+                                    setCategory(CATEGORY_MIND);
+                                    onOpen();
+                                }}
+                            />
+                        </Center>
 
-                        <IconButton
-                            colorScheme="yellow"
-                            aria-label="time"
-                            icon={<AiOutlineClockCircle />}
-                        />
+                        <Center>
+                            <Icon
+                                w="2rem"
+                                h="2rem"
+                                aria-label="time"
+                                as={
+                                    category === CATEGORY_HEALTH
+                                        ? AiFillHeart
+                                        : AiOutlineHeart
+                                }
+                                color={
+                                    category === CATEGORY_HEALTH
+                                        ? "green.400"
+                                        : "blackAlpha.600"
+                                }
+                                onClick={() => {
+                                    setCategory(CATEGORY_HEALTH);
+                                    onOpen();
+                                }}
+                            />
+                        </Center>
 
-                        <IconButton
-                            colorScheme="yellow"
-                            aria-label="time"
-                            icon={<AiOutlineClockCircle />}
-                        />
+                        <Center>
+                            <Icon
+                                w="2rem"
+                                h="2rem"
+                                aria-label="time"
+                                as={
+                                    category === CATEGORY_NETWORK
+                                        ? BsPeopleFill
+                                        : BsPeople
+                                }
+                                color={
+                                    category === CATEGORY_NETWORK
+                                        ? "red.400"
+                                        : "blackAlpha.600"
+                                }
+                                onClick={() => {
+                                    setCategory(CATEGORY_NETWORK);
+                                    onOpen();
+                                }}
+                            />
+                        </Center>
                     </Flex>
+
+                    <Drawer
+                        placement={"bottom"}
+                        onClose={onClose}
+                        isOpen={isOpen}
+                    >
+                        <DrawerOverlay />
+                        <DrawerContent>
+                            <DrawerBody>
+                                <Center flexDir="column" py="1rem">
+                                    <CategoryComponents
+                                        category={category}
+                                        setCategory={setCategory}
+                                        component={component}
+                                        setComponent={setComponent}
+                                        onClose={onClose}
+                                    />
+                                </Center>
+                            </DrawerBody>
+                        </DrawerContent>
+                    </Drawer>
                 </Box>
             </Box>
         );
