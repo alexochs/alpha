@@ -102,6 +102,7 @@ export default function AppPage({ initialSession, user }: any) {
     const supabase = useSupabaseClient();
 
     const isMobile = useMediaQuery("(max-width: 600px)")[0];
+    console.log("isMobile => ", isMobile);
 
     const [date, setDate] = useState(new Date(new Date().setHours(0, 0, 0, 0)));
 
@@ -128,7 +129,7 @@ export default function AppPage({ initialSession, user }: any) {
 
     const hearts = ["💛", "💙", "💚", "❤️"];
 
-    function Content(isMobile: any) {
+    function Content() {
         switch (component) {
             case COMPONENT_MASTERY_CHECKLIST:
                 return (
@@ -139,7 +140,13 @@ export default function AppPage({ initialSession, user }: any) {
                     />
                 );
             case COMPONENT_HABIT_TRACKER:
-                return <HabitTracker profileId={user.id} date={date} />;
+                return (
+                    <HabitTracker
+                        profileId={user.id}
+                        date={date}
+                        isMobile={isMobile}
+                    />
+                );
             default:
                 return <Text>Oops, something went wrong!</Text>;
         }
@@ -270,8 +277,10 @@ export default function AppPage({ initialSession, user }: any) {
                             setCategory={setCategory}
                             component={component}
                             setComponent={setComponent}
+                            onClose={onClose}
                         />
                     </Center>
+
                     <Divider />
 
                     <Center h="5vh">
@@ -283,7 +292,7 @@ export default function AppPage({ initialSession, user }: any) {
                     </Center>
                 </Box>
                 <Divider orientation="vertical" />
-                <Box w="75vw" h="100vh" py="2rem" px="1rem" overflow={"scroll"}>
+                <Box py="2rem" px="1rem" overflow={"scroll"}>
                     <Content />
                 </Box>
             </Flex>
@@ -313,7 +322,7 @@ export default function AppPage({ initialSession, user }: any) {
                 </Center>
 
                 <Box pt="6rem" bg="gray.100" minH="100vh">
-                    <Content isMobile={isMobile} />
+                    <Content />
                 </Box>
 
                 <Box>
