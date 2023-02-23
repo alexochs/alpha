@@ -1,7 +1,9 @@
 import { Box, Button, HStack, Stack, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
-export default function DatePicker({ date, setDate }: any) {
+export default function DatePicker() {
+    const [date, setDate] = useState(new Date(new Date().setHours(0, 0, 0, 0)));
+
     const [dateString, setDateString] = useState(
         date.toLocaleDateString("en-US", {
             weekday: "long",

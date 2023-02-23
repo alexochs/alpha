@@ -9,9 +9,6 @@ export default function Topbar({
     setCategory,
     component,
     setComponent,
-    onOpen,
-    isOpen,
-    onClose,
     isMobile,
 }: any) {
     function Mobile() {
@@ -32,7 +29,7 @@ export default function Topbar({
                 </Heading>
 
                 <Box color="gray">
-                    <DatePicker date={date} setDate={setDate} />
+                    <DatePicker />
                 </Box>
             </Center>
         );
@@ -50,19 +47,11 @@ export default function Topbar({
                 </Center>
 
                 <Center flex={1}>
-                    <Navigation
-                        category={category}
-                        setCategory={setCategory}
-                        component={component}
-                        setComponent={setComponent}
-                        onOpen={onOpen}
-                        isOpen={isOpen}
-                        onClose={onClose}
-                    />
+                    <Navigation isMobile={isMobile} />
                 </Center>
 
                 <Center flex={1}>
-                    <DatePicker date={date} setDate={setDate} />
+                    <DatePicker />
                 </Center>
             </Flex>
         );

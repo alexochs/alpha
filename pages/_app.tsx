@@ -9,30 +9,32 @@ import Head from "next/head";
 import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { SessionContextProvider, Session } from "@supabase/auth-helpers-react";
 import { useState } from "react";
+import Layout from "../components/Layout/Layout";
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [supabaseClient] = useState(() => createBrowserSupabaseClient());
+    const [supabaseClient] = useState(() => createBrowserSupabaseClient());
 
-  const theme = extendTheme({
-    fonts: {
-      heading: `'Space Grotesk', sans-serif`,
-      body: `'Space Grotesk', sans-serif`,
-    },
-  });
+    const theme = extendTheme({
+        fonts: {
+            heading: `'Space Grotesk', sans-serif`,
+            body: `'Space Grotesk', sans-serif`,
+        },
+    });
 
-  return (
-    <ChakraProvider theme={theme}>
-      <SessionContextProvider
-        supabaseClient={supabaseClient}
-        initialSession={pageProps.initialSession}
-      >
-        {" "}
-        <Head>
-          <title>Master Yourself</title>
-          <link rel="favicon" href="/public/logo.png" />
-        </Head>
-        <Component {...pageProps} />
-      </SessionContextProvider>
-    </ChakraProvider>
-  );
+    return (
+        <ChakraProvider theme={theme}>
+            <SessionContextProvider
+                supabaseClient={supabaseClient}
+                initialSession={pageProps.initialSession}
+            >
+                <Head>
+                    <title>Master Yourself</title>
+                    <link rel="favicon" href="/public/logo.png" />
+                </Head>
+                <Layout>
+                    <Component {...pageProps} />
+                </Layout>
+            </SessionContextProvider>
+        </ChakraProvider>
+    );
 }

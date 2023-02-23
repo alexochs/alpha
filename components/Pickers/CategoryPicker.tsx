@@ -1,5 +1,6 @@
 import { CheckCircleIcon } from "@chakra-ui/icons";
 import { Button, Stack, Text, Icon } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { BiNews } from "react-icons/bi";
 import { BsJournalText } from "react-icons/bs";
 import { FaUsers } from "react-icons/fa";
@@ -37,20 +38,19 @@ export default function CategoryPicker({
     const COMPONENT_MEMBERS = 9;
     const COMPONENT_SOCIAL_MEDIA = 10;
 
-    console.log(category);
+    const router = useRouter();
 
-    if (category === CATEGORY_TIME) {
+    if (category === "productivity") {
         return (
             <Stack spacing="2rem">
                 <Button
                     onClick={() => {
-                        setCategory(CATEGORY_TIME);
-                        setComponent(COMPONENT_MASTERY_CHECKLIST);
+                        router.push("/productivity/daily-tasks");
                         onClose();
                     }}
                     colorScheme="yellow"
                     variant={
-                        component === COMPONENT_MASTERY_CHECKLIST
+                        router.asPath.includes("/daily-tasks")
                             ? "solid"
                             : "ghost"
                     }
@@ -62,13 +62,12 @@ export default function CategoryPicker({
                 </Button>
                 <Button
                     onClick={() => {
-                        setCategory(CATEGORY_TIME);
-                        setComponent(COMPONENT_HABIT_TRACKER);
+                        router.push("/productivity/habit-tracker");
                         onClose();
                     }}
                     colorScheme="yellow"
                     variant={
-                        component === COMPONENT_HABIT_TRACKER
+                        router.asPath.includes("/habit-tracker")
                             ? "solid"
                             : "ghost"
                     }
@@ -80,7 +79,7 @@ export default function CategoryPicker({
                 </Button>
             </Stack>
         );
-    } else if (category === CATEGORY_MIND) {
+    } else if (category === "mind") {
         return (
             <Stack spacing="2rem">
                 <Button
@@ -111,7 +110,7 @@ export default function CategoryPicker({
                 </Button>
             </Stack>
         );
-    } else if (category === CATEGORY_HEALTH) {
+    } else if (router.asPath.includes("/health")) {
         return (
             <Stack spacing="2rem">
                 <Button
@@ -140,7 +139,7 @@ export default function CategoryPicker({
                 </Button>
             </Stack>
         );
-    } else if (category === CATEGORY_NETWORK) {
+    } else if (router.asPath.includes("/network")) {
         return (
             <Stack spacing="2rem">
                 <Button

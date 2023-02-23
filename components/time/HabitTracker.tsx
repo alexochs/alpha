@@ -471,5 +471,5 @@ export default function HabitTracker({ profileId, date, isMobile }: any) {
         );
     }
 
-    return isMobile ? <Mobile /> : <Mobile />;
+    return isMobile ? Mobile() : Desktop();
 }
