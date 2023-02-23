@@ -8,6 +8,7 @@ import {
     Flex,
     Icon,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import {
     AiFillClockCircle,
     AiFillHeart,
@@ -17,7 +18,7 @@ import {
 import { BiBrain } from "react-icons/bi";
 import { BsPeople, BsPeopleFill } from "react-icons/bs";
 import { FaBrain } from "react-icons/fa";
-import CategoryComponents from "./CategoryComponents";
+import CategoryPicker from "../Pickers/CategoryPicker";
 
 export default function Navigation({
     category,
@@ -27,6 +28,7 @@ export default function Navigation({
     onOpen,
     isOpen,
     onClose,
+    isMobile,
 }: any) {
     const CATEGORY_TIME = 0;
     const COMPONENT_MASTERY_CHECKLIST = 0;
@@ -50,11 +52,11 @@ export default function Navigation({
         return (
             <Box>
                 <Flex
-                    position="fixed"
+                    position={["fixed", "static"]}
                     bottom="0"
                     minH="5vh"
-                    borderTop="1px solid rgb(0, 0, 0, 0.2)"
-                    w="100vw"
+                    borderTop={["1px solid rgb(0, 0, 0, 0.2)", "0"]}
+                    w={["100vw", "24rem"]}
                     bg="white"
                     p=".5rem"
                     justifyContent="space-evenly"
@@ -144,12 +146,16 @@ export default function Navigation({
                     </Center>
                 </Flex>
 
-                <Drawer placement={"bottom"} onClose={onClose} isOpen={isOpen}>
+                <Drawer
+                    placement={isMobile ? "bottom" : "top"}
+                    onClose={onClose}
+                    isOpen={isOpen}
+                >
                     <DrawerOverlay />
                     <DrawerContent>
                         <DrawerBody>
                             <Center flexDir="column" py="1rem">
-                                <CategoryComponents
+                                <CategoryPicker
                                     category={category}
                                     setCategory={setCategory}
                                     component={component}
@@ -164,5 +170,5 @@ export default function Navigation({
         );
     }
 
-    return <Mobile />;
+    return isMobile ? <Mobile /> : <Mobile />;
 }

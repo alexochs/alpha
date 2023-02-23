@@ -12,7 +12,7 @@ import {
 import { IoShareSocialSharp } from "react-icons/io5";
 import { MdOutlineForum } from "react-icons/md";
 
-export default function CategoryComponents({
+export default function CategoryPicker({
     component,
     setComponent,
     category,
@@ -36,6 +36,8 @@ export default function CategoryComponents({
     const COMPONENT_FORUM = 8;
     const COMPONENT_MEMBERS = 9;
     const COMPONENT_SOCIAL_MEDIA = 10;
+
+    console.log(category);
 
     if (category === CATEGORY_TIME) {
         return (

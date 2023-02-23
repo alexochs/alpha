@@ -57,7 +57,7 @@ export default function DatePicker({ date, setDate }: any) {
     }
 
     return (
-        <HStack spacing="0.5rem">
+        <HStack>
             <Button onClick={previousDay} rounded="full" variant="ghost">
                 {"<"}
             </Button>

@@ -33,9 +33,9 @@ import {
     VStack,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import MasteryChecklist from "../components/time/MasteryChecklist";
+import MasteryChecklist from "../components/Time/MasteryChecklist";
 import { GrCycle } from "react-icons/gr";
-import HabitTracker from "../components/time/HabitTracker";
+import HabitTracker from "../components/Time/HabitTracker";
 import {
     GiCycle,
     GiMeditation,
@@ -58,9 +58,10 @@ import { Auth, ThemeSupa } from "@supabase/auth-ui-react";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/router";
-import DatePicker from "../components/DatePicker";
-import CategoryComponents from "../components/CategoryComponents";
-import Navigation from "../components/Navigation";
+import DatePicker from "../components/Pickers/DatePicker";
+import CategoryComponents from "../components/Pickers/CategoryPicker";
+import Navigation from "../components/Layout/Navigation";
+import Topbar from "../components/Layout/Topbar";
 
 export async function getServerSideProps(context: any) {
     const supabase = createServerSupabaseClient(context);
@@ -102,7 +103,7 @@ export default function AppPage({ initialSession, user }: any) {
     const router = useRouter();
     const supabase = useSupabaseClient();
 
-    const isMobile = useMediaQuery("(max-width: 600px)")[0];
+    const isMobile = useMediaQuery("(max-width: 768px)")[0];
     console.log("isMobile => ", isMobile);
 
     const [date, setDate] = useState(new Date(new Date().setHours(0, 0, 0, 0)));
@@ -156,24 +157,18 @@ export default function AppPage({ initialSession, user }: any) {
     function Mobile() {
         return (
             <Box maxW="100vw" color="gray.700">
-                <Center
-                    position="fixed"
-                    top="0"
-                    w="100vw"
-                    minH="4rem"
-                    flexDir="column"
-                    pt="1rem"
-                    borderBottom={"1px solid rgb(0, 0, 0, 0.2)"}
-                    bg="white"
-                >
-                    <Heading fontSize="lg" letterSpacing={"0.5rem"}>
-                        MASTER YOURSELF
-                    </Heading>
-
-                    <Box color="gray">
-                        <DatePicker date={date} setDate={setDate} />
-                    </Box>
-                </Center>
+                <Topbar
+                    date={date}
+                    setDate={setDate}
+                    category={category}
+                    setCategory={setCategory}
+                    component={component}
+                    setComponent={setComponent}
+                    onOpen={onOpen}
+                    isOpen={isOpen}
+                    onClose={onClose}
+                    isMobile={isMobile}
+                />
 
                 <Box pt="6rem" bg="gray.100" minH="100vh">
                     <Content />
@@ -187,6 +182,7 @@ export default function AppPage({ initialSession, user }: any) {
                     onOpen={onOpen}
                     isOpen={isOpen}
                     onClose={onClose}
+                    isMobile={isMobile}
                 />
             </Box>
         );
@@ -194,148 +190,24 @@ export default function AppPage({ initialSession, user }: any) {
 
     function Desktop() {
         return (
-            <Flex
-                h="100vh"
-                w="100vw"
-                bg="gray.100"
-                color="gray.800"
-                overflow={"hidden"}
-            >
-                <Box w="25vw" bg="white">
-                    <Center w="100%" py="2rem" flexDir={"column"}>
-                        <Heading
-                            fontSize="4xl"
-                            letterSpacing={"0.5rem"}
-                            pb="1rem"
-                        >
-                            MASTER
-                            <br />
-                            YOURSELF
-                        </Heading>
-                        <DatePicker date={date} setDate={setDate} />
-                    </Center>
+            <Box>
+                <Topbar
+                    date={date}
+                    setDate={setDate}
+                    category={category}
+                    setCategory={setCategory}
+                    component={component}
+                    setComponent={setComponent}
+                    onOpen={onOpen}
+                    isOpen={isOpen}
+                    onClose={onClose}
+                    isMobile={isMobile}
+                />
 
-                    <Divider />
-
-                    <Center
-                        h="10vh"
-                        w="100%"
-                        p="2rem"
-                        px="1rem"
-                        flexDirection={"column"}
-                    >
-                        <Button
-                            fontSize="sm"
-                            variant="ghost"
-                            rounded="full"
-                            onClick={() => router.push(`/profiles/${user.id}`)}
-                            p="1rem"
-                        >
-                            {user.email}
-                        </Button>
-                    </Center>
-
-                    <Divider />
-
-                    <Center h="15vh" w="100%" p="1rem" flexDirection={"column"}>
-                        <Stack spacing="0.5rem">
-                            <Center>
-                                <Text fontWeight={"bold"}>Master your</Text>
-                            </Center>
-                            <HStack>
-                                <Button
-                                    onClick={() => setCategory(CATEGORY_TIME)}
-                                    size="sm"
-                                    fontWeight={"bold"}
-                                    rounded="full"
-                                    colorScheme={"yellow"}
-                                    variant={
-                                        category === CATEGORY_TIME
-                                            ? "solid"
-                                            : "outline"
-                                    }
-                                    w="5vw"
-                                >
-                                    TIME
-                                </Button>
-                                <Button
-                                    onClick={() => setCategory(CATEGORY_MIND)}
-                                    size="sm"
-                                    fontWeight={"bold"}
-                                    rounded="full"
-                                    colorScheme={"blue"}
-                                    variant={
-                                        category === CATEGORY_MIND
-                                            ? "solid"
-                                            : "outline"
-                                    }
-                                    w="5vw"
-                                >
-                                    MIND
-                                </Button>
-                                <Button
-                                    onClick={() => setCategory(CATEGORY_HEALTH)}
-                                    size="sm"
-                                    fontWeight={"bold"}
-                                    rounded="full"
-                                    colorScheme={"green"}
-                                    variant={
-                                        category === CATEGORY_HEALTH
-                                            ? "solid"
-                                            : "outline"
-                                    }
-                                    w="5vw"
-                                >
-                                    HEALTH
-                                </Button>
-                                <Button
-                                    onClick={() =>
-                                        setCategory(CATEGORY_NETWORK)
-                                    }
-                                    size="sm"
-                                    fontWeight={"bold"}
-                                    rounded="full"
-                                    colorScheme={"red"}
-                                    variant={
-                                        category === CATEGORY_NETWORK
-                                            ? "solid"
-                                            : "outline"
-                                    }
-                                    w="6vw"
-                                >
-                                    NETWORK
-                                </Button>
-                            </HStack>
-                        </Stack>
-                    </Center>
-
-                    <Divider />
-
-                    <Center h="45vh">
-                        <CategoryComponents
-                            category={category}
-                            setCategory={setCategory}
-                            component={component}
-                            setComponent={setComponent}
-                            onClose={onClose}
-                        />
-                    </Center>
-
-                    <Divider />
-
-                    <Center h="5vh">
-                        <Link href="https://alexochs.de" target="_blank">
-                            <Text fontSize="xs">
-                                Made with {hearts[category]} by Alex Ochs
-                            </Text>
-                        </Link>
-                    </Center>
-                </Box>
-                <Divider orientation="vertical" />
-                <Box py="2rem" px="1rem" overflow={"scroll"}>
+                <Box bg="gray.100" w="100vw" minH="100vh" pt="2rem">
                     <Content />
                 </Box>
-            </Flex>
+            </Box>
         );
     }
 
