@@ -14,15 +14,14 @@ export default function Topbar({
     function Mobile() {
         return (
             <Center
-                position="fixed"
-                top="0"
+                //position="fixed"
+                //top="0"
                 w="100vw"
                 minH="4rem"
                 flexDir="column"
-                pt="1rem"
+                pt=".5rem"
                 borderBottom={"1px solid rgb(0, 0, 0, 0.2)"}
                 bg="white"
-                zIndex={1}
             >
                 <Heading fontSize="lg" letterSpacing={"0.5rem"}>
                     MASTER YOURSELF

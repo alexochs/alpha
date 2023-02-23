@@ -1,4 +1,5 @@
 import {
+    Box,
     ChakraProvider,
     extendTheme,
     useDisclosure,
@@ -14,10 +15,11 @@ export default function Layout({ children, pageProps }: any) {
     const isMobile = useMediaQuery("(max-width: 768px)")[0];
 
     return (
-        <>
+        <Box color="gray.700">
             <Topbar isMobile={isMobile} />
-
-            <main>{children}</main>
-        </>
+            <Box bg="gray.100" minH="100vh" pt="2rem">
+                <main>{children}</main>
+            </Box>
+        </Box>
     );
 }
