@@ -18,6 +18,7 @@ import {
     Thead,
     Th,
     VStack,
+    SimpleGrid,
 } from "@chakra-ui/react";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useEffect, useState } from "react";
@@ -364,10 +365,111 @@ export default function HabitTracker({ profileId, date, isMobile }: any) {
                     >
                         Make a new habit
                     </Text>
+
+                    <Flex flexDir="column">
+                        <Text>Habit</Text>
+                        <Input
+                            value={newHabitName}
+                            onChange={(e) => setNewHabitName(e.target.value)}
+                            isInvalid={invalidHabitName}
+                            variant="outline"
+                            placeholder="Describe your new habit"
+                            rounded="full"
+                        />
+                    </Flex>
+
+                    <Flex flexDir="column">
+                        <Text>Repeat on</Text>
+
+                        <SimpleGrid columns={3} spacing="1rem">
+                            <Center>
+                                <Text fontSize="sm">Monday</Text>
+                                <Checkbox
+                                    onChange={() => toggleDay("monday")}
+                                    isChecked={newHabitDays.includes("monday")}
+                                    isInvalid={invalidHabitDays}
+                                    colorScheme="yellow"
+                                    size="lg"
+                                />
+                            </Center>
+
+                            <Center>
+                                <Text fontSize="sm">Tuesday</Text>
+                                <Checkbox
+                                    onChange={() => toggleDay("tuesday")}
+                                    isChecked={newHabitDays.includes("tuesday")}
+                                    colorScheme="yellow"
+                                    size="lg"
+                                    isInvalid={invalidHabitDays}
+                                />
+                            </Center>
+
+                            <Center>
+                                <Text fontSize="sm">Wednesday</Text>
+                                <Checkbox
+                                    onChange={() => toggleDay("wednesday")}
+                                    isChecked={newHabitDays.includes(
+                                        "wednesday"
+                                    )}
+                                    colorScheme="yellow"
+                                    size="lg"
+                                    isInvalid={invalidHabitDays}
+                                />
+                            </Center>
+
+                            <Center>
+                                <Text fontSize="sm">Thursday</Text>
+                                <Checkbox
+                                    onChange={() => toggleDay("thursday")}
+                                    isChecked={newHabitDays.includes(
+                                        "thursday"
+                                    )}
+                                    colorScheme="yellow"
+                                    size="lg"
+                                    isInvalid={invalidHabitDays}
+                                />
+                            </Center>
+
+                            <Center>
+                                <Text fontSize="sm">Friday</Text>
+                                <Checkbox
+                                    onChange={() => toggleDay("friday")}
+                                    isChecked={newHabitDays.includes("friday")}
+                                    colorScheme="yellow"
+                                    size="lg"
+                                    isInvalid={invalidHabitDays}
+                                />
+                            </Center>
+
+                            <Center>
+                                <Text fontSize="sm">Saturday</Text>
+                                <Checkbox
+                                    onChange={() => toggleDay("saturday")}
+                                    isChecked={newHabitDays.includes(
+                                        "saturday"
+                                    )}
+                                    colorScheme="yellow"
+                                    size="lg"
+                                    isInvalid={invalidHabitDays}
+                                />
+                            </Center>
+
+                            <Center>
+                                <Text fontSize="sm">Sunday</Text>
+                                <Checkbox
+                                    onChange={() => toggleDay("sunday")}
+                                    isChecked={newHabitDays.includes("sunday")}
+                                    colorScheme="yellow"
+                                    size="lg"
+                                    isInvalid={invalidHabitDays}
+                                />
+                            </Center>
+                        </SimpleGrid>
+                    </Flex>
                 </VStack>
             </Center>
         );
     }
 
-    return isMobile ? <Mobile /> : <Desktop />;
+    return isMobile ? <Mobile /> : <Mobile />;
 }

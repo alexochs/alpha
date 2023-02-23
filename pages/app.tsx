@@ -60,6 +60,7 @@ import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/router";
 import DatePicker from "../components/DatePicker";
 import CategoryComponents from "../components/CategoryComponents";
+import Navigation from "../components/Navigation";
 
 export async function getServerSideProps(context: any) {
     const supabase = createServerSupabaseClient(context);
@@ -150,6 +151,45 @@ export default function AppPage({ initialSession, user }: any) {
             default:
                 return <Text>Oops, something went wrong!</Text>;
         }
+    }
+
+    function Mobile() {
+        return (
+            <Box maxW="100vw" color="gray.700">
+                <Center
+                    position="fixed"
+                    top="0"
+                    w="100vw"
+                    minH="4rem"
+                    flexDir="column"
+                    pt="1rem"
+                    borderBottom={"1px solid rgb(0, 0, 0, 0.2)"}
+                    bg="white"
+                >
+                    <Heading fontSize="lg" letterSpacing={"0.5rem"}>
+                        MASTER YOURSELF
+                    </Heading>
+
+                    <Box color="gray">
+                        <DatePicker date={date} setDate={setDate} />
+                    </Box>
+                </Center>
+
+                <Box pt="6rem" bg="gray.100" minH="100vh">
+                    <Content />
+                </Box>
+
+                <Navigation
+                    category={category}
+                    setCategory={setCategory}
+                    component={component}
+                    setComponent={setComponent}
+                    onOpen={onOpen}
+                    isOpen={isOpen}
+                    onClose={onClose}
+                />
+            </Box>
+        );
     }
 
     function Desktop() {
@@ -299,157 +339,6 @@ export default function AppPage({ initialSession, user }: any) {
         );
     }
 
-    function Mobile() {
-        return (
-            <Box maxW="100vw" color="gray.700">
-                <Center
-                    position="fixed"
-                    top="0"
-                    w="100vw"
-                    minH="4rem"
-                    flexDir="column"
-                    pt="1rem"
-                    borderBottom={"1px solid rgb(0, 0, 0, 0.2)"}
-                    bg="white"
-                >
-                    <Heading fontSize="lg" letterSpacing={"0.5rem"}>
-                        MASTER YOURSELF
-                    </Heading>
-
-                    <Box color="gray">
-                        <DatePicker date={date} setDate={setDate} />
-                    </Box>
-                </Center>
-
-                <Box pt="6rem" bg="gray.100" minH="100vh">
-                    <Content />
-                </Box>
-
-                <Box>
-                    <Flex
-                        position="fixed"
-                        bottom="0"
-                        minH="5vh"
-                        borderTop="1px solid rgb(0, 0, 0, 0.2)"
-                        w="100vw"
-                        bg="white"
-                        p=".5rem"
-                        justifyContent="space-evenly"
-                    >
-                        <Center>
-                            <Icon
-                                w="2rem"
-                                h="2rem"
-                                aria-label="time"
-                                as={
-                                    category === CATEGORY_TIME
-                                        ? AiFillClockCircle
-                                        : AiOutlineClockCircle
-                                }
-                                color={
-                                    category === CATEGORY_TIME
-                                        ? "yellow.400"
-                                        : "blackAlpha.600"
-                                }
-                                onClick={() => {
-                                    setCategory(CATEGORY_TIME);
-                                    onOpen();
-                                }}
-                            />
-                        </Center>
-
-                        <Center>
-                            <Icon
-                                w="2rem"
-                                h="2rem"
-                                aria-label="time"
-                                as={
-                                    category === CATEGORY_MIND
-                                        ? FaBrain
-                                        : BiBrain
-                                }
-                                color={
-                                    category === CATEGORY_MIND
-                                        ? "blue.400"
-                                        : "blackAlpha.600"
-                                }
-                                onClick={() => {
-                                    setCategory(CATEGORY_MIND);
-                                    onOpen();
-                                }}
-                            />
-                        </Center>
-
-                        <Center>
-                            <Icon
-                                w="2rem"
-                                h="2rem"
-                                aria-label="time"
-                                as={
-                                    category === CATEGORY_HEALTH
-                                        ? AiFillHeart
-                                        : AiOutlineHeart
-                                }
-                                color={
-                                    category === CATEGORY_HEALTH
-                                        ? "green.400"
-                                        : "blackAlpha.600"
-                                }
-                                onClick={() => {
-                                    setCategory(CATEGORY_HEALTH);
-                                    onOpen();
-                                }}
-                            />
-                        </Center>
-
-                        <Center>
-                            <Icon
-                                w="2rem"
-                                h="2rem"
-                                aria-label="time"
-                                as={
-                                    category === CATEGORY_NETWORK
-                                        ? BsPeopleFill
-                                        : BsPeople
-                                }
-                                color={
-                                    category === CATEGORY_NETWORK
-                                        ? "red.400"
-                                        : "blackAlpha.600"
-                                }
-                                onClick={() => {
-                                    setCategory(CATEGORY_NETWORK);
-                                    onOpen();
-                                }}
-                            />
-                        </Center>
-                    </Flex>
-
-                    <Drawer
-                        placement={"bottom"}
-                        onClose={onClose}
-                        isOpen={isOpen}
-                    >
-                        <DrawerOverlay />
-                        <DrawerContent>
-                            <DrawerBody>
-                                <Center flexDir="column" py="1rem">
-                                    <CategoryComponents
-                                        category={category}
-                                        setCategory={setCategory}
-                                        component={component}
-                                        setComponent={setComponent}
-                                        onClose={onClose}
-                                    />
-                                </Center>
-                            </DrawerBody>
-                        </DrawerContent>
-                    </Drawer>
-                </Box>
-            </Box>
-        );
-    }
-
     return (
         <>
             {user ? (
@@ -464,3 +353,19 @@ export default function AppPage({ initialSession, user }: any) {
         </>
     );
 }
+
+/*
+Desktop
+    Topbar
+        Logo
+        Navigation
+        Datepicker
+    Content
+
+Mobile
+    Topbar
+        Datepicker
+    Content
+    Bottom Bar
+        Navigation
+*/
