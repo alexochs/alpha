@@ -64,6 +64,7 @@ export default function Navigation({ isMobile }: any) {
             >
                 <Center>
                     <Icon
+                        cursor={"pointer"}
                         w="2rem"
                         h="2rem"
                         aria-label="time"
@@ -85,6 +86,7 @@ export default function Navigation({ isMobile }: any) {
 
                 <Center>
                     <Icon
+                        cursor={"pointer"}
                         w="2rem"
                         h="2rem"
                         aria-label="time"
@@ -98,6 +100,7 @@ export default function Navigation({ isMobile }: any) {
 
                 <Center>
                     <Icon
+                        cursor={"pointer"}
                         w="2rem"
                         h="2rem"
                         aria-label="time"
@@ -111,6 +114,7 @@ export default function Navigation({ isMobile }: any) {
 
                 <Center>
                     <Icon
+                        cursor={"pointer"}
                         w="2rem"
                         h="2rem"
                         aria-label="time"

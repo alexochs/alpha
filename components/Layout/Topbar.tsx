@@ -36,7 +36,11 @@ export default function Topbar({
 
     function Desktop() {
         return (
-            <Flex px="4rem" py=".5rem">
+            <Flex
+                px="4rem"
+                py=".5rem"
+                borderBottom={"1px solid rgb(0, 0, 0, 0.2)"}
+            >
                 <Center flex={1}>
                     <Heading fontSize="2xl" letterSpacing={"0.5rem"}>
                         MASTER

@@ -22,18 +22,74 @@ import {
     VStack,
     useMediaQuery,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { useContext, useEffect, useState } from "react";
 
-export default function DailyTasksPage({ profileId, date }: any) {
+export async function getServerSideProps(context: any) {
+    const supabase = createServerSupabaseClient(context);
+
+    const {
+        data: { session },
+    } = await supabase.auth.getSession();
+
+    if (!session) {
+        return {
+            redirect: {
+                destination: "/sign-in",
+                permanent: false,
+            },
+        };
+    }
+
+    const profileId = session.user.id;
+
+    const { data, error } = await supabase
+        .from("mastery-checklist")
+        .select("*")
+        .eq("profile_id", profileId);
+
+    if (error) {
+        console.log(error);
+        return;
+    }
+
+    const tasks = data.map((task: any) => {
+        return {
+            id: task.id,
+            date: task.date,
+            name: task.name,
+            difficulty: task.difficulty,
+            importance: task.importance,
+            completed: task.completed,
+        };
+    });
+
+    return {
+        props: {
+            profileId,
+            initialTasks: tasks,
+        },
+    };
+}
+
+export default function DailyTasksPage({ profileId, initialTasks }: any) {
     const isMobile = useMediaQuery("(max-width: 768px)")[0];
-
-    const [tasks, setTasks] = useState<any[]>([]);
+    const [tasks, setTasks] = useState<any[]>(initialTasks);
 
     const [newTaskName, setNewTaskName] = useState("");
     const [invalidTaskName, setInvalidTaskName] = useState(false);
 
     const [newTaskDifficulty, setNewTaskDifficulty] = useState(1);
     const [newTaskImportance, setNewTaskImportance] = useState(1);
+
+    const [date, setDate] = useState(new Date(new Date().setHours(0, 0, 0, 0)));
+    useEffect(() => {
+        setDate(
+            localStorage.getItem("date")
+                ? new Date(localStorage.getItem("date")!)
+                : new Date(new Date().setHours(0, 0, 0, 0))
+        );
+    }, [date]);
 
     async function addTask() {
         if (!newTaskName) {
@@ -158,7 +214,7 @@ export default function DailyTasksPage({ profileId, date }: any) {
                                 />
                             </Flex>
                             <HStack spacing="1rem">
-                                <Flex flexDir="column">
+                                <Flex flexDir="column" w="50%">
                                     <Center>
                                         <Text>Difficulty&nbsp;</Text>
                                     </Center>
@@ -179,7 +235,7 @@ export default function DailyTasksPage({ profileId, date }: any) {
                                     </Select>
                                 </Flex>
 
-                                <Flex flexDir="column">
+                                <Flex flexDir="column" w="50%">
                                     <Center>
                                         <Text>Importance&nbsp;</Text>
                                     </Center>
@@ -220,82 +276,96 @@ export default function DailyTasksPage({ profileId, date }: any) {
                         >
                             Mastery Checklist
                         </Text>
-                        <TableContainer fontSize="xl">
-                            <Table variant="striped" colorScheme="blackAlpha">
-                                <Thead>
-                                    <Tr>
-                                        <Th>Task</Th>
-                                        <Th isNumeric>Difficulty</Th>
-                                        <Th isNumeric>Importance</Th>
-                                        <Th isNumeric fontWeight={"bold"}>
-                                            Score
-                                        </Th>
-                                        <Th isNumeric fontWeight={"bold"}>
-                                            Completed
-                                        </Th>
-                                        <Th />
-                                    </Tr>
-                                </Thead>
-                                <Tbody>
-                                    {tasks
-                                        .filter(
-                                            (task: any) =>
-                                                task.date === date.getTime()
-                                        )
-                                        .sort(
-                                            (a: any, b: any) =>
-                                                b.difficulty +
-                                                b.importance -
-                                                (a.difficulty + a.importance)
-                                        )
-                                        .map((task, index) => (
-                                            <Tr key={index}>
-                                                <Td>{task.name}</Td>
-                                                <Td isNumeric>
-                                                    {task.difficulty}
-                                                </Td>
-                                                <Td isNumeric>
-                                                    {task.importance}
-                                                </Td>
-                                                <Td
-                                                    isNumeric
-                                                    fontWeight={"bold"}
-                                                >
-                                                    {task.difficulty +
-                                                        task.importance}
-                                                </Td>
-                                                <Td>
-                                                    <Checkbox
-                                                        onChange={() =>
-                                                            updateTaskCompletion(
-                                                                task
-                                                            )
-                                                        }
-                                                        isChecked={
-                                                            task.completed
-                                                        }
-                                                        colorScheme="yellow"
-                                                        size="lg"
-                                                    />
-                                                </Td>
-                                                <Td>
-                                                    <Button
-                                                        onClick={() =>
-                                                            deleteTask(task.id)
-                                                        }
-                                                        colorScheme="red"
-                                                        size="xs"
-                                                        variant="ghost"
-                                                        rounded="full"
+                        {tasks.filter(
+                            (task: any) => task.date === date.getTime()
+                        ).length < 1 ? (
+                            <Text fontSize="xl" textAlign={"center"}>
+                                No tasks for today yet!
+                            </Text>
+                        ) : (
+                            <TableContainer fontSize="xl">
+                                <Table
+                                    variant="striped"
+                                    colorScheme="blackAlpha"
+                                >
+                                    <Thead>
+                                        <Tr>
+                                            <Th>Task</Th>
+                                            <Th isNumeric>Difficulty</Th>
+                                            <Th isNumeric>Importance</Th>
+                                            <Th isNumeric fontWeight={"bold"}>
+                                                Score
+                                            </Th>
+                                            <Th isNumeric fontWeight={"bold"}>
+                                                Completed
+                                            </Th>
+                                            <Th />
+                                        </Tr>
+                                    </Thead>
+                                    <Tbody>
+                                        {tasks
+                                            .filter(
+                                                (task: any) =>
+                                                    task.date === date.getTime()
+                                            )
+                                            .sort(
+                                                (a: any, b: any) =>
+                                                    b.difficulty +
+                                                    b.importance -
+                                                    (a.difficulty +
+                                                        a.importance)
+                                            )
+                                            .map((task, index) => (
+                                                <Tr key={index}>
+                                                    <Td>{task.name}</Td>
+                                                    <Td isNumeric>
+                                                        {task.difficulty}
+                                                    </Td>
+                                                    <Td isNumeric>
+                                                        {task.importance}
+                                                    </Td>
+                                                    <Td
+                                                        isNumeric
+                                                        fontWeight={"bold"}
                                                     >
-                                                        x
-                                                    </Button>
-                                                </Td>
-                                            </Tr>
-                                        ))}
-                                </Tbody>
-                            </Table>
-                        </TableContainer>
+                                                        {task.difficulty +
+                                                            task.importance}
+                                                    </Td>
+                                                    <Td>
+                                                        <Checkbox
+                                                            onChange={() =>
+                                                                updateTaskCompletion(
+                                                                    task
+                                                                )
+                                                            }
+                                                            isChecked={
+                                                                task.completed
+                                                            }
+                                                            colorScheme="yellow"
+                                                            size="lg"
+                                                        />
+                                                    </Td>
+                                                    <Td>
+                                                        <Button
+                                                            onClick={() =>
+                                                                deleteTask(
+                                                                    task.id
+                                                                )
+                                                            }
+                                                            colorScheme="red"
+                                                            size="xs"
+                                                            variant="ghost"
+                                                            rounded="full"
+                                                        >
+                                                            x
+                                                        </Button>
+                                                    </Td>
+                                                </Tr>
+                                            ))}
+                                    </Tbody>
+                                </Table>
+                            </TableContainer>
+                        )}
                     </Stack>
                 </Stack>
             </Center>
@@ -390,71 +460,79 @@ export default function DailyTasksPage({ profileId, date }: any) {
                         Mastery Checklist
                     </Text>
 
-                    <Text>No tasks for today yet!</Text>
-
-                    <TableContainer fontSize="md">
-                        <Table variant="striped" colorScheme="blackAlpha">
-                            <Thead>
-                                <Tr>
-                                    <Th>Task</Th>
-                                    <Th isNumeric fontWeight={"bold"}>
-                                        Score
-                                    </Th>
-                                    <Th isNumeric fontWeight={"bold"}>
-                                        Completed
-                                    </Th>
-                                    <Th />
-                                </Tr>
-                            </Thead>
-                            <Tbody>
-                                {tasks
-                                    .filter(
-                                        (task: any) =>
-                                            task.date === date.getTime()
-                                    )
-                                    .sort(
-                                        (a: any, b: any) =>
-                                            b.difficulty +
-                                            b.importance -
-                                            (a.difficulty + a.importance)
-                                    )
-                                    .map((task, index) => (
-                                        <Tr key={index}>
-                                            <Td>{task.name}</Td>
-                                            <Td isNumeric fontWeight={"bold"}>
-                                                {task.difficulty +
-                                                    task.importance}
-                                            </Td>
-                                            <Td>
-                                                <Checkbox
-                                                    onChange={() =>
-                                                        updateTaskCompletion(
-                                                            task
-                                                        )
-                                                    }
-                                                    isChecked={task.completed}
-                                                    colorScheme="yellow"
-                                                    size="lg"
-                                                />
-                                            </Td>
-                                            <Td>
-                                                <Button
-                                                    onClick={() =>
-                                                        deleteTask(task.id)
-                                                    }
-                                                    colorScheme="red"
-                                                    size="xs"
-                                                    variant="ghost"
-                                                    rounded="full"
+                    {tasks.filter((task: any) => task.date === date.getTime())
+                        .length < 1 ? (
+                        <Text>No tasks for today yet!</Text>
+                    ) : (
+                        <TableContainer fontSize="md">
+                            <Table variant="striped" colorScheme="blackAlpha">
+                                <Thead>
+                                    <Tr>
+                                        <Th>Task</Th>
+                                        <Th isNumeric fontWeight={"bold"}>
+                                            Score
+                                        </Th>
+                                        <Th isNumeric fontWeight={"bold"}>
+                                            Completed
+                                        </Th>
+                                        <Th />
+                                    </Tr>
+                                </Thead>
+                                <Tbody>
+                                    {tasks
+                                        .filter(
+                                            (task: any) =>
+                                                task.date === date.getTime()
+                                        )
+                                        .sort(
+                                            (a: any, b: any) =>
+                                                b.difficulty +
+                                                b.importance -
+                                                (a.difficulty + a.importance)
+                                        )
+                                        .map((task, index) => (
+                                            <Tr key={index}>
+                                                <Td>{task.name}</Td>
+                                                <Td
+                                                    isNumeric
+                                                    fontWeight={"bold"}
                                                 >
-                                                    x
-                                                </Button>
-                                            </Td>
-                                        </Tr>
-                                    ))}
-                            </Tbody>
-                        </Table>
-                    </TableContainer>
+                                                    {task.difficulty +
+                                                        task.importance}
+                                                </Td>
+                                                <Td>
+                                                    <Checkbox
+                                                        onChange={() =>
+                                                            updateTaskCompletion(
+                                                                task
+                                                            )
+                                                        }
+                                                        isChecked={
+                                                            task.completed
+                                                        }
+                                                        colorScheme="yellow"
+                                                        size="lg"
+                                                    />
+                                                </Td>
+                                                <Td>
+                                                    <Button
+                                                        onClick={() =>
+                                                            deleteTask(task.id)
+                                                        }
+                                                        colorScheme="red"
+                                                        size="xs"
+                                                        variant="ghost"
+                                                        rounded="full"
+                                                    >
+                                                        x
+                                                    </Button>
+                                                </Td>
+                                            </Tr>
+                                        ))}
+                                </Tbody>
+                            </Table>
+                        </TableContainer>
+                    )}
                 </VStack>
             </Center>
         );
