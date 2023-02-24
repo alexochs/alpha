@@ -1,6 +1,5 @@
 import { Box, Button, HStack, Stack, Text } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
-import DateContext from "../../contexts/DateContext";
 
 export default function DatePicker() {
     const [date, setDate] = useState(new Date(new Date().setHours(0, 0, 0, 0)));
