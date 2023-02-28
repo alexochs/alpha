@@ -17,15 +17,19 @@ export default function Layout({ children, pageProps }: any) {
     const isMobile = useMediaQuery("(max-width: 768px)")[0];
     const router = useRouter();
 
+    function showBars() {
+        return router.asPath.includes("productivity") || router.asPath.includes("profiles");
+    }
+
     return (
         <Box color="gray.700">
-            {router.asPath != "/" && <Topbar isMobile={isMobile} />}
+            {showBars() && <Topbar isMobile={isMobile} />}
 
             <Box bg="gray.100" minH="100vh" pt="2rem">
                 <main>{children}</main>
             </Box>
 
-            {router.asPath != "/" && isMobile && (
+            {showBars() && isMobile && (
                 <Navigation isMobile={isMobile} />
             )}
         </Box>

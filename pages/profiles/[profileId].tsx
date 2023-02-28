@@ -48,7 +48,7 @@ export default function ProfilePage({
     const supabase = useSupabaseClient();
 
     return (
-        <Center w="100vw" h="100vh">
+        <Center w="100vw" h="90vh">
             <VStack spacing="4rem">
                 <Heading>{user.email}</Heading>
 
@@ -61,7 +61,7 @@ export default function ProfilePage({
 
                 <Button
                     onClick={async () => {
-                        router.push("/app");
+                        router.push("/productivity/daily-tasks");
                     }}
                     rounded="full"
                     maxW="10vw"

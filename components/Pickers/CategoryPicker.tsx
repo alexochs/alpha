@@ -62,8 +62,8 @@ export default function CategoryPicker({
                 </Button>
                 <Button
                     onClick={() => {
-                        router.push("/productivity/habit-tracker");
                         onClose();
+                        router.push("/productivity/habit-tracker");
                     }}
                     colorScheme="yellow"
                     variant={

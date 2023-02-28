@@ -11,7 +11,7 @@ export default function SignInPage() {
 
     useEffect(() => {
         if (user) {
-            router.push("/app");
+            router.push("/productivity/daily-tasks");
         }
     }, [user]);
 

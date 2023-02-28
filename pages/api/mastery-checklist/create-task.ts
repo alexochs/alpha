@@ -17,6 +17,8 @@ export default async function handler(
     const { profileId, name, difficulty, importance, date, completed } =
         req.query;
 
+    console.log(req.query);
+
     const { error } = await supabase.from("mastery-checklist").insert([
         {
             profile_id: profileId,

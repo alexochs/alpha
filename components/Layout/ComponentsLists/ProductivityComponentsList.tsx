@@ -10,7 +10,7 @@ export default function ProductivityComponentsList({ onClose }: any) {
         <Stack spacing="2rem">
             <Button
                 onClick={() => {
-                    router.push("/productivity/daily-tasks");
+                    window.location.href = "/productivity/daily-tasks";
                     onClose();
                 }}
                 colorScheme="yellow"
@@ -21,12 +21,12 @@ export default function ProductivityComponentsList({ onClose }: any) {
                 rounded="full"
                 leftIcon={<CheckCircleIcon boxSize="1.5rem" />}
             >
-                <Text fontSize="xl">Mastery Checklist</Text>
+                <Text fontSize="xl">Daily Tasks</Text>
             </Button>
 
             <Button
                 onClick={() => {
-                    router.push("/productivity/habit-tracker");
+                    window.location.href = "/productivity/habit-tracker";
                     onClose();
                 }}
                 colorScheme="yellow"

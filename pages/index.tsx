@@ -16,7 +16,7 @@ export default function HomePage() {
                 </Heading>
 
                 <Center>
-                    <Link href="/app">
+                    <Link href="/productivity/daily-tasks">
                         <Button
                             colorScheme="yellow"
                             mt="2rem"

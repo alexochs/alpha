@@ -8,8 +8,10 @@ import {
     Flex,
     Icon,
     IconButton,
+    Link,
     useDisclosure,
 } from "@chakra-ui/react";
+import { useSession } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import {
@@ -20,7 +22,7 @@ import {
 } from "react-icons/ai";
 import { BiBrain } from "react-icons/bi";
 import { BsPeople, BsPeopleFill } from "react-icons/bs";
-import { FaBrain } from "react-icons/fa";
+import { FaBrain, FaUserCircle } from "react-icons/fa";
 import CategoryPicker from "../Pickers/CategoryPicker";
 import HealthComponentsList from "./ComponentsLists/HealthComponentsList";
 import MindComponentsList from "./ComponentsLists/MindComponentsList";
@@ -28,22 +30,27 @@ import NetworkComponentsList from "./ComponentsLists/NetworkComponentsList";
 import ProductivityComponentsList from "./ComponentsLists/ProductivityComponentsList";
 
 export default function Navigation({ isMobile }: any) {
+    const session = useSession();
     const router = useRouter();
+
     const {
         isOpen: productivityIsOpen,
         onOpen: productivityOnOpen,
         onClose: productivityOnClose,
     } = useDisclosure();
+
     const {
         isOpen: mindIsOpen,
         onOpen: mindOnOpen,
         onClose: mindOnClose,
     } = useDisclosure();
+
     const {
         isOpen: healthIsOpen,
         onOpen: healthOnOpen,
         onClose: healthOnClose,
     } = useDisclosure();
+
     const {
         isOpen: networkIsOpen,
         onOpen: networkOnOpen,
@@ -125,6 +132,17 @@ export default function Navigation({ isMobile }: any) {
                         }}
                     />
                 </Center>
+
+                {isMobile && <Center>
+                    <Link href={`/profiles/${session?.user.id}`}>
+                        <IconButton
+                            aria-label="userprofile"
+                            as={FaUserCircle}
+                            rounded="full"
+                            cursor="pointer"
+                        />
+                    </Link>
+                </Center>}
             </Flex>
 
             <Drawer

@@ -1,4 +1,6 @@
-import { Box, Center, Flex, Heading, useMediaQuery } from "@chakra-ui/react";
+import { Box, Center, Flex, Heading, IconButton, Link, useMediaQuery } from "@chakra-ui/react";
+import { useSession } from "@supabase/auth-helpers-react";
+import { FaUserCircle } from "react-icons/fa";
 import DatePicker from "../Pickers/DatePicker";
 import Navigation from "./Navigation";
 
@@ -11,6 +13,8 @@ export default function Topbar({
     setComponent,
     isMobile,
 }: any) {
+    const session = useSession();
+
     function Mobile() {
         return (
             <Center
@@ -55,6 +59,17 @@ export default function Topbar({
 
                 <Center flex={1}>
                     <DatePicker />
+                </Center>
+
+                <Center flex={1} ml="-6rem">
+                    <Link href={`/profiles/${session?.user.id}`}>
+                        <IconButton
+                            aria-label="userprofile"
+                            as={FaUserCircle}
+                            rounded="full"
+                            cursor="pointer"
+                        />
+                    </Link>
                 </Center>
             </Flex>
         );
