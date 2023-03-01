@@ -23,7 +23,6 @@ import {
 import { BiBrain } from "react-icons/bi";
 import { BsPeople, BsPeopleFill } from "react-icons/bs";
 import { FaBrain, FaUserCircle } from "react-icons/fa";
-import CategoryPicker from "../Pickers/CategoryPicker";
 import HealthComponentsList from "./ComponentsLists/HealthComponentsList";
 import MindComponentsList from "./ComponentsLists/MindComponentsList";
 import NetworkComponentsList from "./ComponentsLists/NetworkComponentsList";
