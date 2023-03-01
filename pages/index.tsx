@@ -16,6 +16,18 @@ export default function HomePage() {
                 </Heading>
 
                 <Center>
+                    <Text
+                        fontSize={["xl", "4xl"]}
+                        border="2px"
+                        px="1rem"
+                        rounded="full"
+                        color="yellow.400"
+                    >
+                        B E T A
+                    </Text>
+                </Center>
+
+                <Center>
                     <Link href="/productivity/daily-tasks">
                         <Button
                             colorScheme="yellow"
