@@ -122,7 +122,9 @@ export default function PomodoroPage({ profileId, initialTimer, initialHistory }
             alert("Error adding session to history");
         }
 
-        setHistory([...history, newSession]);
+        setHistory([...history, newSession].sort(
+            (a: any, b: any) => a.start < b.start ? -1 : 1
+        ));
     }
 
     function calculateTimeString() {
@@ -139,8 +141,8 @@ export default function PomodoroPage({ profileId, initialTimer, initialHistory }
         let seconds = Math.floor((timeLeft % 60000) / 1000);
 
         if (timeLeft < 0) {
-            minutes *= -1;
-            seconds *= -1;
+            minutes = (minutes + 1) * -1;
+            seconds = (seconds + 1) * -1;
         }
 
         setTimeString(`${timeLeft < 0 ? "+" : ""}${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`);
@@ -162,7 +164,7 @@ export default function PomodoroPage({ profileId, initialTimer, initialHistory }
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [timer]);
+    }, [timer, history]);
 
     return (
         <>
