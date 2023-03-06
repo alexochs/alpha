@@ -30,6 +30,7 @@ export default function App({ Component, pageProps }: AppProps) {
                 <Head>
                     <title>Master Yourself</title>
                     <link rel="favicon" href="/public/logo.png" />
+                    <link rel="manifest" href="/public/manifest.json">
                 </Head>
                 <Layout>
                     <Component {...pageProps} />

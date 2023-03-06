@@ -1,0 +1,11 @@
+{ 
+  "name": "Master Yourself", 
+  "short_name": "Master Yourself", 
+  "start_url": "https://masteryourself.app", 
+  "display": "standalone", 
+  "icons": [{ 
+    "src": "/public/logo.png", 
+    "sizes": "512x512", 
+    "type": "image/png" 
+  }] 
+}
