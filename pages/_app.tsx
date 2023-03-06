@@ -29,8 +29,9 @@ export default function App({ Component, pageProps }: AppProps) {
             >
                 <Head>
                     <title>Master Yourself</title>
-                    <link rel="favicon" href="/public/logo.png" />
-                    <link rel="manifest" href="/public/manifest.json">
+                    <link rel="favicon" href="/public/favicon.ico" />
+                    <link rel="manifest" href="/public/manifest.json" />
+                    <meta name="apple-mobile-web-app-capable" content="yes" />
                 </Head>
                 <Layout>
                     <Component {...pageProps} />
