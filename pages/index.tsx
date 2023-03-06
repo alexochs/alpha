@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function HomePage() {
     return (
-        <Center h="100vh" flexDir="column" color="gray.700">
+        <Center h="95vh" flexDir="column" color="gray.700">
             <Stack spacing="1rem">
                 <Heading
                     fontSize={["5xl", "9xl"]}

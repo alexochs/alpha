@@ -23,7 +23,6 @@ import {
 import { BiBrain } from "react-icons/bi";
 import { BsPeople, BsPeopleFill } from "react-icons/bs";
 import { FaBrain, FaUserCircle } from "react-icons/fa";
-import CategoryPicker from "../Pickers/CategoryPicker";
 import HealthComponentsList from "./ComponentsLists/HealthComponentsList";
 import MindComponentsList from "./ComponentsLists/MindComponentsList";
 import NetworkComponentsList from "./ComponentsLists/NetworkComponentsList";
@@ -151,7 +150,7 @@ export default function Navigation({ isMobile }: any) {
                 isOpen={productivityIsOpen}
             >
                 <DrawerOverlay />
-                <DrawerContent>
+                <DrawerContent roundedBottom={["0", "3xl"]} roundedTop={["3xl", "0"]}>
                     <DrawerBody>
                         <Center flexDir="column" py="1rem">
                             <ProductivityComponentsList
@@ -168,7 +167,7 @@ export default function Navigation({ isMobile }: any) {
                 isOpen={mindIsOpen}
             >
                 <DrawerOverlay />
-                <DrawerContent>
+                <DrawerContent roundedBottom={["0", "3xl"]} roundedTop={["3xl", "0"]}>
                     <DrawerBody>
                         <Center flexDir="column" py="1rem">
                             <MindComponentsList onClose={mindOnClose} />
@@ -183,7 +182,7 @@ export default function Navigation({ isMobile }: any) {
                 isOpen={healthIsOpen}
             >
                 <DrawerOverlay />
-                <DrawerContent>
+                <DrawerContent roundedBottom={["0", "3xl"]} roundedTop={["3xl", "0"]}>
                     <DrawerBody>
                         <Center flexDir="column" py="1rem">
                             <HealthComponentsList onClose={healthOnClose} />
@@ -198,7 +197,7 @@ export default function Navigation({ isMobile }: any) {
                 isOpen={networkIsOpen}
             >
                 <DrawerOverlay />
-                <DrawerContent>
+                <DrawerContent roundedBottom={["0", "3xl"]} roundedTop={["3xl", "0"]}>
                     <DrawerBody>
                         <Center flexDir="column" py="1rem">
                             <NetworkComponentsList onClose={networkOnClose} />
