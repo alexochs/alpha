@@ -56,11 +56,14 @@ export default function PomodoroPage({ profileId, initialTimer, initialHistory }
     const { isOpen: startFocusIsOpen, onOpen: startFocusOnOpen, onClose: startFocusOnClose } = useDisclosure();
     const { isOpen: startBreakIsOpen, onOpen: startBreakOnOpen, onClose: startBreakOnClose } = useDisclosure();
 
+    const [date, setDate] = useState(new Date(new Date().setHours(0, 0, 0, 0)));
     const [history, setHistory] = useState(initialHistory);
     const [timer, setTimer] = useState(initialTimer);
     const [timeString, setTimeString] = useState("00:00");
     const [startFocusDuration, setStartFocusDuration] = useState(45);
     const [startBreakDuration, setStartBreakDuration] = useState(10);
+
+    console.log(initialHistory);
 
     async function startTimer(mode: number, duration: number) {
         const start = new Date();
@@ -123,7 +126,7 @@ export default function PomodoroPage({ profileId, initialTimer, initialHistory }
         }
 
         setHistory([...history, newSession].sort(
-            (a: any, b: any) => a.start < b.start ? -1 : 1
+            (a: any, b: any) => new Date(a.start).getTime() > new Date(b.start).getTime() ? -1 : 1
         ));
     }
 
@@ -165,6 +168,14 @@ export default function PomodoroPage({ profileId, initialTimer, initialHistory }
 
         return () => clearInterval(interval);
     }, [timer, history]);
+
+    useEffect(() => {
+        setDate(
+            localStorage.getItem("date")
+                ? new Date(localStorage.getItem("date")!)
+                : new Date(new Date().setHours(0, 0, 0, 0))
+        );
+    }, [date]);
 
     return (
         <>
@@ -223,9 +234,11 @@ export default function PomodoroPage({ profileId, initialTimer, initialHistory }
                                     </Tr>
                                 </Thead>
                                 <Tbody>
-                                    {history.sort(
-                                        (a: any, b: any) => a.start > b.start ? -1 : 1
-                                    )
+                                    {history
+                                        .filter((session: any) => new Date(session.start).setHours(0, 0, 0, 0) === date.getTime())
+                                        .sort(
+                                            (a: any, b: any) => new Date(a.start).getTime() > new Date(b.start).getTime() ? -1 : 1
+                                        )
                                         .map((session: any, index: number) => (
                                             <Tr key={index}>
                                                 <Td>{session.mode === 0 ? "Focus" : "Break"}</Td>
