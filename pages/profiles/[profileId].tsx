@@ -53,9 +53,8 @@ export default function ProfilePage({
                 <Heading>{user.email}</Heading>
 
                 {isCurrentUser && (
-                    <Text>
-                        You are currently viewing your own profile. You can edit
-                        it here.
+                    <Text px="1rem">
+                        You are currently viewing your own profile.
                     </Text>
                 )}
 
