@@ -1,6 +1,24 @@
 import { Button, Center, Heading, Image, Stack, Text } from "@chakra-ui/react";
 import Head from "next/head";
 import Link from "next/link";
+import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
+
+export async function getServerSideProps(context: any) {
+    const supabase = createServerSupabaseClient(context);
+
+    const {
+        data: { session },
+    } = await supabase.auth.getSession();
+
+    if (session) {
+        return {
+            redirect: {
+                destination: "/productivity/daily-tasks",
+                permanent: false,
+            },
+        };
+    }
+}
 
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 

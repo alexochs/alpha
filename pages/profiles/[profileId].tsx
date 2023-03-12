@@ -60,16 +60,6 @@ export default function ProfilePage({
 
                 <Button
                     onClick={async () => {
-                        router.push("/productivity/daily-tasks");
-                    }}
-                    rounded="full"
-                    maxW="10vw"
-                >
-                    Back to App
-                </Button>
-
-                <Button
-                    onClick={async () => {
                         await supabase.auth.signOut();
                         router.push("/");
                     }}

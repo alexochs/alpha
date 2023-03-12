@@ -139,13 +139,7 @@ export default function HabiTrackerPage({ profileId, initialHabits }: any) {
             alert("Error creating new habit");
         } else {
             setNewHabitName("");
-            setNewHabitDays([
-                "monday",
-                "tuesday",
-                "wednesday",
-                "thursday",
-                "friday",
-            ]);
+            setNewHabitDays([]);
 
             fetchHabits();
         }
@@ -183,15 +177,6 @@ export default function HabiTrackerPage({ profileId, initialHabits }: any) {
     return (
         <Center ml="5vw" w="90vw" flexDir="column">
             <Stack spacing="1rem" w={["90vw", "35vw"]}>
-                <Text
-                    fontSize="3xl"
-                    fontWeight={"bold"}
-                    letterSpacing="0.1rem"
-                    textAlign={"center"}
-                >
-                    Make a new habit
-                </Text>
-
                 <Flex flexDir="column">
                     <Text>Habit</Text>
                     <Input
@@ -298,7 +283,7 @@ export default function HabiTrackerPage({ profileId, initialHabits }: any) {
                         rounded="full"
                         mt="1rem"
                     >
-                        Add to your habits
+                        Make a new habit
                     </Button>
                 </Flex>
             </Stack>
@@ -327,9 +312,7 @@ export default function HabiTrackerPage({ profileId, initialHabits }: any) {
                             <Thead>
                                 <Tr>
                                     <Th>Habit</Th>
-                                    <Th isNumeric fontWeight={"bold"}>
-                                        Done
-                                    </Th>
+                                    <Th fontWeight={"bold"}>Done</Th>
                                 </Tr>
                             </Thead>
                             <Tbody>

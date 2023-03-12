@@ -21,8 +21,18 @@ import {
     Divider,
     VStack,
     useMediaQuery,
+    RangeSlider,
+    RangeSliderTrack,
+    RangeSliderFilledTrack,
+    RangeSliderThumb,
+    Slider,
+    SliderTrack,
+    SliderFilledTrack,
+    Tooltip,
+    SliderThumb,
 } from "@chakra-ui/react";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useContext, useEffect, useState } from "react";
 
 export async function getServerSideProps(context: any) {
@@ -64,8 +74,6 @@ export async function getServerSideProps(context: any) {
         };
     });
 
-    console.log("Profile ID: ", profileId);
-
     return {
         props: {
             profileId,
@@ -75,14 +83,18 @@ export async function getServerSideProps(context: any) {
 }
 
 export default function DailyTasksPage({ profileId, initialTasks }: any) {
+    const supabase = useSupabaseClient();
     const isMobile = useMediaQuery("(max-width: 768px)")[0];
     const [tasks, setTasks] = useState<any[]>(initialTasks);
 
     const [newTaskName, setNewTaskName] = useState("");
     const [invalidTaskName, setInvalidTaskName] = useState(false);
 
-    const [newTaskDifficulty, setNewTaskDifficulty] = useState(1);
-    const [newTaskImportance, setNewTaskImportance] = useState(1);
+    const [newTaskDifficulty, setNewTaskDifficulty] = useState(5);
+    const [showDifficultyTooltip, setShowDifficultyTooltip] = useState(false);
+
+    const [newTaskImportance, setNewTaskImportance] = useState(5);
+    const [showImportanceTooltip, setShowImportanceTooltip] = useState(false);
 
     const [date, setDate] = useState(new Date(new Date().setHours(0, 0, 0, 0)));
     useEffect(() => {
@@ -108,13 +120,20 @@ export default function DailyTasksPage({ profileId, initialTasks }: any) {
             completed: false,
         };
 
-        const res = await fetch(
-            `/api/mastery-checklist/create-task?profileId=${profileId}&date=${date.getTime()}&name=${newTask.name}&difficulty=${newTask.difficulty}&importance=${newTask.importance}&completed=${newTask.completed}`
-        );
-        const data = await res.json();
+        const { error } = await supabase.from("mastery-checklist").insert([
+            {
+                profile_id: profileId,
+                date: date.getTime(),
+                name: newTask.name,
+                difficulty: newTask.difficulty,
+                importance: newTask.importance,
+                completed: newTask.completed,
+            },
+        ]);
 
-        if (!data || !data.success) {
-            alert("Failed to add task");
+        if (error) {
+            alert("Failed to add task :(");
+            console.error(error);
             return;
         }
 
@@ -129,17 +148,16 @@ export default function DailyTasksPage({ profileId, initialTasks }: any) {
     }
 
     async function readTasks() {
-        const res = await fetch(
-            `/api/mastery-checklist/read-tasks?profileId=${profileId}`
-        );
-        const data = await res.json();
+        const { data, error } = await supabase
+            .from("mastery-checklist")
+            .select("*")
+            .eq("profile_id", profileId);
 
-        if (!data) {
-            alert("Failed to get tasks by address");
+        if (error) {
+            console.error(error);
             return;
         }
 
-        console.log(data);
         setTasks(
             data.map((task: any) => {
                 return {
@@ -155,14 +173,16 @@ export default function DailyTasksPage({ profileId, initialTasks }: any) {
     }
 
     async function updateTaskCompletion(task: any) {
-        const res = await fetch(
-            `/api/mastery-checklist/update-task?taskId=${task.id
-            }&completed=${!task.completed}`
-        );
-        const data = await res.json();
+        const { error } = await supabase
+            .from('mastery-checklist')
+            .update([{
+                completed: !task.completed,
+            }])
+            .eq('id', task.id);
 
-        if (!data || !data.success) {
-            alert("Failed to update task");
+        if (error) {
+            alert("Failed to update task :(");
+            console.error(error);
             return;
         }
 
@@ -170,13 +190,14 @@ export default function DailyTasksPage({ profileId, initialTasks }: any) {
     }
 
     async function deleteTask(taskId: number) {
-        const res = await fetch(
-            `/api/mastery-checklist/remove-task?taskId=${taskId}`
-        );
-        const data = await res.json();
+        const { error } = await supabase
+            .from('mastery-checklist')
+            .delete()
+            .eq('id', taskId);
 
-        if (!data || !data.success) {
-            alert("Failed to remove task");
+        if (error) {
+            alert("Failed to delete task :(");
+            console.error(error);
             return;
         }
 
@@ -190,14 +211,6 @@ export default function DailyTasksPage({ profileId, initialTasks }: any) {
                 <Stack>
                     <Center>
                         <Stack spacing="1rem" w="35vw">
-                            <Text
-                                fontSize="4xl"
-                                fontWeight={"bold"}
-                                letterSpacing="0.1rem"
-                                textAlign={"center"}
-                            >
-                                Create a task
-                            </Text>
                             <Stack spacing="1rem">
                                 <Flex flexDir="column">
                                     <Text>Task</Text>
@@ -217,42 +230,66 @@ export default function DailyTasksPage({ profileId, initialTasks }: any) {
                                         <Center>
                                             <Text>Difficulty&nbsp;</Text>
                                         </Center>
-                                        <Select
-                                            value={newTaskDifficulty}
-                                            onChange={(e) =>
-                                                setNewTaskDifficulty(
-                                                    parseInt(e.target.value)
-                                                )
-                                            }
-                                            rounded="full"
+
+                                        <Slider
+                                            mt="1rem"
+                                            id='slider'
+                                            defaultValue={5}
+                                            min={1}
+                                            max={10}
+                                            colorScheme='yellow'
+                                            onChange={(v) => setNewTaskDifficulty(v)}
+                                            onMouseEnter={() => setShowDifficultyTooltip(true)}
+                                            onMouseLeave={() => setShowDifficultyTooltip(false)}
                                         >
-                                            <option value={1}>1</option>
-                                            <option value={3}>3</option>
-                                            <option value={5}>5</option>
-                                            <option value={8}>8</option>
-                                            <option value={13}>13</option>
-                                        </Select>
+                                            <SliderTrack boxSize=".5rem" rounded="full">
+                                                <SliderFilledTrack />
+                                            </SliderTrack>
+                                            <Tooltip
+                                                hasArrow
+                                                bg='yellow.500'
+                                                color='white'
+                                                placement='top'
+                                                isOpen={showDifficultyTooltip}
+                                                label={newTaskDifficulty}
+                                                rounded="lg"
+                                            >
+                                                <SliderThumb boxSize={"1.5rem"} />
+                                            </Tooltip>
+                                        </Slider>
                                     </Flex>
 
                                     <Flex flexDir="column" w="50%">
                                         <Center>
                                             <Text>Importance&nbsp;</Text>
                                         </Center>
-                                        <Select
-                                            value={newTaskImportance}
-                                            onChange={(e) =>
-                                                setNewTaskImportance(
-                                                    parseInt(e.target.value)
-                                                )
-                                            }
-                                            rounded="full"
+
+                                        <Slider
+                                            mt="1rem"
+                                            id='slider'
+                                            defaultValue={5}
+                                            min={1}
+                                            max={10}
+                                            colorScheme='yellow'
+                                            onChange={(v) => setNewTaskImportance(v)}
+                                            onMouseEnter={() => setShowImportanceTooltip(true)}
+                                            onMouseLeave={() => setShowImportanceTooltip(false)}
                                         >
-                                            <option value={1}>1</option>
-                                            <option value={3}>3</option>
-                                            <option value={5}>5</option>
-                                            <option value={8}>8</option>
-                                            <option value={13}>13</option>
-                                        </Select>
+                                            <SliderTrack boxSize=".5rem" rounded="full">
+                                                <SliderFilledTrack />
+                                            </SliderTrack>
+                                            <Tooltip
+                                                hasArrow
+                                                bg='yellow.500'
+                                                color='white'
+                                                placement='top'
+                                                isOpen={showImportanceTooltip}
+                                                label={newTaskImportance}
+                                                rounded="lg"
+                                            >
+                                                <SliderThumb boxSize={"1.5rem"} />
+                                            </Tooltip>
+                                        </Slider>
                                     </Flex>
                                 </HStack>
                             </Stack>
@@ -378,15 +415,6 @@ export default function DailyTasksPage({ profileId, initialTasks }: any) {
         return (
             <Center ml="5vw" w="90vw" flexDir="column">
                 <VStack spacing="1rem">
-                    <Text
-                        fontSize="3xl"
-                        fontWeight={"bold"}
-                        letterSpacing="0.1rem"
-                        textAlign={"center"}
-                    >
-                        Create a task
-                    </Text>
-
                     <Flex flexDir="column">
                         <Text>Task</Text>
                         <Input
@@ -405,42 +433,66 @@ export default function DailyTasksPage({ profileId, initialTasks }: any) {
                             <Center>
                                 <Text>Difficulty&nbsp;</Text>
                             </Center>
-                            <Select
-                                value={newTaskDifficulty}
-                                onChange={(e) =>
-                                    setNewTaskDifficulty(
-                                        parseInt(e.target.value)
-                                    )
-                                }
-                                rounded="full"
+
+                            <Slider
+                                mt="1rem"
+                                id='slider'
+                                defaultValue={5}
+                                min={1}
+                                max={10}
+                                colorScheme='yellow'
+                                onChange={(v) => setNewTaskDifficulty(v)}
+                                onMouseEnter={() => setShowDifficultyTooltip(true)}
+                                onMouseLeave={() => setShowDifficultyTooltip(false)}
                             >
-                                <option value={1}>1</option>
-                                <option value={3}>3</option>
-                                <option value={5}>5</option>
-                                <option value={8}>8</option>
-                                <option value={13}>13</option>
-                            </Select>
+                                <SliderTrack boxSize=".5rem" rounded="full">
+                                    <SliderFilledTrack />
+                                </SliderTrack>
+                                <Tooltip
+                                    hasArrow
+                                    bg='yellow.500'
+                                    color='white'
+                                    placement='top'
+                                    isOpen={showDifficultyTooltip}
+                                    label={newTaskDifficulty}
+                                    rounded="lg"
+                                >
+                                    <SliderThumb boxSize={"1.5rem"} />
+                                </Tooltip>
+                            </Slider>
                         </Flex>
 
                         <Flex flexDir="column" w="100%">
                             <Center>
                                 <Text>Importance&nbsp;</Text>
                             </Center>
-                            <Select
-                                value={newTaskImportance}
-                                onChange={(e) =>
-                                    setNewTaskImportance(
-                                        parseInt(e.target.value)
-                                    )
-                                }
-                                rounded="full"
+
+                            <Slider
+                                mt="1rem"
+                                id='slider'
+                                defaultValue={5}
+                                min={1}
+                                max={10}
+                                colorScheme='yellow'
+                                onChange={(v) => setNewTaskImportance(v)}
+                                onMouseEnter={() => setShowImportanceTooltip(true)}
+                                onMouseLeave={() => setShowImportanceTooltip(false)}
                             >
-                                <option value={1}>1</option>
-                                <option value={3}>3</option>
-                                <option value={5}>5</option>
-                                <option value={8}>8</option>
-                                <option value={13}>13</option>
-                            </Select>
+                                <SliderTrack boxSize=".5rem" rounded="full">
+                                    <SliderFilledTrack />
+                                </SliderTrack>
+                                <Tooltip
+                                    hasArrow
+                                    bg='yellow.500'
+                                    color='white'
+                                    placement='top'
+                                    isOpen={showImportanceTooltip}
+                                    label={newTaskImportance}
+                                    rounded="lg"
+                                >
+                                    <SliderThumb boxSize={"1.5rem"} />
+                                </Tooltip>
+                            </Slider>
                         </Flex>
                     </HStack>
 
