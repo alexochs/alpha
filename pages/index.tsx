@@ -17,25 +17,6 @@ export async function getServerSideProps(context: any) {
                 permanent: false,
             },
         };
-    }
-}
-
-import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
-
-export async function getServerSideProps(context: any) {
-    const supabase = createServerSupabaseClient(context);
-
-    const {
-        data: { session },
-    } = await supabase.auth.getSession();
-
-    if (session) {
-        return {
-            redirect: {
-                destination: "/productivity/daily-tasks",
-                permanent: false,
-            },
-        };
     } else {
         return {
             props: {},
