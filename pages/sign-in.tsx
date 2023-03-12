@@ -28,7 +28,7 @@ export default function SignInPage() {
 
             <Box py="2rem" />
 
-            <Text fontSize="xl">Please check your spam!</Text>
+            {/*<Text fontSize="xl">Please check your spam!</Text>*/}
 
             <Auth
                 supabaseClient={supabase}
