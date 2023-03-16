@@ -1,30 +1,20 @@
 import { Button, Center, Heading, Image, Stack, Text } from "@chakra-ui/react";
 import Head from "next/head";
 import Link from "next/link";
-import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
-
-export async function getServerSideProps(context: any) {
-    const supabase = createServerSupabaseClient(context);
-
-    const {
-        data: { session },
-    } = await supabase.auth.getSession();
-
-    if (session) {
-        return {
-            redirect: {
-                destination: "/productivity/daily-tasks",
-                permanent: false,
-            },
-        };
-    } else {
-        return {
-            props: {},
-        };
-    }
-}
+import { useUser } from "@supabase/auth-helpers-react";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 export default function HomePage() {
+    const router = useRouter();
+    const user = useUser();
+
+    useEffect(() => {
+        if (user) {
+            router.push("/productivity/daily-tasks");
+        }
+    }, [user]);
+
     return (
         <Center h="95vh" flexDir="column" color="gray.700">
             <Stack spacing="1rem">
