@@ -22,9 +22,10 @@ import {
 } from "react-icons/ai";
 import { BiBrain } from "react-icons/bi";
 import { BsPeople, BsPeopleFill } from "react-icons/bs";
-import { FaBrain, FaUserCircle } from "react-icons/fa";
+import { FaBars, FaBrain, FaUserCircle } from "react-icons/fa";
 import HealthComponentsList from "./ComponentsLists/HealthComponentsList";
 import MindComponentsList from "./ComponentsLists/MindComponentsList";
+import MiscComponentsList from "./ComponentsLists/MiscComponentsList";
 import NetworkComponentsList from "./ComponentsLists/NetworkComponentsList";
 import ProductivityComponentsList from "./ComponentsLists/ProductivityComponentsList";
 
@@ -54,6 +55,12 @@ export default function Navigation({ isMobile }: any) {
         isOpen: networkIsOpen,
         onOpen: networkOnOpen,
         onClose: networkOnClose,
+    } = useDisclosure();
+
+    const {
+        isOpen: miscIsOpen,
+        onOpen: miscOnOpen,
+        onClose: miscOnClose,
     } = useDisclosure();
 
     return (
@@ -132,16 +139,19 @@ export default function Navigation({ isMobile }: any) {
                     />
                 </Center>
 
-                {isMobile && <Center>
-                    <Link href={`/profiles/${session?.user.id}`}>
-                        <IconButton
-                            aria-label="userprofile"
-                            as={FaUserCircle}
-                            rounded="full"
-                            cursor="pointer"
-                        />
-                    </Link>
-                </Center>}
+                <Center>
+                    <Icon
+                        cursor={"pointer"}
+                        w="2rem"
+                        h="2rem"
+                        aria-label="time"
+                        as={false ? FaBars : FaBars}
+                        color={false ? "gray.700" : "blackAlpha.600"}
+                        onClick={() => {
+                            miscOnOpen();
+                        }}
+                    />
+                </Center>
             </Flex>
 
             <Drawer
@@ -201,6 +211,21 @@ export default function Navigation({ isMobile }: any) {
                     <DrawerBody>
                         <Center flexDir="column" py="1rem">
                             <NetworkComponentsList onClose={networkOnClose} />
+                        </Center>
+                    </DrawerBody>
+                </DrawerContent>
+            </Drawer>
+
+            <Drawer
+                placement={isMobile ? "bottom" : "top"}
+                onClose={miscOnClose}
+                isOpen={miscIsOpen}
+            >
+                <DrawerOverlay />
+                <DrawerContent roundedBottom={["0", "3xl"]} roundedTop={["3xl", "0"]}>
+                    <DrawerBody>
+                        <Center flexDir="column" py="1rem">
+                            <MiscComponentsList onClose={miscOnClose} />
                         </Center>
                     </DrawerBody>
                 </DrawerContent>
