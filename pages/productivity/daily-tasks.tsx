@@ -239,10 +239,8 @@ export default function DailyTasksPage({ profileId, initialTasks }: any) {
                                             max={10}
                                             colorScheme='yellow'
                                             onChange={(v) => setNewTaskDifficulty(v)}
-                                            onMouseEnter={() => setShowDifficultyTooltip(true)}
-                                            onMouseLeave={() => setShowDifficultyTooltip(false)}
-                                            onTouchStart={() => setShowDifficultyTooltip(true)}
-                                            onTouchEnd={() => setShowDifficultyTooltip(false)}
+                                            onPointerEnter={() => setShowDifficultyTooltip(true)}
+                                            onPointerLeave={() => setShowDifficultyTooltip(false)}
                                         >
                                             <SliderTrack boxSize=".5rem" rounded="full">
                                                 <SliderFilledTrack />
@@ -274,10 +272,8 @@ export default function DailyTasksPage({ profileId, initialTasks }: any) {
                                             max={10}
                                             colorScheme='yellow'
                                             onChange={(v) => setNewTaskImportance(v)}
-                                            onMouseEnter={() => setShowImportanceTooltip(true)}
-                                            onMouseLeave={() => setShowImportanceTooltip(false)}
-                                            onTouchStart={() => setShowDifficultyTooltip(true)}
-                                            onTouchEnd={() => setShowDifficultyTooltip(false)}
+                                            onPointerEnter={() => setShowImportanceTooltip(true)}
+                                            onPointerLeave={() => setShowImportanceTooltip(false)}
                                         >
                                             <SliderTrack boxSize=".5rem" rounded="full">
                                                 <SliderFilledTrack />
