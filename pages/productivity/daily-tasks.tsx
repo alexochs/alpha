@@ -141,8 +141,8 @@ export default function DailyTasksPage({ profileId, initialTasks }: any) {
         //setTasks([...tasks, newTask]);
 
         setNewTaskName("");
-        setNewTaskDifficulty(1);
-        setNewTaskImportance(1);
+        setNewTaskDifficulty(5);
+        setNewTaskImportance(5);
 
         await readTasks();
     }
@@ -234,13 +234,15 @@ export default function DailyTasksPage({ profileId, initialTasks }: any) {
                                         <Slider
                                             mt="1rem"
                                             id='slider'
-                                            defaultValue={5}
+                                            value={newTaskDifficulty}
                                             min={1}
                                             max={10}
                                             colorScheme='yellow'
                                             onChange={(v) => setNewTaskDifficulty(v)}
                                             onMouseEnter={() => setShowDifficultyTooltip(true)}
                                             onMouseLeave={() => setShowDifficultyTooltip(false)}
+                                            onTouchStart={() => setShowDifficultyTooltip(true)}
+                                            onTouchEnd={() => setShowDifficultyTooltip(false)}
                                         >
                                             <SliderTrack boxSize=".5rem" rounded="full">
                                                 <SliderFilledTrack />
@@ -267,13 +269,15 @@ export default function DailyTasksPage({ profileId, initialTasks }: any) {
                                         <Slider
                                             mt="1rem"
                                             id='slider'
-                                            defaultValue={5}
+                                            value={newTaskImportance}
                                             min={1}
                                             max={10}
                                             colorScheme='yellow'
                                             onChange={(v) => setNewTaskImportance(v)}
                                             onMouseEnter={() => setShowImportanceTooltip(true)}
                                             onMouseLeave={() => setShowImportanceTooltip(false)}
+                                            onTouchStart={() => setShowDifficultyTooltip(true)}
+                                            onTouchEnd={() => setShowDifficultyTooltip(false)}
                                         >
                                             <SliderTrack boxSize=".5rem" rounded="full">
                                                 <SliderFilledTrack />
@@ -382,6 +386,7 @@ export default function DailyTasksPage({ profileId, initialTasks }: any) {
                                                             }
                                                             colorScheme="yellow"
                                                             size="lg"
+                                                            borderColor="blackAlpha.500"
                                                         />
                                                     </Td>
                                                     <Td>
