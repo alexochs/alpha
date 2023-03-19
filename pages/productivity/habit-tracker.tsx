@@ -120,14 +120,24 @@ export default function HabitTrackerPage({ profileId, initialHabits }: any) {
     return (
         <Box>
             <Stack spacing="1rem">
-                <Heading
-                    fontSize={["4xl", "5xl"]}
-                    fontWeight={"bold"}
-                    letterSpacing="0.1rem"
-                    textAlign={"center"}
-                >
-                    Today&apos;s Habits
-                </Heading>
+                <Center>
+                    <Text
+                        fontSize={["4xl", "5xl"]}
+                        fontWeight={"bold"}
+                        letterSpacing="0.1rem"
+                        textAlign={"center"}
+                    >
+                        Habit Tracker
+                    </Text>
+                    <IconButton
+                        ml="1rem"
+                        aria-label="help"
+                        icon={<FaQuestionCircle size="1.5rem" />}
+                        onClick={helpOnOpen}
+                        rounded="full"
+                    />
+                </Center>
+
                 {habits.filter((habit: any) =>
                     habit.days.includes(
                         date
@@ -211,10 +221,19 @@ export default function HabitTrackerPage({ profileId, initialHabits }: any) {
 
             <HStack
                 position="fixed"
-                bottom={["10vh", "2rem"]}
-                right="1rem"
+                bottom={["5rem", "2rem"]}
+                right={["1rem", "2rem"]}
             >
-                {!isMobile &&
+                {isMobile ?
+                    <IconButton
+                        aria-label="help"
+                        icon={<FaPlus color="#333333" size="2.5rem" />}
+                        onClick={onOpen}
+                        h="4rem"
+                        w="4rem"
+                        rounded="full"
+                        colorScheme={"yellow"}
+                    /> :
                     <Button
                         onClick={onOpen}
                         colorScheme="yellow"
@@ -227,26 +246,6 @@ export default function HabitTrackerPage({ profileId, initialHabits }: any) {
                             <Text>New Habit</Text>
                         </Center>
                     </Button>}
-
-                <IconButton
-                    aria-label="help"
-                    icon={<FaQuestionCircle size="2rem" />}
-                    onClick={helpOnOpen}
-                    h="4rem"
-                    w="4rem"
-                    rounded="full"
-                />
-
-                {isMobile &&
-                    <IconButton
-                        aria-label="help"
-                        icon={<FaPlus color="#333333" size="2.5rem" />}
-                        onClick={onOpen}
-                        h="4rem"
-                        w="4rem"
-                        rounded="full"
-                        colorScheme={"yellow"}
-                    />}
             </HStack>
 
             <CreateHabitModal

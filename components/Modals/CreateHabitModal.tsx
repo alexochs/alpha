@@ -75,123 +75,106 @@ export default function CreateHabitModal({ profileId, habits, setHabits, date, i
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
-            <ModalContent rounded="3xl">
+            <ModalContent rounded="3xl" w={["90vw", "50vw"]}>
                 <ModalHeader>Make a new habit</ModalHeader>
                 <ModalCloseButton rounded="full" />
                 <ModalBody>
                     <Stack spacing="1rem">
-                        <Flex flexDir="column">
-                            <Text>Habit</Text>
-                            <Input
-                                value={newHabitName}
-                                onChange={(e) => setNewHabitName(e.target.value)}
-                                isInvalid={invalidHabitName}
-                                isDisabled={isLoading}
-                                variant="outline"
-                                placeholder="Describe your new habit"
-                                rounded="full"
-                            />
-                        </Flex>
+                        <Input
+                            value={newHabitName}
+                            onChange={(e) => setNewHabitName(e.target.value)}
+                            isInvalid={invalidHabitName}
+                            isDisabled={isLoading}
+                            variant="outline"
+                            placeholder="Describe your new habit"
+                            rounded="full"
+                        />
 
-                        <Flex flexDir="column">
-                            <Text fontWeight={"bold"}>Repeat on</Text>
+                        <Button
+                            onClick={() => {
+                                toggleDay("monday");
+                            }}
+                            variant={newHabitDays.includes("monday") ? "outline" : "ghost"}
+                            isDisabled={isLoading}
+                            rounded="full"
+                            colorScheme={"yellow"}
+                        >
+                            Monday
+                        </Button>
 
-                            <SimpleGrid columns={2} spacing="1rem" alignContent={"space-evenly"} alignItems="space-evenly">
-                                <HStack w="40vw">
-                                    <Text>Monday</Text>
-                                    <Checkbox
-                                        onChange={() => toggleDay("monday")}
-                                        isChecked={newHabitDays.includes("monday")}
-                                        isInvalid={invalidHabitDays}
-                                        isDisabled={isLoading}
-                                        colorScheme="yellow"
-                                        size="lg"
-                                    />
-                                </HStack>
+                        <Button
+                            onClick={() => {
+                                toggleDay("tuesday");
+                            }}
+                            variant={newHabitDays.includes("tuesday") ? "outline" : "ghost"}
+                            isDisabled={isLoading}
+                            rounded="full"
+                            colorScheme={"yellow"}
+                        >
+                            Tuesday
+                        </Button>
 
-                                <HStack>
-                                    <Text>Tuesday</Text>
-                                    <Checkbox
-                                        onChange={() => toggleDay("tuesday")}
-                                        isChecked={newHabitDays.includes("tuesday")}
-                                        colorScheme="yellow"
-                                        isDisabled={isLoading}
-                                        size="lg"
-                                        isInvalid={invalidHabitDays}
-                                    />
-                                </HStack>
+                        <Button
+                            onClick={() => {
+                                toggleDay("wednesday");
+                            }}
+                            variant={newHabitDays.includes("wednesday") ? "outline" : "ghost"}
+                            isDisabled={isLoading}
+                            rounded="full"
+                            colorScheme={"yellow"}
+                        >
+                            Wednesday
+                        </Button>
 
-                                <HStack>
-                                    <Text >Wednesday</Text>
-                                    <Checkbox
-                                        onChange={() => toggleDay("wednesday")}
-                                        isChecked={newHabitDays.includes(
-                                            "wednesday"
-                                        )}
-                                        isDisabled={isLoading}
-                                        colorScheme="yellow"
-                                        size="lg"
-                                        isInvalid={invalidHabitDays}
-                                    />
-                                </HStack>
+                        <Button
+                            onClick={() => {
+                                toggleDay("thursday");
+                            }}
+                            variant={newHabitDays.includes("thursday") ? "outline" : "ghost"}
+                            isDisabled={isLoading}
+                            rounded="full"
+                            colorScheme={"yellow"}
+                        >
+                            Thursday
+                        </Button>
 
-                                <HStack>
-                                    <Text >Thursday</Text>
-                                    <Checkbox
-                                        onChange={() => toggleDay("thursday")}
-                                        isChecked={newHabitDays.includes(
-                                            "thursday"
-                                        )}
-                                        colorScheme="yellow"
-                                        isDisabled={isLoading}
-                                        size="lg"
-                                        isInvalid={invalidHabitDays}
-                                    />
-                                </HStack>
+                        <Button
+                            onClick={() => {
+                                toggleDay("friday");
+                            }}
+                            variant={newHabitDays.includes("friday") ? "outline" : "ghost"}
+                            isDisabled={isLoading}
+                            rounded="full"
+                            colorScheme={"yellow"}
+                        >
+                            Friday
+                        </Button>
 
-                                <HStack>
-                                    <Text >Friday</Text>
-                                    <Checkbox
-                                        onChange={() => toggleDay("friday")}
-                                        isChecked={newHabitDays.includes("friday")}
-                                        colorScheme="yellow"
-                                        size="lg"
-                                        isDisabled={isLoading}
-                                        isInvalid={invalidHabitDays}
-                                    />
-                                </HStack>
+                        <Button
+                            onClick={() => {
+                                toggleDay("saturday");
+                            }}
+                            variant={newHabitDays.includes("saturday") ? "outline" : "ghost"}
+                            isDisabled={isLoading}
+                            rounded="full"
+                            colorScheme={"yellow"}
+                        >
+                            Saturday
+                        </Button>
 
-                                <HStack>
-                                    <Text >Saturday</Text>
-                                    <Checkbox
-                                        onChange={() => toggleDay("saturday")}
-                                        isChecked={newHabitDays.includes(
-                                            "saturday"
-                                        )}
-                                        colorScheme="yellow"
-                                        size="lg"
-                                        isDisabled={isLoading}
-                                        isInvalid={invalidHabitDays}
-                                    />
-                                </HStack>
-
-                                <HStack>
-                                    <Text >Sunday</Text>
-                                    <Checkbox
-                                        onChange={() => toggleDay("sunday")}
-                                        isChecked={newHabitDays.includes("sunday")}
-                                        colorScheme="yellow"
-                                        size="lg"
-                                        isDisabled={isLoading}
-                                        isInvalid={invalidHabitDays}
-                                    />
-                                </HStack>
-                            </SimpleGrid>
-                        </Flex>
+                        <Button
+                            onClick={() => {
+                                toggleDay("sunday");
+                            }}
+                            variant={newHabitDays.includes("sunday") ? "outline" : "ghost"}
+                            isDisabled={isLoading}
+                            rounded="full"
+                            colorScheme={"yellow"}
+                        >
+                            Sunday
+                        </Button>
                     </Stack>
-                </ModalBody>
 
-                <ModalFooter>
                     <Button
                         onClick={async () => {
                             await addNewHabit();
@@ -200,11 +183,13 @@ export default function CreateHabitModal({ profileId, habits, setHabits, date, i
                         isLoading={isLoading}
                         colorScheme="yellow"
                         rounded="full"
-                        mt="1rem"
+                        mt="2rem"
+                        mb="1rem"
+                        w="100%"
                     >
                         Add habit
                     </Button>
-                </ModalFooter>
+                </ModalBody>
             </ModalContent>
         </Modal>
     );

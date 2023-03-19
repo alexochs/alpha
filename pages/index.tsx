@@ -1,19 +1,24 @@
 import { Button, Center, Heading, Image, Stack, Text } from "@chakra-ui/react";
 import Head from "next/head";
 import Link from "next/link";
-import { useUser } from "@supabase/auth-helpers-react";
-import { useEffect } from "react";
+import { useSession, useUser } from "@supabase/auth-helpers-react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 export default function HomePage() {
     const router = useRouter();
-    const user = useUser();
+    const session = useSession();
+
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        if (user) {
+        if (!session) return;
+
+        if (session) {
+            setLoading(true);
             router.push("/productivity/daily-tasks");
         }
-    }, [user]);
+    }, [session, router]);
 
     return (
         <Center h="95vh" flexDir="column" color="gray.700">
@@ -48,6 +53,8 @@ export default function HomePage() {
                             letterSpacing={"0.1rem"}
                             rounded="full"
                             color="gray.700"
+                            isDisabled={loading}
+                            isLoading={loading}
                         >
                             <Text fontSize={["2xl", "4xl"]}>
                                 START YOUR JOURNEY

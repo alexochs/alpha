@@ -31,7 +31,7 @@ export default function FAQPage({ }: any) {
 
     return (
         <Center w="100vw" h="80vh" flexDir={"column"}>
-            <Heading>Frequently Asked Questions</Heading>
+            <Heading textAlign={"center"}>Frequently Asked Questions</Heading>
             <Text pt="1rem">Coming soon...</Text>
         </Center>
     );

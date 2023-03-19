@@ -2,25 +2,25 @@ import { Button, Checkbox, Flex, HStack, Input, Modal, ModalBody, ModalCloseButt
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useEffect, useState } from "react";
 
-export default function HabitTrackerHelpModal({ profileId, habits, setHabits, date, isOpen, onClose }: any) {
+export default function DailyTasksHelpModal({ isOpen, onClose }: any) {
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent rounded="3xl" w={["90vw", "50vw"]}>
-                <ModalHeader>Track your habits</ModalHeader>
+                <ModalHeader>Master your daily tasks</ModalHeader>
                 <ModalCloseButton rounded="full" />
 
                 <ModalBody>
                     <Text>
-                        To create a new habit, enter a name for the habit and select the days of the week that you want to complete the habit.
+                        To create a new task, enter a name for the task and define the difficulty and importance of the task.
                     </Text>
 
                     <Text pt="1rem">
-                        Keep track of your habits by checking off the days that you completed the habit, day by day.
+                        Your daily tasks are automatically sorted by their score, so you know which ones to complete first.
                     </Text>
 
                     <Text pt="1rem">
-                        You can also edit the name of the habit or delete the habit.
+                        You can also edit the name, difficulty, or importance of the task afterwards.
                     </Text>
                 </ModalBody>
 
