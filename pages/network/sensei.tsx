@@ -102,7 +102,16 @@ export default function HabitTrackerPage({ profileId, initialTelegram }: any) {
     }
 
     async function sendTestMessage() {
-        await fetch("/api/tg-sendMessage");
+        await fetch("/api/tg-sendMessage", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                chat_id: telegram,
+                text: "Hello from Master Yourself!",
+            }),
+        });
     }
 
     async function handleTelegramLogin(authRes: any) {
@@ -134,6 +143,17 @@ export default function HabitTrackerPage({ profileId, initialTelegram }: any) {
         })
 
         setTelegram(authRes.id);
+
+        await fetch("/api/tg-sendMessage", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                chat_id: authRes.id,
+                text: "Hello from Master Yourself!",
+            }),
+        });
     }
 
     return (

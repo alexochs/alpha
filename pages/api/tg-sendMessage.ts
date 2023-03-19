@@ -29,14 +29,12 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  // Run the middleware
   await runMiddleware(req, res, cors)
 
-  // Rest of the API logic
-  console.log("Telegram API: " + process.env.TELEGRAM_API);
-  console.log(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + "@alexochs" + "&text=" + "Hello there!");
+  const chat_id = req.body.chat_id;
+  const text = req.body.text;
 
-  const messageRes = await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + "@alexochs" + "&text=" + "Hello there!");
+  const messageRes = await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + chat_id + "&text=" + text);
   console.log(messageRes.statusText);
 
   res.json({ success: true })
