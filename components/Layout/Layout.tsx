@@ -19,6 +19,7 @@ export default function Layout({ children, pageProps }: any) {
 
     function showBars() {
         return router.asPath.includes("productivity") ||
+            router.asPath.includes("network") ||
             router.asPath.includes("profiles") ||
             router.asPath.includes("faq");
     }

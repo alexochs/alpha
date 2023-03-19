@@ -89,7 +89,7 @@ export default function Navigation({ isMobile }: any) {
                         color={
                             router.asPath.includes("productivity")
                                 ? "yellow.400"
-                                : "blackAlpha.600"
+                                : "gray.500"
                         }
                         onClick={() => {
                             productivityOnOpen();
@@ -104,7 +104,7 @@ export default function Navigation({ isMobile }: any) {
                         h="2rem"
                         aria-label="time"
                         as={false ? FaBrain : BiBrain}
-                        color={false ? "blue.400" : "blackAlpha.600"}
+                        color={false ? "blue.400" : "gray.500"}
                         onClick={() => {
                             mindOnOpen();
                         }}
@@ -118,7 +118,7 @@ export default function Navigation({ isMobile }: any) {
                         h="2rem"
                         aria-label="time"
                         as={false ? AiFillHeart : AiOutlineHeart}
-                        color={false ? "green.400" : "blackAlpha.600"}
+                        color={false ? "green.400" : "gray.500"}
                         onClick={() => {
                             healthOnOpen();
                         }}
@@ -131,8 +131,8 @@ export default function Navigation({ isMobile }: any) {
                         w="2rem"
                         h="2rem"
                         aria-label="time"
-                        as={false ? BsPeopleFill : BsPeople}
-                        color={false ? "red.400" : "blackAlpha.600"}
+                        as={router.asPath.includes("network") ? BsPeopleFill : BsPeople}
+                        color={router.asPath.includes("network") ? "red.400" : "gray.500"}
                         onClick={() => {
                             networkOnOpen();
                         }}
@@ -146,7 +146,7 @@ export default function Navigation({ isMobile }: any) {
                         h="2rem"
                         aria-label="time"
                         as={false ? FaBars : FaBars}
-                        color={false ? "gray.700" : "blackAlpha.600"}
+                        color={false ? "gray.700" : "gray.500"}
                         onClick={() => {
                             miscOnOpen();
                         }}

@@ -3,7 +3,7 @@ import { Button, Icon, Stack, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { BiNews } from "react-icons/bi";
 import { BsJournalText } from "react-icons/bs";
-import { FaUsers } from "react-icons/fa";
+import { FaRobot, FaUsers } from "react-icons/fa";
 import {
     GiCycle,
     GiMeditation,
@@ -29,6 +29,7 @@ export default function NetworkComponentsList({ onClose }: any) {
             >
                 <Text fontSize="xl">Forum</Text>
             </Button>
+
             <Button
                 isDisabled={true}
                 //onClick={() => setComponent(COMPONENT_NEWS_TICKER)}
@@ -42,6 +43,7 @@ export default function NetworkComponentsList({ onClose }: any) {
             >
                 <Text fontSize="xl">News Ticker</Text>
             </Button>
+
             <Button
                 isDisabled={true}
                 //onClick={() => setComponent(COMPONENT_SOCIAL_MEDIA)}
@@ -55,6 +57,7 @@ export default function NetworkComponentsList({ onClose }: any) {
             >
                 <Text fontSize="xl">Social Media</Text>
             </Button>
+
             <Button
                 isDisabled={true}
                 //onClick={() => setComponent(COMPONENT_MEMBERS)}
@@ -65,6 +68,22 @@ export default function NetworkComponentsList({ onClose }: any) {
                 leftIcon={<Icon as={FaUsers} boxSize="1.5rem" />}
             >
                 <Text fontSize="xl">Members</Text>
+            </Button>
+
+            <Button
+                onClick={() => {
+                    window.location.href = "/network/sensei";
+                    onClose();
+                }}
+                colorScheme="red"
+                variant={
+                    router.asPath.includes("/sensei") ? "solid" : "ghost"
+                }
+                size={["md", "lg"]}
+                rounded="full"
+                leftIcon={<Icon as={FaRobot} boxSize="1.5rem" />}
+            >
+                <Text fontSize="xl">Sensei</Text>
             </Button>
         </Stack>
     );
