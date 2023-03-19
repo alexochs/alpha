@@ -21,17 +21,12 @@ export default function Topbar({
                 //position="fixed"
                 //top="0"
                 w="100vw"
-                minH="4rem"
+                h="4rem"
                 flexDir="column"
-                pt=".5rem"
                 borderBottom={"1px solid rgb(0, 0, 0, 0.2)"}
                 bg="white"
             >
-                <Heading fontSize="lg" letterSpacing={"0.5rem"}>
-                    MASTER YOURSELF
-                </Heading>
-
-                <Box color="gray">
+                <Box color="gray.500">
                     <DatePicker />
                 </Box>
             </Center>
@@ -57,7 +52,7 @@ export default function Topbar({
                     <Navigation isMobile={isMobile} />
                 </Center>
 
-                <Center flex={1}>
+                <Center flex={1} color="gray.500">
                     <DatePicker />
                 </Center>
 

@@ -2,7 +2,7 @@ import { CheckCircleIcon } from "@chakra-ui/icons";
 import { Button, Icon, Link, Stack, Text } from "@chakra-ui/react";
 import { useSession } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
-import { FaUser } from "react-icons/fa";
+import { FaQuestion, FaQuestionCircle, FaUser } from "react-icons/fa";
 import { GiCycle, GiDividedSpiral, GiTomato } from "react-icons/gi";
 import { MdFeedback } from "react-icons/md";
 
@@ -39,6 +39,22 @@ export default function MiscComponentsList({ onClose }: any) {
                     <Text fontSize="xl">Feedback</Text>
                 </Button>
             </Link>
+
+            <Button
+                onClick={() => {
+                    window.location.href = `/faq`;
+                    onClose();
+                }}
+                colorScheme="purple"
+                variant={
+                    router.asPath.includes("faq") ? "solid" : "ghost"
+                }
+                size={["md", "lg"]}
+                rounded="full"
+                leftIcon={<Icon as={FaQuestionCircle} boxSize="1.5rem" />}
+            >
+                <Text fontSize="xl">FAQ</Text>
+            </Button>
         </Stack>
     );
 }

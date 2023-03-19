@@ -63,8 +63,6 @@ export default function PomodoroPage({ profileId, initialTimer, initialHistory }
     const [startFocusDuration, setStartFocusDuration] = useState(45);
     const [startBreakDuration, setStartBreakDuration] = useState(10);
 
-    console.log(initialHistory);
-
     async function startTimer(mode: number, duration: number) {
         const start = new Date();
         const end = new Date(start.getTime() + duration * 60000);
@@ -242,10 +240,7 @@ export default function PomodoroPage({ profileId, initialTimer, initialHistory }
                                         .map((session: any, index: number) => (
                                             <Tr key={index}>
                                                 <Td>{session.mode === 0 ? "Focus" : "Break"}</Td>
-                                                <Td>{new Date(session.start).toLocaleDateString("en-US", {
-                                                    month: "long",
-                                                    day: "numeric",
-                                                    year: "numeric",
+                                                <Td>{new Date(session.start).toLocaleTimeString("en-US", {
                                                     hour: "numeric",
                                                     minute: "numeric",
                                                 })}</Td>

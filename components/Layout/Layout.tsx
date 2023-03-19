@@ -18,7 +18,9 @@ export default function Layout({ children, pageProps }: any) {
     const router = useRouter();
 
     function showBars() {
-        return router.asPath.includes("productivity") || router.asPath.includes("profiles");
+        return router.asPath.includes("productivity") ||
+            router.asPath.includes("profiles") ||
+            router.asPath.includes("faq");
     }
 
     return (

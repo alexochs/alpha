@@ -30,10 +30,16 @@ import {
     SliderFilledTrack,
     Tooltip,
     SliderThumb,
+    useDisclosure,
+    Icon,
+    IconButton,
 } from "@chakra-ui/react";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useContext, useEffect, useState } from "react";
+import { FaPlus, FaPlusCircle, FaQuestionCircle } from "react-icons/fa";
+import CreateTaskModal from "../../components/Modals/CreateTaskModal";
+import DailyTasksHelpModal from "../../components/Modals/DailyTasksHelpModal";
 
 export async function getServerSideProps(context: any) {
     const supabase = createServerSupabaseClient(context);
@@ -87,15 +93,6 @@ export default function DailyTasksPage({ profileId, initialTasks }: any) {
     const isMobile = useMediaQuery("(max-width: 768px)")[0];
     const [tasks, setTasks] = useState<any[]>(initialTasks);
 
-    const [newTaskName, setNewTaskName] = useState("");
-    const [invalidTaskName, setInvalidTaskName] = useState(false);
-
-    const [newTaskDifficulty, setNewTaskDifficulty] = useState(5);
-    const [showDifficultyTooltip, setShowDifficultyTooltip] = useState(false);
-
-    const [newTaskImportance, setNewTaskImportance] = useState(5);
-    const [showImportanceTooltip, setShowImportanceTooltip] = useState(false);
-
     const [date, setDate] = useState(new Date(new Date().setHours(0, 0, 0, 0)));
     useEffect(() => {
         setDate(
@@ -105,47 +102,8 @@ export default function DailyTasksPage({ profileId, initialTasks }: any) {
         );
     }, [date]);
 
-    async function addTask() {
-        if (!newTaskName) {
-            setInvalidTaskName(true);
-            return;
-        }
-
-        const newTask = {
-            id: null,
-            date: date,
-            name: newTaskName,
-            difficulty: newTaskDifficulty,
-            importance: newTaskImportance,
-            completed: false,
-        };
-
-        const { error } = await supabase.from("mastery-checklist").insert([
-            {
-                profile_id: profileId,
-                date: date.getTime(),
-                name: newTask.name,
-                difficulty: newTask.difficulty,
-                importance: newTask.importance,
-                completed: newTask.completed,
-            },
-        ]);
-
-        if (error) {
-            alert("Failed to add task :(");
-            console.error(error);
-            return;
-        }
-
-        setInvalidTaskName(false);
-        //setTasks([...tasks, newTask]);
-
-        setNewTaskName("");
-        setNewTaskDifficulty(1);
-        setNewTaskImportance(1);
-
-        await readTasks();
-    }
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen: helpIsOpen, onOpen: helpOnOpen, onClose: helpOnClose } = useDisclosure();
 
     async function readTasks() {
         const { data, error } = await supabase
@@ -205,395 +163,162 @@ export default function DailyTasksPage({ profileId, initialTasks }: any) {
         //setTasks(tasks.filter((task) => task.id !== toDelete));
     }
 
-    function Desktop() {
-        return (
-            <Center>
-                <Stack>
+    return (
+        <Center>
+            <Stack>
+                <Stack spacing="1rem" minW="65vw" maxW={"100vw"}>
                     <Center>
-                        <Stack spacing="1rem" w="35vw">
-                            <Stack spacing="1rem">
-                                <Flex flexDir="column">
-                                    <Text>Task</Text>
-                                    <Input
-                                        value={newTaskName}
-                                        onChange={(e) =>
-                                            setNewTaskName(e.target.value)
-                                        }
-                                        isInvalid={invalidTaskName}
-                                        variant="outline"
-                                        placeholder="Describe your task"
-                                        rounded="full"
-                                    />
-                                </Flex>
-                                <HStack spacing="1rem">
-                                    <Flex flexDir="column" w="50%">
-                                        <Center>
-                                            <Text>Difficulty&nbsp;</Text>
-                                        </Center>
-
-                                        <Slider
-                                            mt="1rem"
-                                            id='slider'
-                                            defaultValue={5}
-                                            min={1}
-                                            max={10}
-                                            colorScheme='yellow'
-                                            onChange={(v) => setNewTaskDifficulty(v)}
-                                            onMouseEnter={() => setShowDifficultyTooltip(true)}
-                                            onMouseLeave={() => setShowDifficultyTooltip(false)}
-                                        >
-                                            <SliderTrack boxSize=".5rem" rounded="full">
-                                                <SliderFilledTrack />
-                                            </SliderTrack>
-                                            <Tooltip
-                                                hasArrow
-                                                bg='yellow.500'
-                                                color='white'
-                                                placement='top'
-                                                isOpen={showDifficultyTooltip}
-                                                label={newTaskDifficulty}
-                                                rounded="lg"
-                                            >
-                                                <SliderThumb boxSize={"1.5rem"} />
-                                            </Tooltip>
-                                        </Slider>
-                                    </Flex>
-
-                                    <Flex flexDir="column" w="50%">
-                                        <Center>
-                                            <Text>Importance&nbsp;</Text>
-                                        </Center>
-
-                                        <Slider
-                                            mt="1rem"
-                                            id='slider'
-                                            defaultValue={5}
-                                            min={1}
-                                            max={10}
-                                            colorScheme='yellow'
-                                            onChange={(v) => setNewTaskImportance(v)}
-                                            onMouseEnter={() => setShowImportanceTooltip(true)}
-                                            onMouseLeave={() => setShowImportanceTooltip(false)}
-                                        >
-                                            <SliderTrack boxSize=".5rem" rounded="full">
-                                                <SliderFilledTrack />
-                                            </SliderTrack>
-                                            <Tooltip
-                                                hasArrow
-                                                bg='yellow.500'
-                                                color='white'
-                                                placement='top'
-                                                isOpen={showImportanceTooltip}
-                                                label={newTaskImportance}
-                                                rounded="lg"
-                                            >
-                                                <SliderThumb boxSize={"1.5rem"} />
-                                            </Tooltip>
-                                        </Slider>
-                                    </Flex>
-                                </HStack>
-                            </Stack>
-                            <Button
-                                onClick={addTask}
-                                colorScheme="yellow"
-                                rounded="full"
-                            >
-                                Add task
-                            </Button>
-                        </Stack>
-                    </Center>
-
-                    <Box py="2rem" />
-
-                    <Stack spacing="1rem" w="65vw">
                         <Text
-                            fontSize="5xl"
+                            fontSize={["4xl", "5xl"]}
                             fontWeight={"bold"}
                             letterSpacing="0.1rem"
                             textAlign={"center"}
                         >
                             Daily Tasks
                         </Text>
-                        {tasks.filter(
-                            (task: any) => task.date === date.getTime()
-                        ).length < 1 ? (
-                            <Text fontSize="xl" textAlign={"center"}>
-                                No tasks for today yet!
-                            </Text>
-                        ) : (
-                            <TableContainer fontSize="xl">
-                                <Table
-                                    variant="striped"
-                                    colorScheme="blackAlpha"
-                                    size="lg"
-                                >
-                                    <Thead>
-                                        <Tr>
-                                            <Th>Task</Th>
-                                            <Th isNumeric>Difficulty</Th>
-                                            <Th isNumeric>Importance</Th>
-                                            <Th isNumeric fontWeight={"bold"}>
-                                                Score
-                                            </Th>
-                                            <Th isNumeric fontWeight={"bold"}>
-                                                Done
-                                            </Th>
-                                            <Th />
-                                        </Tr>
-                                    </Thead>
-                                    <Tbody>
-                                        {tasks
-                                            .filter(
-                                                (task: any) =>
-                                                    task.date === date.getTime()
-                                            )
-                                            .sort(
-                                                (a: any, b: any) =>
-                                                    b.difficulty +
-                                                    b.importance -
-                                                    (a.difficulty +
-                                                        a.importance)
-                                            )
-                                            .map((task, index) => (
-                                                <Tr key={index}>
-                                                    <Td>{task.name}</Td>
-                                                    <Td isNumeric>
-                                                        {task.difficulty}
-                                                    </Td>
-                                                    <Td isNumeric>
-                                                        {task.importance}
-                                                    </Td>
-                                                    <Td
-                                                        isNumeric
-                                                        fontWeight={"bold"}
-                                                    >
-                                                        {task.difficulty +
-                                                            task.importance}
-                                                    </Td>
-                                                    <Td>
-                                                        <Checkbox
-                                                            onChange={() =>
-                                                                updateTaskCompletion(
-                                                                    task
-                                                                )
-                                                            }
-                                                            isChecked={
-                                                                task.completed
-                                                            }
-                                                            colorScheme="yellow"
-                                                            size="lg"
-                                                        />
-                                                    </Td>
-                                                    <Td>
-                                                        <Button
-                                                            onClick={() =>
-                                                                deleteTask(
-                                                                    task.id
-                                                                )
-                                                            }
-                                                            colorScheme="red"
-                                                            size="xs"
-                                                            variant="ghost"
-                                                            rounded="full"
-                                                        >
-                                                            x
-                                                        </Button>
-                                                    </Td>
-                                                </Tr>
-                                            ))}
-                                    </Tbody>
-                                </Table>
-                            </TableContainer>
-                        )}
-                    </Stack>
-                </Stack>
-            </Center>
-        );
-    }
-
-    function Mobile() {
-        return (
-            <Center ml="5vw" w="90vw" flexDir="column">
-                <VStack spacing="1rem">
-                    <Flex flexDir="column">
-                        <Text>Task</Text>
-                        <Input
-                            w="90vw"
-                            value={newTaskName}
-                            onChange={(e) => setNewTaskName(e.target.value)}
-                            isInvalid={invalidTaskName}
-                            variant="outline"
-                            placeholder="Describe your task"
+                        <IconButton
+                            ml="1rem"
+                            aria-label="help"
+                            icon={<FaQuestionCircle size="1.5rem" />}
+                            onClick={helpOnOpen}
                             rounded="full"
                         />
-                    </Flex>
+                    </Center>
 
-                    <HStack spacing="1rem" w="90vw">
-                        <Flex flexDir="column" w="100%">
-                            <Center>
-                                <Text>Difficulty&nbsp;</Text>
-                            </Center>
-
-                            <Slider
-                                mt="1rem"
-                                id='slider'
-                                defaultValue={5}
-                                min={1}
-                                max={10}
-                                colorScheme='yellow'
-                                onChange={(v) => setNewTaskDifficulty(v)}
-                                onMouseEnter={() => setShowDifficultyTooltip(true)}
-                                onMouseLeave={() => setShowDifficultyTooltip(false)}
+                    {tasks.filter(
+                        (task: any) => task.date === date.getTime()
+                    ).length < 1 ? (
+                        <Text fontSize="xl" textAlign={"center"}>
+                            No tasks for today yet!
+                        </Text>
+                    ) : (
+                        <TableContainer fontSize="xl">
+                            <Table
+                                variant="striped"
+                                colorScheme="blackAlpha"
+                                size="lg"
                             >
-                                <SliderTrack boxSize=".5rem" rounded="full">
-                                    <SliderFilledTrack />
-                                </SliderTrack>
-                                <Tooltip
-                                    hasArrow
-                                    bg='yellow.500'
-                                    color='white'
-                                    placement='top'
-                                    isOpen={showDifficultyTooltip}
-                                    label={newTaskDifficulty}
-                                    rounded="lg"
-                                >
-                                    <SliderThumb boxSize={"1.5rem"} />
-                                </Tooltip>
-                            </Slider>
-                        </Flex>
+                                <Thead>
+                                    <Tr>
+                                        <Th>Task</Th>
+                                        <Th isNumeric>Difficulty</Th>
+                                        <Th isNumeric>Importance</Th>
+                                        <Th isNumeric fontWeight={"bold"}>
+                                            Score
+                                        </Th>
+                                        <Th isNumeric fontWeight={"bold"}>
+                                            Done
+                                        </Th>
+                                        <Th />
+                                    </Tr>
+                                </Thead>
+                                <Tbody>
+                                    {tasks
+                                        .filter(
+                                            (task: any) =>
+                                                task.date === date.getTime()
+                                        )
+                                        .sort(
+                                            (a: any, b: any) =>
+                                                b.difficulty +
+                                                b.importance -
+                                                (a.difficulty +
+                                                    a.importance)
+                                        )
+                                        .map((task, index) => (
+                                            <Tr key={index}>
+                                                <Td>{task.name}</Td>
+                                                <Td isNumeric>
+                                                    {task.difficulty}
+                                                </Td>
+                                                <Td isNumeric>
+                                                    {task.importance}
+                                                </Td>
+                                                <Td
+                                                    isNumeric
+                                                    fontWeight={"bold"}
+                                                >
+                                                    {task.difficulty +
+                                                        task.importance}
+                                                </Td>
+                                                <Td>
+                                                    <Checkbox
+                                                        onChange={() =>
+                                                            updateTaskCompletion(
+                                                                task
+                                                            )
+                                                        }
+                                                        isChecked={
+                                                            task.completed
+                                                        }
+                                                        colorScheme="yellow"
+                                                        size="lg"
+                                                        borderColor="blackAlpha.500"
+                                                    />
+                                                </Td>
+                                                <Td>
+                                                    <Button
+                                                        onClick={() =>
+                                                            deleteTask(
+                                                                task.id
+                                                            )
+                                                        }
+                                                        colorScheme="red"
+                                                        size="xs"
+                                                        variant="ghost"
+                                                        rounded="full"
+                                                    >
+                                                        x
+                                                    </Button>
+                                                </Td>
+                                            </Tr>
+                                        ))}
+                                </Tbody>
+                            </Table>
+                        </TableContainer>
+                    )}
+                </Stack>
+            </Stack>
 
-                        <Flex flexDir="column" w="100%">
-                            <Center>
-                                <Text>Importance&nbsp;</Text>
-                            </Center>
-
-                            <Slider
-                                mt="1rem"
-                                id='slider'
-                                defaultValue={5}
-                                min={1}
-                                max={10}
-                                colorScheme='yellow'
-                                onChange={(v) => setNewTaskImportance(v)}
-                                onMouseEnter={() => setShowImportanceTooltip(true)}
-                                onMouseLeave={() => setShowImportanceTooltip(false)}
-                            >
-                                <SliderTrack boxSize=".5rem" rounded="full">
-                                    <SliderFilledTrack />
-                                </SliderTrack>
-                                <Tooltip
-                                    hasArrow
-                                    bg='yellow.500'
-                                    color='white'
-                                    placement='top'
-                                    isOpen={showImportanceTooltip}
-                                    label={newTaskImportance}
-                                    rounded="lg"
-                                >
-                                    <SliderThumb boxSize={"1.5rem"} />
-                                </Tooltip>
-                            </Slider>
-                        </Flex>
-                    </HStack>
-
+            <HStack
+                position="fixed"
+                bottom={["5rem", "2rem"]}
+                right={["1rem", "2rem"]}
+            >
+                {isMobile ?
+                    <IconButton
+                        aria-label="help"
+                        icon={<FaPlus color="#333333" size="2.5rem" />}
+                        onClick={onOpen}
+                        h="4rem"
+                        w="4rem"
+                        rounded="full"
+                        colorScheme={"yellow"}
+                    /> :
                     <Button
-                        w="90vw"
-                        onClick={addTask}
+                        onClick={onOpen}
                         colorScheme="yellow"
+                        w={"12rem"}
+                        h="4rem"
                         rounded="full"
                     >
-                        Add task
-                    </Button>
-                </VStack>
+                        <Center fontSize="2xl">
+                            <Icon as={FaPlusCircle} mr=".5rem" />
+                            <Text>New Task</Text>
+                        </Center>
+                    </Button>}
+            </HStack>
 
-                <VStack spacing="1rem" pt="4rem">
-                    <Text
-                        fontSize="3xl"
-                        fontWeight={"bold"}
-                        letterSpacing="0.1rem"
-                        textAlign={"center"}
-                    >
-                        Daily Tasks
-                    </Text>
-                    <Box maxW="100vw">
-                        {tasks.filter((task: any) => task.date === date.getTime())
-                            .length < 1 ? (
-                            <Text>No tasks for today yet!</Text>
-                        ) : (
-                            <TableContainer mb="4rem">
-                                <Table variant="striped" colorScheme="blackAlpha">
-                                    <Thead>
-                                        <Tr>
-                                            <Th>Task</Th>
-                                            <Th isNumeric fontWeight={"bold"}>
-                                                Score
-                                            </Th>
-                                            <Th isNumeric fontWeight={"bold"}>
-                                                Done
-                                            </Th>
-                                            <Th />
-                                        </Tr>
-                                    </Thead>
-                                    <Tbody>
-                                        {tasks
-                                            .filter(
-                                                (task: any) =>
-                                                    task.date === date.getTime()
-                                            )
-                                            .sort(
-                                                (a: any, b: any) =>
-                                                    b.difficulty +
-                                                    b.importance -
-                                                    (a.difficulty + a.importance)
-                                            )
-                                            .map((task, index) => (
-                                                <Tr key={index}>
-                                                    <Td>{task.name}</Td>
-                                                    <Td
-                                                        isNumeric
-                                                        fontWeight={"bold"}
-                                                    >
-                                                        {task.difficulty +
-                                                            task.importance}
-                                                    </Td>
-                                                    <Td>
-                                                        <Checkbox
-                                                            onChange={() =>
-                                                                updateTaskCompletion(
-                                                                    task
-                                                                )
-                                                            }
-                                                            isChecked={
-                                                                task.completed
-                                                            }
-                                                            colorScheme="yellow"
-                                                            size="lg"
-                                                        />
-                                                    </Td>
-                                                    <Td>
-                                                        <Button
-                                                            onClick={() =>
-                                                                deleteTask(task.id)
-                                                            }
-                                                            colorScheme="red"
-                                                            size="xs"
-                                                            variant="ghost"
-                                                            rounded="full"
-                                                        >
-                                                            x
-                                                        </Button>
-                                                    </Td>
-                                                </Tr>
-                                            ))}
-                                    </Tbody>
-                                </Table>
-                            </TableContainer>
-                        )}
-                    </Box>
-                </VStack>
-            </Center>
-        );
-    }
+            <CreateTaskModal
+                profileId={profileId}
+                tasks={tasks}
+                setTasks={setTasks}
+                date={date}
+                isOpen={isOpen}
+                onClose={onClose}
+            />
 
-    return isMobile ? Mobile() : Desktop();
+            <DailyTasksHelpModal isOpen={helpIsOpen} onClose={helpOnClose} />
+        </Center >
+    );
 }
