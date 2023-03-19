@@ -46,13 +46,14 @@ export async function getServerSideProps(context: any) {
     };
 }
 
-export default function HabitTrackerPage({ profileId, telegram }: any) {
+export default function HabitTrackerPage({ profileId, initialTelegram }: any) {
     const isMobile = useMediaQuery("(max-width: 768px)")[0];
     const supabase = useSupabaseClient();
     const toast = useToast();
 
     const { isOpen: helpIsOpen, onOpen: helpOnOpen, onClose: helpOnClose } = useDisclosure();
 
+    const [telegram, setTelegram] = useState(initialTelegram);
     const [username, setUsername] = useState(telegram);
     const [invalidUsername, setInvalidUsername] = useState(false);
 
@@ -104,8 +105,39 @@ export default function HabitTrackerPage({ profileId, telegram }: any) {
         await fetch("/api/tg-sendMessage");
     }
 
+    async function handleTelegramLogin(authRes: any) {
+        const res = await supabase
+            .from("profiles")
+            .upsert({ id: profileId, telegram: authRes.id })
+            .eq("id", profileId);
+
+        if (res.status !== 201) {
+            toast({
+                title: 'Failed to link Telegram',
+                description: "Seems like something went wrong, please try again.",
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+                position: isMobile ? "top" : "bottom"
+            })
+            console.error(res.error?.message);
+            return;
+        }
+
+        toast({
+            title: 'Telegram linked',
+            description: "We've linked your account with Telegram, Sensei awaits you.",
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+            position: isMobile ? "top" : "bottom",
+        })
+
+        setTelegram(authRes.id);
+    }
+
     return (
-        <Center>
+        <Center flexDir={"column"}>
             <Stack spacing="2rem">
                 <Center>
                     <Text
@@ -131,7 +163,7 @@ export default function HabitTrackerPage({ profileId, telegram }: any) {
                     </Text>
 
                     <Center mt=".5rem">
-                        <Input
+                        {/*<Input
                             value={username}
                             onChange={(e) =>
                                 setUsername(e.target.value)
@@ -151,7 +183,8 @@ export default function HabitTrackerPage({ profileId, telegram }: any) {
                             onClick={updateUsername}
                         >
                             Link account
-                        </Button>
+                        </Button>*/}
+                        <TelegramLoginButton dataOnauth={handleTelegramLogin} botName="MasterYourselfBot" />,
                     </Center>
                 </Box>
 
@@ -160,12 +193,11 @@ export default function HabitTrackerPage({ profileId, telegram }: any) {
                     colorScheme={"red"}
                     variant="solid"
                     onClick={sendTestMessage}
+                    isDisabled={!telegram}
                 >
                     Send test message
                 </Button>
             </Stack>
-
-            <TelegramLoginButton dataOnauth={(res: any) => console.log(res)} botName="MasterYourselfBot" />,
 
             <SenseiHelpModal isOpen={helpIsOpen} onClose={helpOnClose} />
         </Center>
