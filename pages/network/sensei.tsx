@@ -41,7 +41,7 @@ export async function getServerSideProps(context: any) {
     return {
         props: {
             profileId,
-            telegram: data[0].telegram,
+            initialTelegram: data[0].telegram,
         },
     };
 }
