@@ -6,6 +6,7 @@ import { FaPlus, FaPlusCircle, FaQuestionCircle } from "react-icons/fa";
 import CreateHabitModal from "../../components/Modals/CreateHabitModal";
 import HabitTrackerHelpModal from "../../components/Modals/HabitTrackerHelpModal";
 import SenseiHelpModal from "../../components/Modals/SenseiHelpModal";
+import TelegramLoginButton from 'react-telegram-login';
 
 export async function getServerSideProps(context: any) {
     const supabase = createServerSupabaseClient(context);
@@ -163,6 +164,8 @@ export default function HabitTrackerPage({ profileId, telegram }: any) {
                     Send test message
                 </Button>
             </Stack>
+
+            <TelegramLoginButton dataOnauth={(res: any) => console.log(res)} botName="MasterYourselfBot" />,
 
             <SenseiHelpModal isOpen={helpIsOpen} onClose={helpOnClose} />
         </Center>
