@@ -255,7 +255,7 @@ export default function PomodoroPage({ profileId, initialTimer, initialHistory }
 
             <Modal isOpen={startFocusIsOpen} onClose={startFocusOnClose}>
                 <ModalOverlay />
-                <ModalContent rounded={"3xl"}>
+                <ModalContent rounded={"3xl"} w={["90vw", "50vw"]}>
                     <ModalHeader>Focus on your work</ModalHeader>
                     <ModalCloseButton rounded="full" />
                     <ModalBody>
@@ -286,7 +286,7 @@ export default function PomodoroPage({ profileId, initialTimer, initialHistory }
 
             <Modal isOpen={startBreakIsOpen} onClose={startBreakOnClose}>
                 <ModalOverlay />
-                <ModalContent rounded={"3xl"}>
+                <ModalContent rounded={"3xl"} w={["90vw", "50vw"]}>
                     <ModalHeader>Take a break</ModalHeader>
                     <ModalCloseButton rounded="full" />
                     <ModalBody>
