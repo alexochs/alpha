@@ -177,7 +177,7 @@ export default function HabitTrackerPage({ profileId, initialTelegram }: any) {
                     />
                 </Center>
 
-                <Box>
+                {!telegram && <Box>
                     <Text fontSize="xl" fontWeight="bold">
                         Link your Telegram
                     </Text>
@@ -204,9 +204,10 @@ export default function HabitTrackerPage({ profileId, initialTelegram }: any) {
                         >
                             Link account
                         </Button>*/}
-                        <TelegramLoginButton dataOnauth={handleTelegramLogin} botName="MasterYourselfBot" />,
+
+                        <TelegramLoginButton dataOnauth={handleTelegramLogin} botName="MasterYourselfBot" />
                     </Center>
-                </Box>
+                </Box>}
 
                 <Button
                     rounded="full"
