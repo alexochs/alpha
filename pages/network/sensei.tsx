@@ -158,7 +158,7 @@ export default function HabitTrackerPage({ profileId, initialTelegram, initialSt
                         </Center>
                     </Box>
 
-                    <Stack mt="2rem">
+                    <Stack mt="3rem">
                         <Flex>
                             <Text fontSize="2xl" fontWeight="bold">
                                 2. Start the bot

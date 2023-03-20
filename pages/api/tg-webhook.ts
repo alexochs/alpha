@@ -1,5 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { createClient } from '@supabase/supabase-js';
+import { Configuration, OpenAIApi } from "openai";
+
+const configuration = new Configuration({
+    organization: "org-mtrBPfW5SKWxHXJ2HTpD49GD",
+    apiKey: "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",
+});
+const openai = new OpenAIApi(configuration);
 
 type Update = {
   update_id: number;
@@ -64,6 +71,20 @@ export default async function handler(
     } else {
 		const messageRes = await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Hello, " + update.message.chat.first_name + ". Please link your account first.");
     }
+  } else {
+	const response = await openai.createChatCompletion({
+		model: "gpt-4",
+		messages: [
+			{"role": "system", "content": "You are Sensei. The helpful AI assistant by Master Yourself. Master Yourself is a platform developed by Alex Ochs that helps people to improve there productivy, mental and physical health."},
+			{"role": "user", "content": update.message.text},
+		],
+	});
+
+	if (!response.data.choices[0].message?.content) {
+		const messageRes = await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Sorry, I was in deep meditation. Can you repeat that for me?");
+	} else {
+		const messageRes = await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + response.data.choices[0].message?.content);
+	}
   }
 
   res.json({ success: true })
