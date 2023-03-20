@@ -38,19 +38,17 @@ export async function getServerSideProps(context: any) {
 
     const { data: startedData, error: startedError } = await supabase
         .from("started-bot")
-        .select("started")
-        .eq("telegram", data[0].telegram);
+        .select("*")
+        .eq("telegram", data[0].telegram)
+        .single();
 
-    if (startedError) {
-        console.log(error);
-        return;
-    }
+    console.log(startedData);
 
     return {
         props: {
             profileId,
             initialTelegram: data[0].telegram,
-            initialStarted: startedData[0].started,
+            initialStarted: startedData ? startedData.started : false,
         },
     };
 }
