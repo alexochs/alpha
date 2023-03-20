@@ -73,7 +73,7 @@ export default async function handler(
     }
   } else {
 	const response = await openai.createChatCompletion({
-		model: "gpt-4",
+		model: "gpt-3.5-turbo",
 		messages: [
 			{"role": "system", "content": "You are Sensei. The helpful AI assistant by Master Yourself. Master Yourself is a platform developed by Alex Ochs that helps people to improve there productivy, mental and physical health."},
 			{"role": "user", "content": update.message.text},
