@@ -1,8 +1,8 @@
-import { Center, Checkbox, Flex, Heading, Text, SimpleGrid, Input, VStack, HStack, Stack, TableContainer, Table, Tbody, Tr, Td, Button, Thead, Th, Box, useDisclosure, Icon, IconButton, useMediaQuery, useToast } from "@chakra-ui/react";
+import { Center, Checkbox, Flex, Heading, Text, SimpleGrid, Input, VStack, HStack, Stack, TableContainer, Table, Tbody, Tr, Td, Button, Thead, Th, Box, useDisclosure, Icon, IconButton, useMediaQuery, useToast, Link } from "@chakra-ui/react";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useEffect, useState } from "react";
-import { FaPlus, FaPlusCircle, FaQuestionCircle } from "react-icons/fa";
+import { FaCheckCircle, FaPlus, FaPlusCircle, FaQuestionCircle, FaTimesCircle } from "react-icons/fa";
 import CreateHabitModal from "../../components/Modals/CreateHabitModal";
 import HabitTrackerHelpModal from "../../components/Modals/HabitTrackerHelpModal";
 import SenseiHelpModal from "../../components/Modals/SenseiHelpModal";
@@ -36,17 +36,26 @@ export async function getServerSideProps(context: any) {
         return;
     }
 
-    console.log(data);
+    const { data: startedData, error: startedError } = await supabase
+        .from("started-bot")
+        .select("started")
+        .eq("telegram", data[0].telegram);
+
+    if (startedError) {
+        console.log(error);
+        return;
+    }
 
     return {
         props: {
             profileId,
             initialTelegram: data[0].telegram,
+            initialStarted: startedData[0].started,
         },
     };
 }
 
-export default function HabitTrackerPage({ profileId, initialTelegram }: any) {
+export default function HabitTrackerPage({ profileId, initialTelegram, initialStarted }: any) {
     const isMobile = useMediaQuery("(max-width: 768px)")[0];
     const supabase = useSupabaseClient();
     const toast = useToast();
@@ -54,52 +63,7 @@ export default function HabitTrackerPage({ profileId, initialTelegram }: any) {
     const { isOpen: helpIsOpen, onOpen: helpOnOpen, onClose: helpOnClose } = useDisclosure();
 
     const [telegram, setTelegram] = useState(initialTelegram);
-    const [username, setUsername] = useState(telegram);
-    const [invalidUsername, setInvalidUsername] = useState(false);
-
-    async function updateUsername() {
-        if (username === "" || username[0] !== "@") {
-            setInvalidUsername(true);
-            toast({
-                title: 'Invalid username',
-                description: "Your username seems to be invalid, it should start with @.",
-                status: 'error',
-                duration: 5000,
-                isClosable: true,
-                position: isMobile ? "top" : "bottom",
-            })
-            return;
-        }
-
-        setInvalidUsername(false);
-
-        const res = await supabase
-            .from("profiles")
-            .upsert({ id: profileId, telegram: username })
-            .eq("id", profileId);
-
-        if (res.status !== 201) {
-            toast({
-                title: 'Failed to link Telegram',
-                description: "Seems like something went wrong, please try again.",
-                status: 'error',
-                duration: 5000,
-                isClosable: true,
-                position: isMobile ? "top" : "bottom"
-            })
-            console.error(res.error?.message);
-            return;
-        }
-
-        toast({
-            title: 'Telegram linked',
-            description: "We've linked your account with Telegram, Sensei awaits you.",
-            status: 'success',
-            duration: 5000,
-            isClosable: true,
-            position: isMobile ? "top" : "bottom",
-        })
-    }
+    const [started, setStarted] = useState(initialStarted);
 
     async function sendTestMessage() {
         await fetch("/api/tg-sendMessage", {
@@ -177,37 +141,47 @@ export default function HabitTrackerPage({ profileId, initialTelegram }: any) {
                     />
                 </Center>
 
-                {!telegram && <Box>
-                    <Text fontSize="xl" fontWeight="bold">
-                        Link your Telegram
-                    </Text>
+                <Stack>
+                    <Heading>Setup</Heading>
 
-                    <Center mt=".5rem">
-                        {/*<Input
-                            value={username}
-                            onChange={(e) =>
-                                setUsername(e.target.value)
-                            }
-                            isInvalid={invalidUsername}
-                            variant="outline"
-                            placeholder="@username"
-                            rounded="full"
-                            w="16rem"
-                        />
+                    <Box mt="1rem">
+                        <Flex>
+                            <Text fontSize="2xl" fontWeight="bold">
+                                1. Link your Telegram
+                            </Text>
 
-                        <Button
-                            ml="1rem"
-                            rounded="full"
-                            colorScheme={"red"}
-                            variant="outline"
-                            onClick={updateUsername}
-                        >
-                            Link account
-                        </Button>*/}
+                            <Center>
+                                <Icon as={telegram ? FaCheckCircle : FaTimesCircle} ml=".5rem" color={telegram ? "green.500" : "red.500"} boxSize="2rem" />
+                            </Center>
+                        </Flex>
 
-                        <TelegramLoginButton dataOnauth={handleTelegramLogin} botName="MasterYourselfBot" />
-                    </Center>
-                </Box>}
+                        <Center mt=".5rem">
+                            <TelegramLoginButton dataOnauth={handleTelegramLogin} botName="MasterYourselfBot" />
+                        </Center>
+                    </Box>
+
+                    <Stack mt="2rem">
+                        <Flex>
+                            <Text fontSize="2xl" fontWeight="bold">
+                                2. Start the bot
+                            </Text>
+
+                            <Center>
+                                <Icon as={started ? FaCheckCircle : FaTimesCircle} ml=".5rem" color={started ? "green.500" : "red.500"} boxSize="2rem" />
+                            </Center>
+                        </Flex>
+
+                        <Text fontSize="xl">
+                            Send <i>/start</i> to @MasterYourselfBot
+                        </Text>
+
+                        <Link href={telegram ? "https://t.me/MasterYourselfBot" : ""} target="_blank" style={{ textDecoration: "none" }}>
+                            <Button isDisabled={!telegram} w="100%" variant="solid" colorScheme="red" rounded="full">
+                                Open chat in Telegram
+                            </Button>
+                        </Link>
+                    </Stack>
+                </Stack>
 
                 <Button
                     rounded="full"
@@ -215,6 +189,7 @@ export default function HabitTrackerPage({ profileId, initialTelegram }: any) {
                     variant="solid"
                     onClick={sendTestMessage}
                     isDisabled={!telegram}
+                    mt="2rem"
                 >
                     Send test message
                 </Button>
