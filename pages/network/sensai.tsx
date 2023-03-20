@@ -97,7 +97,7 @@ export default function HabitTrackerPage({ profileId, initialTelegram, initialSt
 
         toast({
             title: 'Telegram linked',
-            description: "We've linked your account with Telegram, Sensei awaits you.",
+            description: "We've linked your account with Telegram, SensAI awaits you.",
             status: 'success',
             duration: 5000,
             isClosable: true,
@@ -128,7 +128,7 @@ export default function HabitTrackerPage({ profileId, initialTelegram, initialSt
                         letterSpacing="0.1rem"
                         textAlign={"center"}
                     >
-                        Sensei
+                        SensAI
                     </Text>
                     <IconButton
                         ml="1rem"

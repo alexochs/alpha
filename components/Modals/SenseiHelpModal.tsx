@@ -7,27 +7,27 @@ export default function SenseiHelpModal({ isOpen, onClose }: any) {
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent rounded="3xl" w={["90vw", "50vw"]}>
-                <ModalHeader>Sensei, your AI assistant</ModalHeader>
+                <ModalHeader>SensAI, your AI assistant</ModalHeader>
                 <ModalCloseButton rounded="full" />
 
                 <ModalBody>
                     <Text>
-                        Sensei is your AI assistant that helps you keep up-to-date with your daily goals.
+                        SensAI is your AI assistant that helps you keep up-to-date with your daily goals.
                     </Text>
 
                     <Text mt="1rem">
                         Link your Telegram account to receive your daily reminders and weekly summaries
-                        directly in your Telegram chat from Sensei.
+                        directly in your Telegram chat from SensAI.
                     </Text>
 
                     <Text mt="1rem">
-                        Chat with Sensei to update and to get help with your goals, or ask for advice on how to
+                        Chat with SensAI to update and to get help with your goals, or ask for advice on how to
                         improve your life.
                     </Text>
 
                     <Text mt="1rem">
-                        Sensei is still in beta, so please be patient with us as we work to improve
-                        Sensei&apos;s capabilities.
+                        SensAI is still in beta, so please be patient with us as we work to improve
+                        SensAI&apos;s capabilities.
                     </Text>
                 </ModalBody>
 

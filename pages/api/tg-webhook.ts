@@ -66,20 +66,20 @@ export default async function handler(
 	
 		if (error) {
 			console.log(error);
-			await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Seems like there was an error. Please send /start again.");
+			 fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Seems like there was an error. Please send /start again.");
 		} else {
-			await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Hello, " + update.message.chat.first_name + ". You have successfully linked your account.");
+			 fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Hello, " + update.message.chat.first_name + ". You have successfully linked your account.");
 		}
       } else {
-			await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Hello again, " + update.message.chat.first_name + ". You have already linked your account.");
+			 fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Hello again, " + update.message.chat.first_name + ". You have already linked your account.");
       }
     } else {
-		await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Hello, " + update.message.chat.first_name + ". Please link your account first.");
+		 fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Hello, " + update.message.chat.first_name + ". Please link your account first.");
     }
-  } /*else {
+  } else {
 	console.log("Received message for AI: " + update.message.text);
 
-	const response = await openai.createChatCompletion({
+	/*const response = await openai.createChatCompletion({
 		model: "gpt-3.5-turbo",
 		messages: [
 			{"role": "system", "content": "You are Sensei. The helpful AI assistant by Master Yourself. Master Yourself is a platform developed by Alex Ochs that helps people to improve there productivy, mental and physical health."},
@@ -94,8 +94,10 @@ export default async function handler(
 		fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Sorry, I was in deep meditation. Can you repeat that for me?");
 	} else {
 		fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + response.data.choices[0].message?.content);
-	}
-  }*/
+	}*/
+
+	// call api for ai
+  }
 
   res.json({ success: true })
 }

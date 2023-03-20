@@ -72,18 +72,18 @@ export default function NetworkComponentsList({ onClose }: any) {
 
             <Button
                 onClick={() => {
-                    window.location.href = "/network/sensei";
+                    window.location.href = "/network/sensai";
                     onClose();
                 }}
                 colorScheme="red"
                 variant={
-                    router.asPath.includes("/sensei") ? "solid" : "ghost"
+                    router.asPath.includes("/sensai") ? "solid" : "ghost"
                 }
                 size={["md", "lg"]}
                 rounded="full"
                 leftIcon={<Icon as={FaRobot} boxSize="1.5rem" />}
             >
-                <Text fontSize="xl">Sensei</Text>
+                <Text fontSize="xl">SensAI</Text>
             </Button>
         </Stack>
     );
