@@ -40,6 +40,8 @@ export default async function handler(
 	
   const update = req.body as Update;
 
+  console.log("Received update: " + JSON.stringify(update.message.text, null, 2));
+
   if (update.message.text === '/start') {
 	console.log("Received /start command");
 
@@ -64,17 +66,17 @@ export default async function handler(
 	
 		if (error) {
 			console.log(error);
-			const messageRes = await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Seems like there was an error. Please send /start again.");
+			await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Seems like there was an error. Please send /start again.");
 		} else {
-			const messageRes = await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Hello, " + update.message.chat.first_name + ". You have successfully linked your account.");
+			await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Hello, " + update.message.chat.first_name + ". You have successfully linked your account.");
 		}
       } else {
-			const messageRes = await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Hello again, " + update.message.chat.first_name + ". You have already linked your account.");
+			await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Hello again, " + update.message.chat.first_name + ". You have already linked your account.");
       }
     } else {
-		const messageRes = await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Hello, " + update.message.chat.first_name + ". Please link your account first.");
+		await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Hello, " + update.message.chat.first_name + ". Please link your account first.");
     }
-  } else {
+  } /*else {
 	console.log("Received message for AI: " + update.message.text);
 
 	const response = await openai.createChatCompletion({
@@ -93,7 +95,7 @@ export default async function handler(
 	} else {
 		fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + response.data.choices[0].message?.content);
 	}
-  }
+  }*/
 
   res.json({ success: true })
 }
