@@ -79,6 +79,7 @@ export default async function handler(
 			{"role": "system", "content": "You are Sensei. The helpful AI assistant by Master Yourself. Master Yourself is a platform developed by Alex Ochs that helps people to improve there productivy, mental and physical health."},
 			{"role": "user", "content": update.message.text},
 		],
+		user: update.message.chat.id.toString(),
 	});
 
 	if (!response.data.choices[0].message?.content) {
