@@ -2,14 +2,6 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { createClient } from '@supabase/supabase-js';
 import { Configuration, OpenAIApi } from "openai";
 
-const configuration = new Configuration({
-    organization: "org-mtrBPfW5SKWxHXJ2HTpD49GD",
-    apiKey: "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",
-});
-const openai = new OpenAIApi(configuration);
-
-const supabase = createClient('https://mdopedudnlhzrldtwitv.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1kb3BlZHVkbmxoenJsZHR3aXR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzA3ODY2NjcsImV4cCI6MTk4NjM2MjY2N30.eFUHbA23jNK42RGhpKCIJ89oRnoRPS-BilMV5MSxFYU');
-
 type Update = {
   update_id: number;
   message: {
@@ -38,9 +30,19 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+	const configuration = new Configuration({
+		organization: "org-mtrBPfW5SKWxHXJ2HTpD49GD",
+		apiKey: "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",
+	});
+	const openai = new OpenAIApi(configuration);
+	
+	const supabase = createClient('https://mdopedudnlhzrldtwitv.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1kb3BlZHVkbmxoenJsZHR3aXR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzA3ODY2NjcsImV4cCI6MTk4NjM2MjY2N30.eFUHbA23jNK42RGhpKCIJ89oRnoRPS-BilMV5MSxFYU');
+	
   const update = req.body as Update;
 
   if (update.message.text === '/start') {
+	console.log("Received /start command");
+
     const  { data: linkedData, error: linkedError } = await supabase
       .from('profiles')
       .select('*')
@@ -73,6 +75,8 @@ export default async function handler(
 		const messageRes = await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Hello, " + update.message.chat.first_name + ". Please link your account first.");
     }
   } else {
+	console.log("Received message for AI: " + update.message.text);
+
 	const response = await openai.createChatCompletion({
 		model: "gpt-3.5-turbo",
 		messages: [
@@ -81,6 +85,8 @@ export default async function handler(
 		],
 		user: update.message.chat.id.toString(),
 	});
+
+	console.log("AI response received");
 
 	if (!response.data.choices[0].message?.content) {
 		fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Sorry, I was in deep meditation. Can you repeat that for me?");
