@@ -8,6 +8,8 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
+const supabase = createClient('https://mdopedudnlhzrldtwitv.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1kb3BlZHVkbmxoenJsZHR3aXR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzA3ODY2NjcsImV4cCI6MTk4NjM2MjY2N30.eFUHbA23jNK42RGhpKCIJ89oRnoRPS-BilMV5MSxFYU');
+
 type Update = {
   update_id: number;
   message: {
@@ -36,7 +38,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const supabase = createClient('https://mdopedudnlhzrldtwitv.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1kb3BlZHVkbmxoenJsZHR3aXR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzA3ODY2NjcsImV4cCI6MTk4NjM2MjY2N30.eFUHbA23jNK42RGhpKCIJ89oRnoRPS-BilMV5MSxFYU');
   const update = req.body as Update;
 
   if (update.message.text === '/start') {
@@ -81,9 +82,9 @@ export default async function handler(
 	});
 
 	if (!response.data.choices[0].message?.content) {
-		const messageRes = await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Sorry, I was in deep meditation. Can you repeat that for me?");
+		fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Sorry, I was in deep meditation. Can you repeat that for me?");
 	} else {
-		const messageRes = await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + response.data.choices[0].message?.content);
+		fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + response.data.choices[0].message?.content);
 	}
   }
 
