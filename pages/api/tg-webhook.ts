@@ -101,16 +101,18 @@ export default async function handler(
         return;
     }
 
-    const tasks = data.map((task: any) => {
-        return {
-            id: task.id,
-            date: task.date,
-            name: task.name,
-            difficulty: task.difficulty,
-            importance: task.importance,
-            completed: task.completed,
-        };
-    });
+    const tasks = data
+      .map((task: any) => {
+          return {
+              id: task.id,
+              date: task.date,
+              name: task.name,
+              difficulty: task.difficulty,
+              importance: task.importance,
+              completed: task.completed,
+          };
+      })
+      .filter((task: any) => new Date(task.date).getTime() == new Date(new Date().setHours(0, 0, 0, 0)).getTime());
 
     console.log("Tasks: " + JSON.stringify(tasks, null, 2));
     
