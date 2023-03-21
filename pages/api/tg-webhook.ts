@@ -40,7 +40,7 @@ export default async function handler(
 	
   const update = req.body as Update;
 
-  console.log("Received update: " + JSON.stringify(update.message.text, null, 2));
+  console.log("Received update: " + JSON.stringify(update, null, 2));
 
   if (update.message.text === '/start') {
 	console.log("Received /start command");
