@@ -76,9 +76,8 @@ export default async function handler(
     } else {
 		 fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Hello, " + update.message.chat.first_name + ". Please link your account first.");
     }
-  } else {
-    console.log("ELSE");
-	//console.log("Received message for AI: " + update);
+  } else if(update && update.message && update.message.text) {
+	  console.log("Received message for AI: " + update.message.text);
 
 	/*const response = await openai.createChatCompletion({
 		model: "gpt-3.5-turbo",
@@ -97,7 +96,27 @@ export default async function handler(
 		fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + response.data.choices[0].message?.content);
 	}*/
 
-	// call api for ai
+    // call api for ai
+    const response = await openai.createCompletion({
+      model: "text-davinci-003",
+      prompt: update.message.text,
+      temperature: 0.5,
+      max_tokens: 256,
+    });
+
+    const text = response.data.choices[0].text || "undefined";
+    if (text === "undefined") {
+      res.status(400).json({
+        message: "Error creating completion!",
+        error: true
+      });
+      fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Sorry, I was in deep meditation. Can you repeat that for me?");
+      return;
+    }
+
+    fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + text);
+  } else {
+    console.log("Received error message!");
   }
 
   res.json({ success: true })
