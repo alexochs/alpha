@@ -66,15 +66,15 @@ export default async function handler(
 	
 		if (error) {
 			console.log(error);
-			 fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Seems like there was an error. Please send /start again.");
+			 await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Seems like there was an error. Please send /start again.");
 		} else {
-			 fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Hello, " + update.message.chat.first_name + ". You have successfully linked your account.");
+      await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Hello, " + update.message.chat.first_name + ". You have successfully linked your account.");
 		}
       } else {
-			 fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Hello again, " + update.message.chat.first_name + ". You have already linked your account.");
+        await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Hello again, " + update.message.chat.first_name + ". You have already linked your account.");
       }
     } else {
-		 fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Hello, " + update.message.chat.first_name + ". Please link your account first.");
+      await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Hello, " + update.message.chat.first_name + ". Please link your account first.");
     }
   } else if(update && update.message && update.message.text) {
 	  console.log("Received message for AI: " + update.message.text);
