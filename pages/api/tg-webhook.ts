@@ -90,10 +90,29 @@ export default async function handler(
     console.log("Telegram ID: " + update.message.chat.id);
     console.log("Profile ID: " + profileId);
 
-    const  { data: tasks, error: tasksError } = await supabase
-      .from('mastery-checklist')
-      .select('*')
-      .eq('profile_id', profileId);
+
+      const { data, error } = await supabase
+        .from("mastery-checklist")
+        .select("*")
+        .eq("profile_id", profileId);
+
+    if (error) {
+        console.log(error);
+        return;
+    }
+
+    const tasks = data.map((task: any) => {
+        return {
+            id: task.id,
+            date: task.date,
+            name: task.name,
+            difficulty: task.difficulty,
+            importance: task.importance,
+            completed: task.completed,
+        };
+    });
+
+    console.log("Tasks: " + JSON.stringify(tasks, null, 2));
     
     await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + JSON.stringify(tasks, null, 2));
 
