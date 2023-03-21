@@ -111,10 +111,11 @@ export default async function handler(
               importance: task.importance,
               completed: task.completed,
           };
-      })
-      .filter((task: any) => new Date(task.date).getTime() == new Date(new Date().setHours(0, 0, 0, 0)).getTime());
+      });
+    
+    const filteredTasks = tasks.filter((task: any) => new Date(task.date).getTime() == new Date(new Date().setHours(0, 0, 0, 0)).getTime());
 
-    console.log("Tasks: " + JSON.stringify(tasks, null, 2));
+    console.log("Filtered Tasks: " + JSON.stringify(filteredTasks, null, 2));
     
     const text = tasks.map((task: any) => {
         return task.name + " - " + (task.completed ? "✅" : "❌");
