@@ -42,7 +42,7 @@ export default async function handler(
 
   console.log("Received update: " + JSON.stringify(update, null, 2));
 
-  if (update.message.text === '/start') {
+  if (update && update.message && update.message.text === '/start') {
 	console.log("Received /start command");
 
     const  { data: linkedData, error: linkedError } = await supabase
@@ -77,7 +77,8 @@ export default async function handler(
 		 fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Hello, " + update.message.chat.first_name + ". Please link your account first.");
     }
   } else {
-	console.log("Received message for AI: " + update);
+    console.log("ELSE");
+	//console.log("Received message for AI: " + update);
 
 	/*const response = await openai.createChatCompletion({
 		model: "gpt-3.5-turbo",
