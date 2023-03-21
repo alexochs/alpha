@@ -43,7 +43,7 @@ export default async function handler(
   console.log("Received update: " + JSON.stringify(update, null, 2));
 
   if (update && update.message && update.message.text === '/start') {
-	console.log("Received /start command");
+	  console.log("Received /start command");
 
     const  { data: linkedData, error: linkedError } = await supabase
       .from('profiles')
@@ -76,6 +76,22 @@ export default async function handler(
     } else {
       await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Hello, " + update.message.chat.first_name + ". Please link your account first.");
     }
+  } else if (update && update.message && update.message.text === '/tasks') {
+    console.log("Received /tasks command");
+
+    const  { data: profileId, error: profileIdError } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('telegram', update.message.chat.id)
+      .single();
+
+    const  { data: tasks, error: tasksError } = await supabase
+      .from('mastery-checklist')
+      .select('*')
+      .eq('profile_id', profileId);
+    
+    console.log(tasks);
+
   } else if(update && update.message && update.message.text) {
 	  console.log("Received message for AI: " + update.message.text);
 
