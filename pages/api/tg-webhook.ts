@@ -79,21 +79,23 @@ export default async function handler(
   } else if (update && update.message && update.message.text === '/tasks') {
     console.log("Received /tasks command");
 
-    const  { data: profileId, error: profileIdError } = await supabase
+    const  { data: profileIdData, error: profileIdError } = await supabase
       .from('profiles')
       .select('id')
       .eq('telegram', update.message.chat.id)
       .single();
 
+    const profileId = profileIdData?.id;
+
     console.log("Telegram ID: " + update.message.chat.id);
-    console.log("Profile ID: " + JSON.stringify(profileId));
+    console.log("Profile ID: " + profileId);
 
     const  { data: tasks, error: tasksError } = await supabase
       .from('mastery-checklist')
       .select('*')
       .eq('profile_id', profileId);
     
-    console.log(tasks);
+    await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + JSON.stringify(tasks, null, 2));
 
   } else if(update && update.message && update.message.text) {
 	  console.log("Received message for AI: " + update.message.text);
