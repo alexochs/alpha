@@ -97,7 +97,7 @@ export default async function handler(
 	}*/
 
     // call api for ai
-    const response = await openai.createCompletion({
+    /*const response = await openai.createCompletion({
       model: "text-ada-001",
       prompt: update.message.text,
       temperature: 0.5,
@@ -116,7 +116,8 @@ export default async function handler(
       return;
     }
 
-    await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + text);
+    await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + text);*/
+    //console.log("")
   } else {
     console.log("Received error message!");
   }
