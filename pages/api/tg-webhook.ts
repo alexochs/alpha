@@ -77,7 +77,7 @@ export default async function handler(
 		 fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Hello, " + update.message.chat.first_name + ". Please link your account first.");
     }
   } else {
-	console.log("Received message for AI: " + update.message.text);
+	console.log("Received message for AI: " + update);
 
 	/*const response = await openai.createChatCompletion({
 		model: "gpt-3.5-turbo",

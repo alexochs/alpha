@@ -1,4 +1,4 @@
-import { Button, Center, Heading, Text, VStack } from "@chakra-ui/react";
+import { Button, Center, Heading, Link, Text, VStack } from "@chakra-ui/react";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
@@ -31,8 +31,10 @@ export default function FAQPage({ }: any) {
 
     return (
         <Center w="100vw" h="80vh" flexDir={"column"}>
-            <Heading textAlign={"center"}>Frequently Asked Questions</Heading>
-            <Text pt="1rem">Coming soon...</Text>
+            <Heading textAlign={"center"} fontSize="6xl">Contact</Heading>
+            <Link href="mailto:mail@alexochs.de" target="_blank">
+                <Text pt="1rem" fontSize="2xl">mail@alexochs.de</Text>
+            </Link>
         </Center>
     );
 }
