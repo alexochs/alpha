@@ -91,10 +91,10 @@ export default async function handler(
     console.log("Profile ID: " + profileId);
 
 
-      const { data, error } = await supabase
-        .from("mastery-checklist")
-        .select("*")
-        .eq("profile_id", profileId);
+    const { data, error } = await supabase
+      .from("mastery-checklist")
+      .select("*")
+      .eq("profile_id", profileId);
 
     if (error) {
         console.log(error);
@@ -114,7 +114,11 @@ export default async function handler(
 
     console.log("Tasks: " + JSON.stringify(tasks, null, 2));
     
-    await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + JSON.stringify(tasks, null, 2));
+    const text = tasks.map((task: any) => {
+        return task.name + " - " + (task.completed ? "✅" : "❌");
+    }).join("\n");
+
+    await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + text);
 
   } else if(update && update.message && update.message.text) {
 	  console.log("Received message for AI: " + update.message.text);
