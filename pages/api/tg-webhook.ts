@@ -98,7 +98,7 @@ export default async function handler(
 
     // call api for ai
     const response = await openai.createCompletion({
-      model: "text-davinci-003",
+      model: "text-ada-001",
       prompt: update.message.text,
       temperature: 0.5,
       max_tokens: 256,
