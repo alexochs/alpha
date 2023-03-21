@@ -86,7 +86,7 @@ export default async function handler(
       .single();
 
     console.log("Telegram ID: " + update.message.chat.id);
-    console.log("Profile ID: " + profileId);
+    console.log("Profile ID: " + JSON.stringify(profileId));
 
     const  { data: tasks, error: tasksError } = await supabase
       .from('mastery-checklist')
