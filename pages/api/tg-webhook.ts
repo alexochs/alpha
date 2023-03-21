@@ -116,7 +116,7 @@ export default async function handler(
     const filteredTasks = tasks.filter((task: any) => task.date === new Date().getTime());
 
     console.log("Today: " + new Date().getTime());
-    console.log("Tasks: " + JSON.stringify(tasks, null, 2));
+    //console.log("Tasks: " + JSON.stringify(tasks, null, 2));
     console.log("Filtered Tasks: " + JSON.stringify(filteredTasks, null, 2));
     
     const text = tasks.map((task: any) => {
