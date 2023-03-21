@@ -105,16 +105,18 @@ export default async function handler(
     });
 
     const text = response.data.choices[0].text || "undefined";
+    console.log("AI response received: " + text);
+
     if (text === "undefined") {
       res.status(400).json({
         message: "Error creating completion!",
         error: true
       });
-      fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Sorry, I was in deep meditation. Can you repeat that for me?");
+      await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "Sorry, I was in deep meditation. Can you repeat that for me?");
       return;
     }
 
-    fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + text);
+    await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + text);
   } else {
     console.log("Received error message!");
   }
