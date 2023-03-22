@@ -150,6 +150,8 @@ export default async function handler(
     }
 
     const habits = data;
+    console.log("Habits: " + JSON.stringify(habits, null, 2));
+
     const todaysHabits = habits.filter((habit: any) =>
       habit.days.includes(
           new Date()
@@ -160,9 +162,11 @@ export default async function handler(
               .toLowerCase()
       ));
     
+    console.log("Todays Habits: " + JSON.stringify(todaysHabits, null, 2));
+    
     const text = todaysHabits.map((habit: any) => {
-        return habit.name + " - " + (habit.completed ? "✅%0A" : "❌%0A");
-    }).join("\n");
+        return habit.name + " - " + (habit.completed ? "✅" : "❌");
+    }).join("0A");
 
     await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + text);
 
