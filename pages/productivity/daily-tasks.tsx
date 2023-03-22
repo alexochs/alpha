@@ -186,7 +186,7 @@ export default function DailyTasksPage({ profileId, initialTasks }: any) {
                     </Center>
 
                     {tasks.filter(
-                        (task: any) => task.date === date.getTime()
+                        (task: any) => task.date === date.getTime() - 1000 * 60 * date.getTimezoneOffset()
                     ).length < 1 ? (
                         <Text fontSize="xl" textAlign={"center"}>
                             No tasks for today yet!
@@ -216,7 +216,7 @@ export default function DailyTasksPage({ profileId, initialTasks }: any) {
                                     {tasks
                                         .filter(
                                             (task: any) =>
-                                                task.date === date.getTime()
+                                                task.date === date.getTime() - 1000 * 60 * date.getTimezoneOffset()
                                         )
                                         .sort(
                                             (a: any, b: any) =>

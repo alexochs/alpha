@@ -113,13 +113,13 @@ export default async function handler(
           };
       });
     
-    const filteredTasks = tasks.filter((task: any) => task.date === new Date().setHours(0, 0, 0, 0));
+    const filteredTasks = tasks.filter((task: any) => task.date === new Date().setHours(0,0,0,0) - 1000 * 60 * new Date().getTimezoneOffset());
 
-    console.log("Today: " + new Date().setHours(0, 0, 0, 0));
+    console.log("Today: " + (new Date().setHours(0,0,0,0) - 1000 * 60 * new Date().getTimezoneOffset()));
     //console.log("Tasks: " + JSON.stringify(tasks, null, 2));
     console.log("Filtered Tasks: " + JSON.stringify(filteredTasks, null, 2));
     
-    const text = tasks.map((task: any) => {
+    const text = filteredTasks.map((task: any) => {
         return task.name + " - " + (task.completed ? "✅" : "❌");
     }).join("\n");
 
