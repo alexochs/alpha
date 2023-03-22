@@ -120,8 +120,8 @@ export default async function handler(
     console.log("Filtered Tasks: " + JSON.stringify(filteredTasks, null, 2));
     
     const text = filteredTasks.map((task: any) => {
-        return task.name + " - " + (task.completed ? "✅%0A" : "❌%0A");
-    }).join("\n");
+        return task.name + " - " + (task.completed ? "✅" : "❌");
+    }).join("%0A");
 
     await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + text);
 
@@ -166,7 +166,7 @@ export default async function handler(
     
     const text = todaysHabits.map((habit: any) => {
         return habit.name + " - " + (habit.completed ? "✅" : "❌");
-    }).join("0A");
+    }).join("%0A");
 
     await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + text);
 
