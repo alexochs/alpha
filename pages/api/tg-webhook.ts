@@ -120,7 +120,7 @@ export default async function handler(
     console.log("Filtered Tasks: " + JSON.stringify(filteredTasks, null, 2));
     
     const text = filteredTasks.map((task: any) => {
-        return task.name + " - " + (task.completed ? "✅" : "❌");
+        return task.name + " - " + (task.completed ? "✅%0A" : "❌%0A");
     }).join("\n");
 
     await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + text);
