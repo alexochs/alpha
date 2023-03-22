@@ -165,7 +165,13 @@ export default async function handler(
     console.log("Todays Habits: " + JSON.stringify(todaysHabits, null, 2));
     
     const text = todaysHabits.map((habit: any) => {
-        return habit.name + " - " + (habit.completed ? "✅" : "❌");
+        return habit.name + " - " + (habit.completed.includes(
+          new Date()
+              .toISOString()
+              .split(
+                  "T"
+              )[0]
+      ) ? "✅" : "❌");
     }).join("%0A");
 
     await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + text);
