@@ -125,6 +125,47 @@ export default async function handler(
 
     await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + text);
 
+  } else if (update && update.message && update.message.text === '/habits') {
+    console.log("Received /habits command");
+
+    const  { data: profileIdData, error: profileIdError } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('telegram', update.message.chat.id)
+      .single();
+
+    const profileId = profileIdData?.id;
+
+    console.log("Telegram ID: " + update.message.chat.id);
+    console.log("Profile ID: " + profileId);
+
+    const { data, error } = await supabase
+      .from("habit-tracker")
+      .select("*")
+      .eq("profile_id", profileId);
+
+    if (error) {
+        console.log(error);
+        return;
+    }
+
+    const habits = data;
+    const todaysHabits = habits.filter((habit: any) =>
+      habit.days.includes(
+          new Date()
+              .toLocaleDateString(
+                  "en-US",
+                  { weekday: "long" }
+              )
+              .toLowerCase()
+      ));
+    
+    const text = todaysHabits.map((habit: any) => {
+        return habit.name + " - " + (habit.completed ? "✅%0A" : "❌%0A");
+    }).join("\n");
+
+    await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + text);
+
   } else if(update && update.message && update.message.text) {
 	  console.log("Received message for AI: " + update.message.text);
 
