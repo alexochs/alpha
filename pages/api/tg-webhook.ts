@@ -164,6 +164,12 @@ export default async function handler(
     
     console.log("Todays Habits: " + JSON.stringify(todaysHabits, null, 2));
     
+    console.log("Date string: " + new Date()
+              .toISOString()
+              .split(
+                  "T"
+              )[0]);
+
     const text = todaysHabits.map((habit: any) => {
         return habit.name + " - " + (habit.completed.includes(
           new Date()
