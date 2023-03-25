@@ -73,7 +73,8 @@ export default function HabitTrackerPage({ profileId, initialHabits }: any) {
 
     async function toggleHabitCompletion(habit: any) {
         const _date = date.toISOString().split("T")[0];
-        if (habit.completed.includes(date.toISOString().split("T")[0])) {
+        console.log(date);
+        if (habit.completed.includes(_date)) {
             for (let i = 0; i < habit.completed.length; i++) {
                 if (habit.completed[i] === _date) {
                     habit.completed.splice(i, 1);

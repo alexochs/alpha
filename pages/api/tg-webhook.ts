@@ -119,9 +119,9 @@ export default async function handler(
     //console.log("Tasks: " + JSON.stringify(tasks, null, 2));
     console.log("Filtered Tasks: " + JSON.stringify(filteredTasks, null, 2));
     
-    const text = filteredTasks.map((task: any) => {
+    const text = filteredTasks.length > 0 ?  filteredTasks.map((task: any) => {
         return task.name + " - " + (task.completed ? "✅" : "❌");
-    }).join("%0A");
+    }).join("%0A") : "No tasks for today 🥸";
 
     await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + text);
 
@@ -170,7 +170,7 @@ export default async function handler(
                   "T"
               )[0]);
 
-    const text = todaysHabits.map((habit: any) => {
+    const text = todaysHabits.length > 0 ?  todaysHabits.map((habit: any) => {
         return habit.name + " - " + (habit.completed.includes(
           new Date()
               .toISOString()
@@ -178,7 +178,7 @@ export default async function handler(
                   "T"
               )[0]
       ) ? "✅" : "❌");
-    }).join("%0A");
+    }).join("%0A") : "No habits for today 🥸";
 
     await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + text);
 
@@ -203,7 +203,7 @@ export default async function handler(
 	}*/
 
     // call api for ai
-    /*const response = await openai.createCompletion({
+    const response = await openai.createCompletion({
       model: "text-ada-001",
       prompt: update.message.text,
       temperature: 0.5,
@@ -222,7 +222,7 @@ export default async function handler(
       return;
     }
 
-    await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + text);*/
+    await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + text);
     //console.log("")
   } else {
     console.log("Received error message!");
