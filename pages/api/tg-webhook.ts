@@ -182,6 +182,9 @@ export default async function handler(
 
     await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + text);
 
+  } else if (update && update.message && update.message.text === '/app') {
+    console.log("Received /app command");
+    await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + "https://masteryourself.app");
   } else if(update && update.message && update.message.text) {
 	  console.log("Received message for AI: " + update.message.text);
 
@@ -204,7 +207,7 @@ export default async function handler(
 
     // call api for ai
     const response = await openai.createCompletion({
-      model: "text-ada-001",
+      model: "text-curie-001",
       prompt: update.message.text,
       temperature: 0.5,
       max_tokens: 256,
