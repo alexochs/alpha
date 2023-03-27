@@ -39,7 +39,8 @@ export default function Layout({ children, pageProps }: any) {
                     <Center aria-label="help"
                         w={["3rem", "4rem"]}
                         h={["3rem", "4rem"]}
-                        bg="blackAlpha.50"
+                        bg="gray.200"
+                        _hover={{ bg: "gray.300" }}
                         rounded="full"
                         position="fixed"
                         bottom={["5rem", "2rem"]}
