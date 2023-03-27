@@ -228,7 +228,7 @@ export default function HabitTrackerPage({ profileId, initialHabits }: any) {
                 {isMobile ?
                     <IconButton
                         aria-label="help"
-                        icon={<FaPlus color="#333333" size="2.5rem" />}
+                        icon={<FaPlus color="#555555" size="2.5rem" />}
                         onClick={onOpen}
                         h="4rem"
                         w="4rem"
