@@ -153,12 +153,12 @@ export default function HabitTrackerPage({ profileId, initialTelegram, initialSt
                             </Center>
                         </Flex>
 
-                        <Center mt=".5rem">
+                        {!telegram && <Center mt=".5rem">
                             <TelegramLoginButton dataOnauth={handleTelegramLogin} botName="MasterYourselfBot" />
-                        </Center>
+                        </Center>}
                     </Box>
 
-                    <Stack>
+                    <Stack spacing="1rem">
                         <Flex>
                             <Text fontSize="2xl" fontWeight="bold">
                                 2. Start the bot
@@ -169,20 +169,22 @@ export default function HabitTrackerPage({ profileId, initialTelegram, initialSt
                             </Center>
                         </Flex>
 
-                        <Text fontSize="xl">
-                            Send <i>/start</i> to @MasterYourselfBot
-                        </Text>
-
-                        <Link href={telegram ? "https://t.me/MasterYourselfBot" : ""} target="_blank" style={{ textDecoration: "none" }}>
-                            <Button size="lg" isDisabled={!telegram} w="100%" variant="solid" colorScheme="yellow" rounded="full">
-                                Open chat in Telegram
-                            </Button>
-                        </Link>
+                        {!started &&
+                            <Text fontSize="xl">
+                                Send <i>/start</i> to @MasterYourselfBot
+                            </Text>}
                     </Stack>
+
+
+                    <Link href={telegram ? "https://t.me/MasterYourselfBot" : ""} target="_blank" style={{ textDecoration: "none" }}>
+                        <Button size="lg" isDisabled={!telegram} w="100%" variant="solid" colorScheme="yellow" rounded="full">
+                            Open chat in Telegram
+                        </Button>
+                    </Link>
                 </Stack>
             </Stack>
 
             <SenseiHelpModal isOpen={helpIsOpen} onClose={helpOnClose} />
-        </Center>
+        </Center >
     );
 }
