@@ -17,7 +17,7 @@ export async function getServerSideProps(context: any) {
 
     if (!session) {
         return {
-            redirect: {
+            yellowirect: {
                 destination: "/sign-in",
                 permanent: false,
             },
@@ -139,17 +139,17 @@ export default function HabitTrackerPage({ profileId, initialTelegram, initialSt
                     />
                 </Center>
 
-                <Stack>
+                <Stack spacing="2rem">
                     <Heading>Setup</Heading>
 
-                    <Box mt="1rem">
+                    <Box>
                         <Flex>
                             <Text fontSize="2xl" fontWeight="bold">
                                 1. Link your Telegram
                             </Text>
 
                             <Center>
-                                <Icon as={telegram ? FaCheckCircle : FaTimesCircle} ml=".5rem" color={telegram ? "green.500" : "red.500"} boxSize="2rem" />
+                                <Icon as={telegram ? FaCheckCircle : FaTimesCircle} ml=".5rem" color={telegram ? "green.500" : "yellow.500"} boxSize="2rem" />
                             </Center>
                         </Flex>
 
@@ -158,14 +158,14 @@ export default function HabitTrackerPage({ profileId, initialTelegram, initialSt
                         </Center>
                     </Box>
 
-                    <Stack mt="3rem">
+                    <Stack>
                         <Flex>
                             <Text fontSize="2xl" fontWeight="bold">
                                 2. Start the bot
                             </Text>
 
                             <Center>
-                                <Icon as={started ? FaCheckCircle : FaTimesCircle} ml=".5rem" color={started ? "green.500" : "red.500"} boxSize="2rem" />
+                                <Icon as={started ? FaCheckCircle : FaTimesCircle} ml=".5rem" color={started ? "green.500" : "yellow.500"} boxSize="2rem" />
                             </Center>
                         </Flex>
 
@@ -174,23 +174,12 @@ export default function HabitTrackerPage({ profileId, initialTelegram, initialSt
                         </Text>
 
                         <Link href={telegram ? "https://t.me/MasterYourselfBot" : ""} target="_blank" style={{ textDecoration: "none" }}>
-                            <Button isDisabled={!telegram} w="100%" variant="solid" colorScheme="red" rounded="full">
+                            <Button size="lg" isDisabled={!telegram} w="100%" variant="solid" colorScheme="yellow" rounded="full">
                                 Open chat in Telegram
                             </Button>
                         </Link>
                     </Stack>
                 </Stack>
-
-                <Button
-                    rounded="full"
-                    colorScheme={"red"}
-                    variant="solid"
-                    onClick={sendTestMessage}
-                    isDisabled={!telegram}
-                    mt="2rem"
-                >
-                    Send test message
-                </Button>
             </Stack>
 
             <SenseiHelpModal isOpen={helpIsOpen} onClose={helpOnClose} />
