@@ -1,7 +1,9 @@
+import { CheckCircleIcon } from "@chakra-ui/icons";
 import {
     Box,
     Center,
     Drawer,
+    Text,
     DrawerBody,
     DrawerContent,
     DrawerOverlay,
@@ -22,7 +24,8 @@ import {
 } from "react-icons/ai";
 import { BiBrain } from "react-icons/bi";
 import { BsPeople, BsPeopleFill } from "react-icons/bs";
-import { FaBars, FaBrain, FaUserCircle } from "react-icons/fa";
+import { FaBars, FaBrain, FaRobot, FaUserCircle } from "react-icons/fa";
+import { GiCycle, GiDividedSpiral } from "react-icons/gi";
 import HealthComponentsList from "./ComponentsLists/HealthComponentsList";
 import MindComponentsList from "./ComponentsLists/MindComponentsList";
 import MiscComponentsList from "./ComponentsLists/MiscComponentsList";
@@ -70,76 +73,144 @@ export default function Navigation({ isMobile }: any) {
                 bottom="0"
                 h="4rem"
                 borderTop={["1px solid rgb(0, 0, 0, 0.2)", "0"]}
-                w={["100vw", "24rem"]}
+                w={["100vw", "32rem"]}
                 bg="white"
                 p=".5rem"
                 justifyContent="space-evenly"
             >
-                <Center>
-                    <Icon
+                <Link href="/productivity/daily-tasks" style={{ textDecoration: "none" }}>
+                    <Center
+                        flexDir={"column"}
                         cursor={"pointer"}
-                        w="2rem"
-                        h="2rem"
-                        aria-label="time"
-                        as={
-                            router.asPath.includes("productivity")
-                                ? AiFillClockCircle
-                                : AiOutlineClockCircle
-                        }
-                        color={
-                            router.asPath.includes("productivity")
-                                ? "yellow.400"
-                                : "gray.500"
-                        }
-                        onClick={() => {
-                            productivityOnOpen();
-                        }}
-                    />
-                </Center>
 
-                <Center>
-                    <Icon
+                    >
+                        <Icon
+                            w="1.5rem"
+                            h="1.5rem"
+                            aria-label="time"
+                            as={
+                                router.asPath.includes("daily-tasks")
+                                    ? CheckCircleIcon
+                                    : CheckCircleIcon
+                            }
+                            color={
+                                router.asPath.includes("daily-tasks")
+                                    ? "yellow.400"
+                                    : "gray.500"
+                            }
+                        />
+                        <Text
+                            mt=".25rem"
+                            fontSize={["xs", "sm"]}
+                            color={router.asPath.includes("daily-tasks")
+                                ? "gray.700"
+                                : "gray.500"}
+                        >
+                            Daily Tasks
+                        </Text>
+                    </Center>
+                </Link>
+
+                <Link ml="1rem" href="/productivity/habit-tracker" style={{ textDecoration: "none" }}>
+                    <Center
+                        flexDir={"column"}
                         cursor={"pointer"}
-                        w="2rem"
-                        h="2rem"
-                        aria-label="time"
-                        as={false ? FaBrain : BiBrain}
-                        color={false ? "blue.400" : "gray.500"}
-                        onClick={() => {
-                            mindOnOpen();
-                        }}
-                    />
-                </Center>
 
-                <Center>
-                    <Icon
+                    >
+                        <Icon
+                            w="1.5rem"
+                            h="1.5rem"
+                            aria-label="time"
+                            as={
+                                router.asPath.includes("habit-tracker")
+                                    ? GiCycle
+                                    : GiCycle
+                            }
+                            color={
+                                router.asPath.includes("habit-tracker")
+                                    ? "yellow.400"
+                                    : "gray.500"
+                            }
+                        />
+                        <Text
+                            mt=".25rem"
+                            fontSize={["xs", "sm"]}
+                            color={router.asPath.includes("habit-tracker")
+                                ? "gray.700"
+                                : "gray.500"}
+                        >
+                            Habit Tracker
+                        </Text>
+                    </Center>
+                </Link>
+
+                <Link ml="1rem" href="/productivity/deep-work" style={{ textDecoration: "none" }}>
+                    <Center
+                        flexDir={"column"}
                         cursor={"pointer"}
-                        w="2rem"
-                        h="2rem"
-                        aria-label="time"
-                        as={false ? AiFillHeart : AiOutlineHeart}
-                        color={false ? "green.400" : "gray.500"}
-                        onClick={() => {
-                            healthOnOpen();
-                        }}
-                    />
-                </Center>
 
-                <Center>
-                    <Icon
+                    >
+                        <Icon
+                            w="1.5rem"
+                            h="1.5rem"
+                            aria-label="time"
+                            as={
+                                router.asPath.includes("deep-work")
+                                    ? GiDividedSpiral
+                                    : GiDividedSpiral
+                            }
+                            color={
+                                router.asPath.includes("deep-work")
+                                    ? "yellow.400"
+                                    : "gray.500"
+                            }
+                        />
+                        <Text
+                            mt=".25rem"
+                            fontSize={["xs", "sm"]}
+                            color={router.asPath.includes("deep-work")
+                                ? "gray.700"
+                                : "gray.500"}
+                        >
+                            Deep Work
+                        </Text>
+                    </Center>
+                </Link>
+
+                <Link ml="1rem" href="/network/sensai" style={{ textDecoration: "none" }}>
+                    <Center
+                        flexDir={"column"}
                         cursor={"pointer"}
-                        w="2rem"
-                        h="2rem"
-                        aria-label="time"
-                        as={router.asPath.includes("network") ? BsPeopleFill : BsPeople}
-                        color={router.asPath.includes("network") ? "red.400" : "gray.500"}
-                        onClick={() => {
-                            networkOnOpen();
-                        }}
-                    />
-                </Center>
 
-                <Center>
+                    >
+                        <Icon
+                            w="1.5rem"
+                            h="1.5rem"
+                            aria-label="time"
+                            as={
+                                router.asPath.includes("sensai")
+                                    ? FaRobot
+                                    : FaRobot
+                            }
+                            color={
+                                router.asPath.includes("sensai")
+                                    ? "yellow.400"
+                                    : "gray.500"
+                            }
+                        />
+                        <Text
+                            mt=".25rem"
+                            fontSize={["xs", "sm"]}
+                            color={router.asPath.includes("sensai")
+                                ? "gray.700"
+                                : "gray.500"}
+                        >
+                            SensAI
+                        </Text>
+                    </Center>
+                </Link>
+
+                <Center ml="1rem">
                     <Icon
                         cursor={"pointer"}
                         w="2rem"

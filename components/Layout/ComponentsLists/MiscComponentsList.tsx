@@ -11,13 +11,12 @@ export default function MiscComponentsList({ onClose }: any) {
     const session = useSession();
 
     return (
-        <Stack spacing="2rem">
+        <Stack spacing="2rem" color="gray.700">
             <Button
                 onClick={() => {
                     window.location.href = `/profiles/${session?.user.id}`;
                     onClose();
                 }}
-                colorScheme="purple"
                 variant={
                     router.asPath.includes(session?.user.id ? session?.user.id : "blablablamrfreeman") ? "solid" : "ghost"
                 }
@@ -30,7 +29,6 @@ export default function MiscComponentsList({ onClose }: any) {
 
             <Link href="https://forms.gle/UDpoVAaqpfBFxv8y5" target="_blank" style={{ textDecoration: "none" }}>
                 <Button
-                    colorScheme="purple"
                     variant="ghost"
                     size={["md", "lg"]}
                     rounded="full"
@@ -45,7 +43,6 @@ export default function MiscComponentsList({ onClose }: any) {
                     window.location.href = `/faq`;
                     onClose();
                 }}
-                colorScheme="purple"
                 variant={
                     router.asPath.includes("faq") ? "solid" : "ghost"
                 }
