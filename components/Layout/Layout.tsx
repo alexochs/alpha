@@ -35,7 +35,7 @@ export default function Layout({ children, pageProps }: any) {
             {showBars() && <Topbar isMobile={isMobile} />}
 
             <Box bg="gray.100" minH="100vh" pt="2rem">
-                <Link href="https://forms.gle/UDpoVAaqpfBFxv8y5" target="_blank">
+                <Link zIndex={3} href="https://forms.gle/UDpoVAaqpfBFxv8y5" target="_blank">
                     <Center aria-label="help"
                         w={["3rem", "4rem"]}
                         h={["3rem", "4rem"]}
