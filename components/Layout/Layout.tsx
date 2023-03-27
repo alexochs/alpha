@@ -35,7 +35,7 @@ export default function Layout({ children, pageProps }: any) {
             {showBars() && <Topbar isMobile={isMobile} />}
 
             <Box bg="gray.100" minH="100vh" pt="2rem">
-                <Link zIndex={3} href="https://forms.gle/UDpoVAaqpfBFxv8y5" target="_blank">
+                {!(router.asPath == "/") && !(router.asPath.includes("sign")) && <Link zIndex={3} href="https://forms.gle/UDpoVAaqpfBFxv8y5" target="_blank">
                     <Center aria-label="help"
                         w={["3rem", "4rem"]}
                         h={["3rem", "4rem"]}
@@ -47,7 +47,7 @@ export default function Layout({ children, pageProps }: any) {
                         left={["1rem", "2rem"]}>
                         <Icon as={MdFeedback} color="#666666" w={["1.5rem", "2rem"]} h={["1.5rem", "2rem"]} />
                     </Center>
-                </Link>
+                </Link>}
                 <main>{children}</main>
             </Box>
 
