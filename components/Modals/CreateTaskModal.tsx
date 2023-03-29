@@ -36,7 +36,7 @@ export default function CreateTaskModal({ profileId, tasks, setTasks, date, isOp
         const { error } = await supabase.from("mastery-checklist").insert([
             {
                 profile_id: profileId,
-                date: date.getTime(),
+                date: date.getTime() - 1000 * 60 * date.getTimezoneOffset(),
                 name: newTask.name,
                 difficulty: newTask.difficulty,
                 importance: newTask.importance,
@@ -179,6 +179,21 @@ export default function CreateTaskModal({ profileId, tasks, setTasks, date, isOp
                         onClick={async () => {
                             await addTask();
                             onClose();
+                        }}
+                        isLoading={isLoading}
+                        colorScheme="yellow"
+                        rounded="full"
+                        mt="2rem"
+                        w="100%"
+                        mb="1rem"
+                    >
+                        Add task
+                    </Button>
+
+                    <Button
+                        onClick={async () => {
+                            const _date = date as Date;
+                            alert(date.getTime() - 1000 * 60 * _date.getTimezoneOffset());
                         }}
                         isLoading={isLoading}
                         colorScheme="yellow"

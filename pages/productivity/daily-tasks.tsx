@@ -186,7 +186,7 @@ export default function DailyTasksPage({ profileId, initialTasks }: any) {
                     </Center>
 
                     {tasks.filter(
-                        (task: any) => task.date === date.getTime()
+                        (task: any) => task.date === date.getTime() - 1000 * 60 * date.getTimezoneOffset()
                     ).length < 1 ? (
                         <Text fontSize="xl" textAlign={"center"}>
                             No tasks for today yet!
@@ -216,7 +216,7 @@ export default function DailyTasksPage({ profileId, initialTasks }: any) {
                                     {tasks
                                         .filter(
                                             (task: any) =>
-                                                task.date === date.getTime()
+                                                task.date === date.getTime() - 1000 * 60 * date.getTimezoneOffset()
                                         )
                                         .sort(
                                             (a: any, b: any) =>
@@ -288,7 +288,7 @@ export default function DailyTasksPage({ profileId, initialTasks }: any) {
                 {isMobile ?
                     <IconButton
                         aria-label="help"
-                        icon={<FaPlus color="#333333" size="2.5rem" />}
+                        icon={<FaPlus color="#555555" size="2.5rem" />}
                         onClick={onOpen}
                         h="4rem"
                         w="4rem"

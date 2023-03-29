@@ -1,6 +1,7 @@
 import { CheckCircleIcon } from "@chakra-ui/icons";
-import { Button, Icon, Stack, Text } from "@chakra-ui/react";
+import { Button, Icon, Link, Stack, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { AiFillYoutube } from "react-icons/ai";
 import { GiCycle, GiDividedSpiral, GiTomato } from "react-icons/gi";
 
 export default function ProductivityComponentsList({ onClose }: any) {
@@ -55,6 +56,20 @@ export default function ProductivityComponentsList({ onClose }: any) {
             >
                 <Text fontSize="xl">Deep Work</Text>
             </Button>
+
+            <Link href="https://lazywatch.app" target="_blank" style={{ textDecoration: "none" }}>
+                <Button
+                    colorScheme="yellow"
+                    variant={
+                        router.asPath.includes("/lazywatch") ? "solid" : "ghost"
+                    }
+                    size={["md", "lg"]}
+                    rounded="full"
+                    leftIcon={<Icon as={AiFillYoutube} boxSize="1.5rem" />}
+                >
+                    <Text fontSize="xl">LazyWatch</Text>
+                </Button>
+            </Link>
         </Stack>
     );
 }

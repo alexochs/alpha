@@ -72,8 +72,9 @@ export default function HabitTrackerPage({ profileId, initialHabits }: any) {
     }, [date]);
 
     async function toggleHabitCompletion(habit: any) {
-        const _date = date.toISOString().split("T")[0];
-        if (habit.completed.includes(date.toISOString().split("T")[0])) {
+        const _date = new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000).toISOString().split("T")[0];
+        console.log(_date);
+        if (habit.completed.includes(_date)) {
             for (let i = 0; i < habit.completed.length; i++) {
                 if (habit.completed[i] === _date) {
                     habit.completed.splice(i, 1);
@@ -185,11 +186,7 @@ export default function HabitTrackerPage({ profileId, initialHabits }: any) {
                                                                 )
                                                             }
                                                             isChecked={habit.completed.includes(
-                                                                date
-                                                                    .toISOString()
-                                                                    .split(
-                                                                        "T"
-                                                                    )[0]
+                                                                new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000).toISOString().split("T")[0]
                                                             )}
                                                             colorScheme="yellow"
                                                             size="lg"
@@ -227,7 +224,7 @@ export default function HabitTrackerPage({ profileId, initialHabits }: any) {
                 {isMobile ?
                     <IconButton
                         aria-label="help"
-                        icon={<FaPlus color="#333333" size="2.5rem" />}
+                        icon={<FaPlus color="#555555" size="2.5rem" />}
                         onClick={onOpen}
                         h="4rem"
                         w="4rem"
