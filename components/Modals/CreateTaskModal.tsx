@@ -189,21 +189,6 @@ export default function CreateTaskModal({ profileId, tasks, setTasks, date, isOp
                     >
                         Add task
                     </Button>
-
-                    <Button
-                        onClick={async () => {
-                            const _date = date as Date;
-                            alert(date.getTime() - 1000 * 60 * _date.getTimezoneOffset());
-                        }}
-                        isLoading={isLoading}
-                        colorScheme="yellow"
-                        rounded="full"
-                        mt="2rem"
-                        w="100%"
-                        mb="1rem"
-                    >
-                        Add task
-                    </Button>
                 </ModalBody>
             </ModalContent>
         </Modal>
