@@ -178,7 +178,7 @@ export default async function handler(
                   "T"
               )[0]
       ) ? "✅" : "❌");
-    }).join("%0A") : "No habits for today 🥸";
+    }).join("%0A") : "No habits for today 🤨";
 
     await fetch(process.env.TELEGRAM_API + "sendMessage" + "?chat_id=" + update.message.chat.id + "&text=" + text);
 

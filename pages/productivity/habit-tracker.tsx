@@ -72,8 +72,8 @@ export default function HabitTrackerPage({ profileId, initialHabits }: any) {
     }, [date]);
 
     async function toggleHabitCompletion(habit: any) {
-        const _date = date.toISOString().split("T")[0];
-        console.log(date);
+        const _date = new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000).toISOString().split("T")[0];
+        console.log(_date);
         if (habit.completed.includes(_date)) {
             for (let i = 0; i < habit.completed.length; i++) {
                 if (habit.completed[i] === _date) {
@@ -186,11 +186,7 @@ export default function HabitTrackerPage({ profileId, initialHabits }: any) {
                                                                 )
                                                             }
                                                             isChecked={habit.completed.includes(
-                                                                date
-                                                                    .toISOString()
-                                                                    .split(
-                                                                        "T"
-                                                                    )[0]
+                                                                new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000).toISOString().split("T")[0]
                                                             )}
                                                             colorScheme="yellow"
                                                             size="lg"
