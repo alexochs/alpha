@@ -53,6 +53,7 @@ export default function CreateHabitModal({ profileId, habits, setHabits, date, i
 
             await fetchHabits();
             setIsLoading(false);
+            onClose();
         }
     }
 
@@ -176,10 +177,7 @@ export default function CreateHabitModal({ profileId, habits, setHabits, date, i
                     </Stack>
 
                     <Button
-                        onClick={async () => {
-                            await addNewHabit();
-                            onClose();
-                        }}
+                        onClick={addNewHabit}
                         isLoading={isLoading}
                         colorScheme="yellow"
                         rounded="full"

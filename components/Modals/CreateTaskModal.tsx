@@ -59,6 +59,7 @@ export default function CreateTaskModal({ profileId, tasks, setTasks, date, isOp
 
         await readTasks();
         setIsLoading(false);
+        onClose();
     }
 
     async function readTasks() {
@@ -176,10 +177,7 @@ export default function CreateTaskModal({ profileId, tasks, setTasks, date, isOp
                     </Stack>
 
                     <Button
-                        onClick={async () => {
-                            await addTask();
-                            onClose();
-                        }}
+                        onClick={addTask}
                         isLoading={isLoading}
                         colorScheme="yellow"
                         rounded="full"
