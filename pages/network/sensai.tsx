@@ -139,49 +139,52 @@ export default function HabitTrackerPage({ profileId, initialTelegram, initialSt
                     />
                 </Center>
 
-                <Stack spacing="2rem">
-                    <Heading>Setup</Heading>
-
+                {!telegram ?
                     <Box>
                         <Flex>
-                            <Text fontSize="2xl" fontWeight="bold">
+                            <Heading>
                                 1. Link your Telegram
-                            </Text>
+                            </Heading>
 
                             <Center>
-                                <Icon as={telegram ? FaCheckCircle : FaTimesCircle} ml=".5rem" color={telegram ? "green.500" : "yellow.500"} boxSize="2rem" />
+                                <Icon as={telegram ? FaCheckCircle : FaTimesCircle} ml=".5rem" color={telegram ? "green.500" : "red.500"} boxSize="2rem" />
                             </Center>
                         </Flex>
 
                         {!telegram && <Center mt=".5rem">
                             <TelegramLoginButton dataOnauth={handleTelegramLogin} botName="MasterYourselfBot" />
                         </Center>}
-                    </Box>
+                    </Box> : telegram && !started ?
+                        <Stack spacing="1rem">
+                            <Flex>
+                                <Heading>
+                                    2. Start the bot
+                                </Heading>
 
-                    <Stack spacing="1rem">
-                        <Flex>
-                            <Text fontSize="2xl" fontWeight="bold">
-                                2. Start the bot
-                            </Text>
+                                <Center>
+                                    <Icon as={started ? FaCheckCircle : FaTimesCircle} ml=".5rem" color={started ? "green.500" : "red.500"} boxSize="2rem" />
+                                </Center>
+                            </Flex>
 
-                            <Center>
-                                <Icon as={started ? FaCheckCircle : FaTimesCircle} ml=".5rem" color={started ? "green.500" : "yellow.500"} boxSize="2rem" />
-                            </Center>
-                        </Flex>
-
-                        {!started &&
                             <Text fontSize="xl">
                                 Send <i>/start</i> to @MasterYourselfBot
-                            </Text>}
-                    </Stack>
+                            </Text>
 
+                            <Link href={telegram ? "https://t.me/MasterYourselfBot" : ""} target="_blank" style={{ textDecoration: "none" }}>
+                                <Button size="lg" isDisabled={!telegram} w="100%" variant="solid" colorScheme="yellow" rounded="full">
+                                    Open chat in Telegram
+                                </Button>
+                            </Link>
+                        </Stack> : telegram && started &&
+                        <Stack spacing="1rem">
+                            <Heading>SensAI is ready!</Heading>
 
-                    <Link href={telegram ? "https://t.me/MasterYourselfBot" : ""} target="_blank" style={{ textDecoration: "none" }}>
-                        <Button size="lg" isDisabled={!telegram} w="100%" variant="solid" colorScheme="yellow" rounded="full">
-                            Open chat in Telegram
-                        </Button>
-                    </Link>
-                </Stack>
+                            <Link href={telegram ? "https://t.me/MasterYourselfBot" : ""} target="_blank" style={{ textDecoration: "none" }}>
+                                <Button size="lg" isDisabled={!telegram} w="100%" variant="solid" colorScheme="yellow" rounded="full">
+                                    Open chat in Telegram
+                                </Button>
+                            </Link>
+                        </Stack>}
             </Stack>
 
             <SenseiHelpModal isOpen={helpIsOpen} onClose={helpOnClose} />
