@@ -53,13 +53,13 @@ export default async function handler(
 
     if (linkedData) {
       const  { data, error } = await supabase
-      .from('started-bot')
+      .from('bot')
       .select('started')
       .eq('telegram', update.message.chat.id);
 
       if (!data || error || data.length === 0) {
         const { data, error } = await supabase
-          .from('started-bot')
+          .from('bot')
           .upsert([
             { telegram: update.message.chat.id, started: true },
           ]);
