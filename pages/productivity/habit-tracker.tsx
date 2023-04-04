@@ -257,8 +257,7 @@ export default function HabitTrackerPage({ profileId, initialHabits }: any) {
                                                 )}
                                                 colorScheme="yellow"
                                                 size={["mobilexl", "xl"]}
-                                                borderColor="blackAlpha.500"
-                                                isDisabled={date.getTime() > new Date().getTime()}
+                                                isDisabled={date.getTime() > new Date().getTime() || date.getTime() < new Date().setHours(0, 0, 0, 0)}
                                             />
                                         </Flex>
                                     </Flex>
