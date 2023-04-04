@@ -97,6 +97,7 @@ export default function CreateTaskModal({ profileId, tasks, setTasks, date, isOp
                 <ModalBody>
                     <Stack spacing="1rem">
                         <Input
+                            size="lg"
                             value={newTaskName}
                             onChange={(e) =>
                                 setNewTaskName(e.target.value)
@@ -110,7 +111,7 @@ export default function CreateTaskModal({ profileId, tasks, setTasks, date, isOp
                         <HStack spacing="1rem">
                             <Flex flexDir="column" w="50%">
                                 <Center>
-                                    <Text>Difficulty&nbsp;</Text>
+                                    <Text fontSize="lg">Difficulty&nbsp;</Text>
                                 </Center>
 
                                 <Slider
@@ -124,10 +125,11 @@ export default function CreateTaskModal({ profileId, tasks, setTasks, date, isOp
                                     onPointerEnter={() => setShowDifficultyTooltip(true)}
                                     onPointerLeave={() => setShowDifficultyTooltip(false)}
                                 >
-                                    <SliderTrack boxSize=".5rem" rounded="full">
+                                    <SliderTrack boxSize="1rem" rounded="full">
                                         <SliderFilledTrack />
                                     </SliderTrack>
                                     <Tooltip
+                                        fontSize="lg"
                                         hasArrow
                                         bg='yellow.500'
                                         color='white'
@@ -143,7 +145,7 @@ export default function CreateTaskModal({ profileId, tasks, setTasks, date, isOp
 
                             <Flex flexDir="column" w="50%">
                                 <Center>
-                                    <Text>Importance&nbsp;</Text>
+                                    <Text fontSize="lg">Importance&nbsp;</Text>
                                 </Center>
 
                                 <Slider
@@ -157,10 +159,11 @@ export default function CreateTaskModal({ profileId, tasks, setTasks, date, isOp
                                     onPointerEnter={() => setShowImportanceTooltip(true)}
                                     onPointerLeave={() => setShowImportanceTooltip(false)}
                                 >
-                                    <SliderTrack boxSize=".5rem" rounded="full">
+                                    <SliderTrack boxSize="1rem" rounded="full">
                                         <SliderFilledTrack />
                                     </SliderTrack>
                                     <Tooltip
+                                        fontSize="lg"
                                         hasArrow
                                         bg='yellow.500'
                                         color='white'
@@ -177,6 +180,7 @@ export default function CreateTaskModal({ profileId, tasks, setTasks, date, isOp
                     </Stack>
 
                     <Button
+                        size="lg"
                         onClick={addTask}
                         isLoading={isLoading}
                         colorScheme="yellow"

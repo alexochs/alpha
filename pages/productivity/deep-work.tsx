@@ -259,28 +259,32 @@ export default function PomodoroPage({ profileId, initialTimer, initialHistory }
                     <ModalHeader>Focus on your work</ModalHeader>
                     <ModalCloseButton rounded="full" />
                     <ModalBody>
-                        <VStack spacing="1rem">
+                        <Stack spacing="2rem" mb="1rem">
                             <Text>How long do you want to focus for?</Text>
 
-                            <Button rounded="full" colorScheme={"yellow"} variant={startFocusDuration == 30 ? "outline" : "ghost"} onClick={() => setStartFocusDuration(30)}>
-                                30 Minutes
-                            </Button>
+                            <Stack spacing="1rem">
+                                <Button size="lg" rounded="full" colorScheme={"yellow"} variant={startFocusDuration == 30 ? "outline" : "ghost"} onClick={() => setStartFocusDuration(30)}>
+                                    30 Minutes
+                                </Button>
 
-                            <Button rounded="full" colorScheme={"yellow"} variant={startFocusDuration == 45 ? "outline" : "ghost"} onClick={() => setStartFocusDuration(45)}>
-                                45 Minutes
-                            </Button>
+                                <Button size="lg" rounded="full" colorScheme={"yellow"} variant={startFocusDuration == 45 ? "outline" : "ghost"} onClick={() => setStartFocusDuration(45)}>
+                                    45 Minutes
+                                </Button>
 
-                            <Button rounded="full" colorScheme={"yellow"} variant={startFocusDuration == 60 ? "outline" : "ghost"} onClick={() => setStartFocusDuration(60)}>
-                                60 Minutes
+                                <Button size="lg" rounded="full" colorScheme={"yellow"} variant={startFocusDuration == 60 ? "outline" : "ghost"} onClick={() => setStartFocusDuration(60)}>
+                                    60 Minutes
+                                </Button>
+
+                                <Button size="lg" rounded="full" colorScheme={"yellow"} variant={startFocusDuration == 90 ? "outline" : "ghost"} onClick={() => setStartFocusDuration(90)}>
+                                    90 Minutes
+                                </Button>
+                            </Stack>
+
+                            <Button size="lg" rounded="full" colorScheme={"yellow"} onClick={() => startTimer(0, startFocusDuration)}>
+                                Get to work
                             </Button>
-                        </VStack>
+                        </Stack>
                     </ModalBody>
-
-                    <ModalFooter>
-                        <Button rounded="full" colorScheme={"yellow"} onClick={() => startTimer(0, startFocusDuration)}>
-                            Get to work
-                        </Button>
-                    </ModalFooter>
                 </ModalContent>
             </Modal>
 
@@ -290,28 +294,28 @@ export default function PomodoroPage({ profileId, initialTimer, initialHistory }
                     <ModalHeader>Take a break</ModalHeader>
                     <ModalCloseButton rounded="full" />
                     <ModalBody>
-                        <VStack spacing="1rem">
+                        <Stack spacing="2rem" mb="1rem">
                             <Text>How long do you want to relax for?</Text>
 
-                            <Button rounded="full" colorScheme={"yellow"} variant={startBreakDuration == 5 ? "outline" : "ghost"} onClick={() => setStartBreakDuration(5)}>
-                                5 Minutes
-                            </Button>
+                            <Stack spacing="1rem">
+                                <Button size="lg" rounded="full" colorScheme={"yellow"} variant={startBreakDuration == 5 ? "outline" : "ghost"} onClick={() => setStartBreakDuration(5)}>
+                                    5 Minutes
+                                </Button>
 
-                            <Button rounded="full" colorScheme={"yellow"} variant={startBreakDuration == 10 ? "outline" : "ghost"} onClick={() => setStartBreakDuration(10)}>
-                                10 Minutes
-                            </Button>
+                                <Button size="lg" rounded="full" colorScheme={"yellow"} variant={startBreakDuration == 10 ? "outline" : "ghost"} onClick={() => setStartBreakDuration(10)}>
+                                    10 Minutes
+                                </Button>
 
-                            <Button rounded="full" colorScheme={"yellow"} variant={startBreakDuration == 15 ? "outline" : "ghost"} onClick={() => setStartBreakDuration(15)}>
-                                15 Minutes
+                                <Button size="lg" rounded="full" colorScheme={"yellow"} variant={startBreakDuration == 15 ? "outline" : "ghost"} onClick={() => setStartBreakDuration(15)}>
+                                    15 Minutes
+                                </Button>
+                            </Stack>
+
+                            <Button size="lg" rounded="full" colorScheme={"yellow"} onClick={() => startTimer(1, startBreakDuration)}>
+                                Relax
                             </Button>
-                        </VStack>
+                        </Stack>
                     </ModalBody>
-
-                    <ModalFooter>
-                        <Button rounded="full" colorScheme={"yellow"} onClick={() => startTimer(1, startBreakDuration)}>
-                            Relax
-                        </Button>
-                    </ModalFooter>
                 </ModalContent>
             </Modal>
         </>

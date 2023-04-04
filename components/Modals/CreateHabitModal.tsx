@@ -1,4 +1,4 @@
-import { Button, Checkbox, Flex, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, SimpleGrid, Stack, Text } from "@chakra-ui/react";
+import { Button, Center, Checkbox, Flex, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, SimpleGrid, Stack, Text } from "@chakra-ui/react";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useEffect, useState } from "react";
 
@@ -10,6 +10,9 @@ export default function CreateHabitModal({ profileId, habits, setHabits, date, i
 
     const [newHabitDays, setNewHabitDays] = useState<string[]>([]);
     const [invalidHabitDays, setInvalidHabitDays] = useState(false);
+
+    const [timestampHours, setTimestampHours] = useState(12);
+    const [timestampMinutes, setTimestampMinutes] = useState(0);
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -36,17 +39,22 @@ export default function CreateHabitModal({ profileId, habits, setHabits, date, i
 
         setIsLoading(true);
 
+        const hoursUTC = timestampHours * 1 + new Date().getTimezoneOffset() * 1 / 60 * 1;
+
         const { data, error } = await supabase.from("habit-tracker").insert([
             {
                 profile_id: profileId,
                 name: newHabitName,
                 days: newHabitDays,
+                timestamp: `${hoursUTC}:${timestampMinutes}:00+00`,//new Date(new Date(date).setHours(timestampHours, timestampMinutes)).getTime(),
                 completed: [],
             },
         ]);
 
         if (error) {
             alert("Error creating new habit");
+            console.error(error);
+            setIsLoading(false);
         } else {
             setNewHabitName("");
             setNewHabitDays([]);
@@ -68,9 +76,6 @@ export default function CreateHabitModal({ profileId, habits, setHabits, date, i
         }
 
         setHabits(data!);
-
-        console.log(data);
-        console.log(date.toISOString().split("T")[0]);
     }
 
     return (
@@ -80,8 +85,9 @@ export default function CreateHabitModal({ profileId, habits, setHabits, date, i
                 <ModalHeader>Make a new habit</ModalHeader>
                 <ModalCloseButton rounded="full" />
                 <ModalBody>
-                    <Stack spacing="1rem">
+                    <Stack spacing="2rem" mb="1rem">
                         <Input
+                            size="lg"
                             value={newHabitName}
                             onChange={(e) => setNewHabitName(e.target.value)}
                             isInvalid={invalidHabitName}
@@ -91,102 +97,138 @@ export default function CreateHabitModal({ profileId, habits, setHabits, date, i
                             rounded="full"
                         />
 
-                        <Button
-                            onClick={() => {
-                                toggleDay("monday");
-                            }}
-                            variant={newHabitDays.includes("monday") ? "outline" : "ghost"}
-                            isDisabled={isLoading}
-                            rounded="full"
-                            colorScheme={"yellow"}
-                        >
-                            Monday
-                        </Button>
+                        <Stack spacing="1rem">
+                            <Button
+                                size="lg"
+                                onClick={() => {
+                                    toggleDay("monday");
+                                }}
+                                variant={newHabitDays.includes("monday") ? "outline" : "ghost"}
+                                isDisabled={isLoading}
+                                rounded="full"
+                                colorScheme={"yellow"}
+                            >
+                                Monday
+                            </Button>
+
+                            <Button
+                                size="lg"
+                                onClick={() => {
+                                    toggleDay("tuesday");
+                                }}
+                                variant={newHabitDays.includes("tuesday") ? "outline" : "ghost"}
+                                isDisabled={isLoading}
+                                rounded="full"
+                                colorScheme={"yellow"}
+                            >
+                                Tuesday
+                            </Button>
+
+                            <Button
+                                size="lg"
+                                onClick={() => {
+                                    toggleDay("wednesday");
+                                }}
+                                variant={newHabitDays.includes("wednesday") ? "outline" : "ghost"}
+                                isDisabled={isLoading}
+                                rounded="full"
+                                colorScheme={"yellow"}
+                            >
+                                Wednesday
+                            </Button>
+
+                            <Button
+                                size="lg"
+                                onClick={() => {
+                                    toggleDay("thursday");
+                                }}
+                                variant={newHabitDays.includes("thursday") ? "outline" : "ghost"}
+                                isDisabled={isLoading}
+                                rounded="full"
+                                colorScheme={"yellow"}
+                            >
+                                Thursday
+                            </Button>
+
+                            <Button
+                                size="lg"
+                                onClick={() => {
+                                    toggleDay("friday");
+                                }}
+                                variant={newHabitDays.includes("friday") ? "outline" : "ghost"}
+                                isDisabled={isLoading}
+                                rounded="full"
+                                colorScheme={"yellow"}
+                            >
+                                Friday
+                            </Button>
+
+                            <Button
+                                size="lg"
+                                onClick={() => {
+                                    toggleDay("saturday");
+                                }}
+                                variant={newHabitDays.includes("saturday") ? "outline" : "ghost"}
+                                isDisabled={isLoading}
+                                rounded="full"
+                                colorScheme={"yellow"}
+                            >
+                                Saturday
+                            </Button>
+
+                            <Button
+                                size="lg"
+                                onClick={() => {
+                                    toggleDay("sunday");
+                                }}
+                                variant={newHabitDays.includes("sunday") ? "outline" : "ghost"}
+                                isDisabled={isLoading}
+                                rounded="full"
+                                colorScheme={"yellow"}
+                            >
+                                Sunday
+                            </Button>
+                        </Stack>
+
+                        <Center>
+                            <HStack>
+                                <Select w="6rem" colorScheme="yellow" rounded="full" borderColor="gray.500" size="lg" value={timestampHours} onChange={(e: any) => setTimestampHours(e.target.value)}>
+                                    {Array.from(Array(24).keys()).map((i) => {
+                                        return (
+                                            <option value={i} key={i}>
+                                                {i}
+                                            </option>
+                                        );
+                                    })}
+                                </Select>
+
+                                <Text fontSize="lg" fontWeight="bold">:</Text>
+
+                                <Select w="6rem" colorScheme="yellow" rounded="full" borderColor="gray.500" size="lg" value={timestampMinutes} onChange={(e: any) => setTimestampMinutes(e.target.value)}>
+                                    {Array.from(Array(59).keys()).map((i) => {
+                                        return (
+                                            <option value={i} key={i}>
+                                                {i}
+                                            </option>
+                                        );
+                                    })}
+                                </Select>
+                            </HStack>
+                        </Center>
 
                         <Button
-                            onClick={() => {
-                                toggleDay("tuesday");
-                            }}
-                            variant={newHabitDays.includes("tuesday") ? "outline" : "ghost"}
-                            isDisabled={isLoading}
+                            size="lg"
+                            onClick={addNewHabit}
+                            isLoading={isLoading}
+                            colorScheme="yellow"
                             rounded="full"
-                            colorScheme={"yellow"}
+                            mt="2rem"
+                            mb="1rem"
+                            w="100%"
                         >
-                            Tuesday
-                        </Button>
-
-                        <Button
-                            onClick={() => {
-                                toggleDay("wednesday");
-                            }}
-                            variant={newHabitDays.includes("wednesday") ? "outline" : "ghost"}
-                            isDisabled={isLoading}
-                            rounded="full"
-                            colorScheme={"yellow"}
-                        >
-                            Wednesday
-                        </Button>
-
-                        <Button
-                            onClick={() => {
-                                toggleDay("thursday");
-                            }}
-                            variant={newHabitDays.includes("thursday") ? "outline" : "ghost"}
-                            isDisabled={isLoading}
-                            rounded="full"
-                            colorScheme={"yellow"}
-                        >
-                            Thursday
-                        </Button>
-
-                        <Button
-                            onClick={() => {
-                                toggleDay("friday");
-                            }}
-                            variant={newHabitDays.includes("friday") ? "outline" : "ghost"}
-                            isDisabled={isLoading}
-                            rounded="full"
-                            colorScheme={"yellow"}
-                        >
-                            Friday
-                        </Button>
-
-                        <Button
-                            onClick={() => {
-                                toggleDay("saturday");
-                            }}
-                            variant={newHabitDays.includes("saturday") ? "outline" : "ghost"}
-                            isDisabled={isLoading}
-                            rounded="full"
-                            colorScheme={"yellow"}
-                        >
-                            Saturday
-                        </Button>
-
-                        <Button
-                            onClick={() => {
-                                toggleDay("sunday");
-                            }}
-                            variant={newHabitDays.includes("sunday") ? "outline" : "ghost"}
-                            isDisabled={isLoading}
-                            rounded="full"
-                            colorScheme={"yellow"}
-                        >
-                            Sunday
+                            Add habit
                         </Button>
                     </Stack>
-
-                    <Button
-                        onClick={addNewHabit}
-                        isLoading={isLoading}
-                        colorScheme="yellow"
-                        rounded="full"
-                        mt="2rem"
-                        mb="1rem"
-                        w="100%"
-                    >
-                        Add habit
-                    </Button>
                 </ModalBody>
             </ModalContent>
         </Modal>

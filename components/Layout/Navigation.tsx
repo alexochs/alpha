@@ -71,14 +71,13 @@ export default function Navigation({ isMobile }: any) {
             <Flex
                 position={["fixed", "static"]}
                 bottom="0"
-                h="4rem"
                 borderTop={["1px solid rgb(0, 0, 0, 0.2)", "0"]}
                 w={["100vw", "32rem"]}
                 bg="white"
                 p=".5rem"
                 justifyContent="space-evenly"
             >
-                <Link href="/productivity/daily-tasks" style={{ textDecoration: "none" }}>
+                <Link href="/productivity/daily-tasks" style={{ textDecoration: "none" }} _hover={{ bg: "blackAlpha.50" }} p=".5rem" rounded="xl">
                     <Center
                         flexDir={"column"}
                         cursor={"pointer"}
@@ -111,7 +110,7 @@ export default function Navigation({ isMobile }: any) {
                     </Center>
                 </Link>
 
-                <Link ml="1rem" href="/productivity/habit-tracker" style={{ textDecoration: "none" }}>
+                <Link href="/productivity/habit-tracker" style={{ textDecoration: "none" }} _hover={{ bg: "blackAlpha.50" }} p=".5rem" rounded="xl">
                     <Center
                         flexDir={"column"}
                         cursor={"pointer"}
@@ -144,7 +143,7 @@ export default function Navigation({ isMobile }: any) {
                     </Center>
                 </Link>
 
-                <Link ml="1rem" href="/productivity/deep-work" style={{ textDecoration: "none" }}>
+                <Link href="/productivity/deep-work" style={{ textDecoration: "none" }} _hover={{ bg: "blackAlpha.50" }} p=".5rem" rounded="xl">
                     <Center
                         flexDir={"column"}
                         cursor={"pointer"}
@@ -177,7 +176,7 @@ export default function Navigation({ isMobile }: any) {
                     </Center>
                 </Link>
 
-                <Link ml="1rem" href="/network/sensai" style={{ textDecoration: "none" }}>
+                <Link href="/network/sensai" style={{ textDecoration: "none" }} _hover={{ bg: "blackAlpha.50" }} p=".5rem" rounded="xl">
                     <Center
                         flexDir={"column"}
                         cursor={"pointer"}
@@ -210,7 +209,7 @@ export default function Navigation({ isMobile }: any) {
                     </Center>
                 </Link>
 
-                <Center ml="1rem">
+                <Center _hover={{ bg: "blackAlpha.50" }} p=".5rem" rounded="xl">
                     <Icon
                         cursor={"pointer"}
                         w="2rem"
