@@ -22,16 +22,18 @@ export default function App({ Component, pageProps }: AppProps) {
     const sizes = {
         xl: definePartsStyle({
             control: defineStyle({
-                boxSize: "2.5rem",
-                fontSize: "1.5rem",
-                borderRadius: ".5rem",
+                boxSize: "4rem",
+                fontSize: "2rem",
+                borderRadius: "1rem",
+                bg: "gray.300"
             }),
         }),
         mobilexl: definePartsStyle({
             control: defineStyle({
-                boxSize: "1.75rem",
-                fontSize: "1rem",
-                borderRadius: ".5rem",
+                boxSize: "3.5rem",
+                fontSize: "1.75rem",
+                borderRadius: ".75rem",
+                bg: "gray.300"
             }),
         }),
     }

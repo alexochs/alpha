@@ -66,12 +66,16 @@ export default function HabitTrackerPage({ profileId, initialHabits }: any) {
     const [selectedHabit, setSelectedHabit] = useState<any>(null);
     const [date, setDate] = useState(new Date(new Date().setHours(0, 0, 0, 0)));
 
+    const [streaks, setStreaks] = useState<any[]>([]);
+
     useEffect(() => {
         setDate(
             localStorage.getItem("date")
                 ? new Date(localStorage.getItem("date")!)
                 : new Date(new Date().setHours(0, 0, 0, 0))
         );
+
+        getStreaks();
     }, [date]);
 
     async function toggleHabitCompletion(habit: any) {
@@ -119,6 +123,38 @@ export default function HabitTrackerPage({ profileId, initialHabits }: any) {
         } else {
             setHabits(habits.filter((h: any) => h.id !== habit.id));
         }
+    }
+
+    function getStreaks() {
+        const streaks = habits.map((habit: any) => {
+            const _date = new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000).toISOString().split("T")[0];
+
+            let streak = 0;
+
+            for (let i = 0; i < 1000; i++) {
+                const dayName = new Date(new Date(_date).setDate(new Date(_date).getDate() - i)).toLocaleDateString(
+                    "en-US",
+                    { weekday: "long" }
+                ).toLowerCase();
+
+                if (!habit.days.includes(dayName)) {
+                    continue;
+                }
+
+                const completed = habit.completed.includes(new Date(new Date(_date).setDate(new Date(_date).getDate() - i)).toISOString().split("T")[0]) &&
+                    habit.completed.includes(_date);
+
+                if (!completed) {
+                    break;
+                }
+
+                streak++;
+            }
+
+            return streak;
+        });
+
+        setStreaks(streaks);
     }
 
     return (
@@ -171,54 +207,60 @@ export default function HabitTrackerPage({ profileId, initialHabits }: any) {
                                 .map((habit, index) => (
                                     <Flex
                                         key={index}
-                                        w={["90vw", "35vw"]}
+                                        w={["95vw", "35vw"]}
                                         bg="gray.200"
                                         p="1rem"
                                         rounded="3xl"
                                         _hover={{ bg: "gray.300" }}
                                         cursor={"pointer"}
                                     >
-                                        <Box textAlign={"start"}>
-                                            <Box
-                                                onClick={() => {
-                                                    setSelectedHabit(habit);
-                                                    detailOnOpen();
-                                                }}
-                                                w="35vw"
-                                            >
-                                                <Heading fontSize={["4xl", "5xl"]}>{habit.name}</Heading>
+                                        <Box
+                                            onClick={() => {
+                                                setSelectedHabit(habit);
+                                                detailOnOpen();
+                                            }}
+                                            w={["90%", "65%"]}
+                                            pr="1rem"
+                                        >
+                                            <Heading fontSize={["4xl", "5xl"]}>{habit.name}</Heading>
 
+                                            <Flex>
                                                 <Text fontSize={["2xl", "3xl"]}>{(parseInt(habit.timestamp.slice(0, 2)) - date.getTimezoneOffset() / 60) + ":" + habit.timestamp.slice(3, 5)}</Text>
-                                            </Box>
-
-                                            <HStack pt="1rem" spacing="1rem" fontSize="4xl">
-                                                {[6, 5, 4, 3, 2, 1].map((i) =>
-                                                    <Checkbox
-                                                        key={i}
-                                                        isDisabled={true}
-                                                        isChecked={habit.completed.includes(
-                                                            new Date(date.getTime() - i * 24 * 60 * 60 * 1000 - date.getTimezoneOffset() * 60 * 1000).toISOString().split("T")[0]
-                                                        )}
-                                                        colorScheme="yellow"
-                                                        size={["mobilexl", "xl"]}
-                                                        borderColor="blackAlpha.500"
-                                                    />
-                                                )}
-
-                                                <Checkbox
-                                                    onChange={(e) => {
-                                                        toggleHabitCompletion(habit);
-                                                        e.stopPropagation();
-                                                    }}
-                                                    isChecked={habit.completed.includes(
-                                                        new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000).toISOString().split("T")[0]
-                                                    )}
-                                                    colorScheme="yellow"
-                                                    size={["mobilexl", "xl"]}
-                                                    borderColor="blackAlpha.500"
-                                                />
-                                            </HStack>
+                                                <Spacer />
+                                                {streaks[index] > 0 && isMobile &&
+                                                    <Center>
+                                                        <Text fontSize={["2xl", "5xl"]}>{streaks[index]}🔥</Text>
+                                                    </Center>}
+                                            </Flex>
                                         </Box>
+
+                                        <Flex>
+                                            {!isMobile &&
+                                                <Center
+                                                    w="12rem"
+                                                    onClick={() => {
+                                                        setSelectedHabit(habit);
+                                                        detailOnOpen();
+                                                    }}
+                                                >
+                                                    {streaks[index] > 0 &&
+                                                        <Text fontSize={["2xl", "5xl"]}>{streaks[index]}🔥</Text>}
+                                                </Center>}
+
+                                            <Checkbox
+                                                onChange={(e) => {
+                                                    toggleHabitCompletion(habit);
+                                                    e.stopPropagation();
+                                                }}
+                                                isChecked={habit.completed.includes(
+                                                    new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000).toISOString().split("T")[0]
+                                                )}
+                                                colorScheme="yellow"
+                                                size={["mobilexl", "xl"]}
+                                                borderColor="blackAlpha.500"
+                                                isDisabled={date.getTime() > new Date().getTime()}
+                                            />
+                                        </Flex>
                                     </Flex>
                                 ))}
                     </Stack>}
