@@ -204,7 +204,7 @@ export default function SensaiPage({ profileId, botId, initialTelegram, initialS
                         <Stack spacing="1rem">
                             <Stack spacing=".5rem">
                                 <Heading>Daily Tasks</Heading>
-                                <Text>Notify me about my tasks everyday at</Text>
+                                <Text>Notify me everyday about my tasks at</Text>
                                 <Select colorScheme="yellow" rounded="full" borderColor="gray.500" size="lg" value={taskNotification} onChange={handleTaskNotificationChange}>
                                     <option value='0'>12:00 am</option>
                                     <option value='1'>01:00 am</option>
