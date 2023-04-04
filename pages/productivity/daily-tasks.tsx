@@ -282,7 +282,7 @@ export default function DailyTasksPage({ profileId, initialTasks }: any) {
 
             <HStack
                 position="fixed"
-                bottom={["5rem", "2rem"]}
+                bottom={["6rem", "2rem"]}
                 right={["1rem", "2rem"]}
             >
                 {isMobile ?

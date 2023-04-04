@@ -43,7 +43,7 @@ export default function Layout({ children, pageProps }: any) {
                         _hover={{ bg: "gray.300" }}
                         rounded="full"
                         position="fixed"
-                        bottom={["5rem", "2rem"]}
+                        bottom={["6rem", "2rem"]}
                         left={["1rem", "2rem"]}>
                         <Icon as={MdFeedback} color="#666666" w={["1.5rem", "2rem"]} h={["1.5rem", "2rem"]} />
                     </Center>

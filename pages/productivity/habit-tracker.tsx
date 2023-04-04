@@ -1,10 +1,11 @@
-import { Center, Checkbox, Flex, Heading, Text, SimpleGrid, Input, VStack, HStack, Stack, TableContainer, Table, Tbody, Tr, Td, Button, Thead, Th, Box, useDisclosure, Icon, IconButton, useMediaQuery } from "@chakra-ui/react";
+import { Center, Checkbox, Flex, Heading, Text, SimpleGrid, Input, VStack, HStack, Stack, TableContainer, Table, Tbody, Tr, Td, Button, Thead, Th, Box, useDisclosure, Icon, IconButton, useMediaQuery, Spacer } from "@chakra-ui/react";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useEffect, useState } from "react";
-import { FaPlus, FaPlusCircle, FaQuestionCircle } from "react-icons/fa";
+import { FaEdit, FaPen, FaPlus, FaPlusCircle, FaQuestionCircle, FaTrash } from "react-icons/fa";
 import CreateHabitModal from "../../components/Modals/CreateHabitModal";
 import HabitTrackerHelpModal from "../../components/Modals/HabitTrackerHelpModal";
+import HabitDetailModal from "../../components/Modals/HabitDetailModal";
 
 export async function getServerSideProps(context: any) {
     const supabase = createServerSupabaseClient(context);
@@ -58,9 +59,11 @@ export default function HabitTrackerPage({ profileId, initialHabits }: any) {
     const supabase = useSupabaseClient();
 
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen: detailIsOpen, onOpen: detailOnOpen, onClose: detailOnClose } = useDisclosure();
     const { isOpen: helpIsOpen, onOpen: helpOnOpen, onClose: helpOnClose } = useDisclosure();
 
     const [habits, setHabits] = useState<any[]>(initialHabits);
+    const [selectedHabit, setSelectedHabit] = useState<any>(null);
     const [date, setDate] = useState(new Date(new Date().setHours(0, 0, 0, 0)));
 
     useEffect(() => {
@@ -121,7 +124,7 @@ export default function HabitTrackerPage({ profileId, initialHabits }: any) {
     return (
         <Box>
             <Stack spacing="1rem">
-                <Center>
+                {/*<Center>
                     <Text
                         fontSize={["4xl", "5xl"]}
                         fontWeight={"bold"}
@@ -137,7 +140,7 @@ export default function HabitTrackerPage({ profileId, initialHabits }: any) {
                         onClick={helpOnOpen}
                         rounded="full"
                     />
-                </Center>
+    </Center>*/}
 
                 {habits.filter((habit: any) =>
                     habit.days.includes(
@@ -149,76 +152,81 @@ export default function HabitTrackerPage({ profileId, initialHabits }: any) {
                             .toLowerCase()
                     )
                 ).length === 0 ? <Text fontSize="lg" textAlign={"center"}>No habits for today!</Text> :
-                    <Center>
-                        <TableContainer fontSize="xl" pb="4rem" maxW={["100vw", "50vw"]} minW={["100vw", "35vw"]}>
-                            <Table variant="striped" colorScheme="blackAlpha">
-                                <Thead>
-                                    <Tr>
-                                        <Th>Habit</Th>
-                                        <Th fontWeight={"bold"}>Done</Th>
-                                    </Tr>
-                                </Thead>
-                                <Tbody>
-                                    {habits &&
-                                        habits
-                                            .filter((habit: any) =>
-                                                habit.days.includes(
-                                                    date
-                                                        .toLocaleDateString(
-                                                            "en-US",
-                                                            { weekday: "long" }
-                                                        )
-                                                        .toLowerCase()
-                                                )
+                    <Stack alignSelf={"center"} spacing="1rem" pb="4rem">
+                        {habits &&
+                            habits
+                                .filter((habit: any) =>
+                                    habit.days.includes(
+                                        date
+                                            .toLocaleDateString(
+                                                "en-US",
+                                                { weekday: "long" }
                                             )
-                                            .sort(
-                                                (a: any, b: any) => a.completed
-                                            )
-                                            .map((habit, index) => (
-                                                <Tr key={index}>
-                                                    {/*<Td>{habit.name.length > 16 ? habit.name.slice(0, 16) + "..." : habit.name}</Td>*/}
-                                                    <Td>{habit.name}</Td>
-                                                    <Td>
-                                                        <Checkbox
-                                                            onChange={() =>
-                                                                toggleHabitCompletion(
-                                                                    habit
-                                                                )
-                                                            }
-                                                            isChecked={habit.completed.includes(
-                                                                new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000).toISOString().split("T")[0]
-                                                            )}
-                                                            colorScheme="yellow"
-                                                            size="lg"
-                                                            borderColor="blackAlpha.500"
-                                                        />
-                                                    </Td>
-                                                    <Td>
-                                                        <Button
-                                                            onClick={() =>
-                                                                deleteHabit(
-                                                                    habit
-                                                                )
-                                                            }
-                                                            colorScheme="red"
-                                                            size="xs"
-                                                            variant="ghost"
-                                                            rounded="full"
-                                                        >
-                                                            x
-                                                        </Button>
-                                                    </Td>
-                                                </Tr>
-                                            ))}
-                                </Tbody>
-                            </Table>
-                        </TableContainer>
-                    </Center>}
+                                            .toLowerCase()
+                                    )
+                                )
+                                .sort(
+                                    (a: any, b: any) => a.completed
+                                )
+                                .map((habit, index) => (
+                                    <Flex
+                                        key={index}
+                                        w={["90vw", "35vw"]}
+                                        bg="gray.200"
+                                        p="1rem"
+                                        rounded="3xl"
+                                        _hover={{ bg: "gray.300" }}
+                                        cursor={"pointer"}
+                                    >
+                                        <Box textAlign={"start"}>
+                                            <Box
+                                                onClick={() => {
+                                                    setSelectedHabit(habit);
+                                                    detailOnOpen();
+                                                }}
+                                                w="35vw"
+                                            >
+                                                <Heading fontSize={["4xl", "5xl"]}>{habit.name}</Heading>
+
+                                                <Text fontSize={["2xl", "3xl"]}>{(parseInt(habit.timestamp.slice(0, 2)) - date.getTimezoneOffset() / 60) + ":" + habit.timestamp.slice(3, 5)}</Text>
+                                            </Box>
+
+                                            <HStack pt="1rem" spacing="1rem" fontSize="4xl">
+                                                {[6, 5, 4, 3, 2, 1].map((i) =>
+                                                    <Checkbox
+                                                        key={i}
+                                                        isDisabled={true}
+                                                        isChecked={habit.completed.includes(
+                                                            new Date(date.getTime() - i * 24 * 60 * 60 * 1000 - date.getTimezoneOffset() * 60 * 1000).toISOString().split("T")[0]
+                                                        )}
+                                                        colorScheme="yellow"
+                                                        size={["mobilexl", "xl"]}
+                                                        borderColor="blackAlpha.500"
+                                                    />
+                                                )}
+
+                                                <Checkbox
+                                                    onChange={(e) => {
+                                                        toggleHabitCompletion(habit);
+                                                        e.stopPropagation();
+                                                    }}
+                                                    isChecked={habit.completed.includes(
+                                                        new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000).toISOString().split("T")[0]
+                                                    )}
+                                                    colorScheme="yellow"
+                                                    size={["mobilexl", "xl"]}
+                                                    borderColor="blackAlpha.500"
+                                                />
+                                            </HStack>
+                                        </Box>
+                                    </Flex>
+                                ))}
+                    </Stack>}
             </Stack>
 
             <HStack
                 position="fixed"
-                bottom={["5rem", "2rem"]}
+                bottom={["6rem", "2rem"]}
                 right={["1rem", "2rem"]}
             >
                 {isMobile ?
@@ -252,6 +260,16 @@ export default function HabitTrackerPage({ profileId, initialHabits }: any) {
                 date={date}
                 isOpen={isOpen}
                 onClose={onClose}
+            />
+
+            <HabitDetailModal
+                profileId={profileId}
+                habit={selectedHabit}
+                habits={habits}
+                setHabits={setHabits}
+                date={date}
+                isOpen={detailIsOpen}
+                onClose={detailOnClose}
             />
 
             <HabitTrackerHelpModal isOpen={helpIsOpen} onClose={helpOnClose} />
