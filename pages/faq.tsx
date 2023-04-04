@@ -32,7 +32,7 @@ export default function FAQPage({ }: any) {
     return (
         <Center w="100vw" h="80vh" flexDir={"column"}>
             <Heading textAlign={"center"} fontSize="6xl">Contact</Heading>
-            <Link href="mailto:mail@alexochs.de" target="_blank">
+            <Link href="mailto:mail@alexochs.de">
                 <Text pt="1rem" fontSize="2xl">mail@alexochs.de</Text>
             </Link>
         </Center>

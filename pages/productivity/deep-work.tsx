@@ -180,11 +180,11 @@ export default function PomodoroPage({ profileId, initialTimer, initialHistory }
             <Center flexDir={"column"}>
                 <VStack
                     p="1rem"
-                    border="2px"
                     rounded="3xl"
                     flexDir="column"
                     spacing="1rem"
-                    w={["90vw", "25vw"]}
+                    w={["85vw", "24rem"]}
+                    bg="gray.200"
                 >
                     <Text fontSize={["3xl", "4xl"]}>
                         {!timer || !timer.active ? "Start a session" : timer.mode == 0 ? "Focus" : "Relax"}
