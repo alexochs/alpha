@@ -71,7 +71,6 @@ export default function Navigation({ isMobile }: any) {
             <Flex
                 position={["fixed", "static"]}
                 bottom="0"
-                borderTop={["1px solid rgb(0, 0, 0, 0.2)", "0"]}
                 w={["100vw", "32rem"]}
                 bg="white"
                 p=".5rem"
