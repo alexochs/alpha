@@ -23,7 +23,6 @@ export default function Topbar({
                 w="100vw"
                 h="4rem"
                 flexDir="column"
-                borderBottom={"1px solid rgb(0, 0, 0, 0.2)"}
                 bg="white"
             >
                 <Box color="gray.500">
@@ -38,7 +37,6 @@ export default function Topbar({
             <Flex
                 px="4rem"
                 py=".5rem"
-                borderBottom={"1px solid rgb(0, 0, 0, 0.2)"}
             >
                 <Center flex={1}>
                     <Heading fontSize="2xl" letterSpacing={"0.5rem"}>
