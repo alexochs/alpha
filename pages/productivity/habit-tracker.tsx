@@ -126,7 +126,7 @@ export default function HabitTrackerPage({ profileId, initialHabits }: any) {
     }
 
     function getStreaks() {
-        const streaks = habits.map((habit: any) => {
+        const streaks = habits.sort((a: any, b: any) => a.timestamp.localeCompare(b.timestamp)).map((habit: any) => {
             const _date = new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000).toISOString().split("T")[0];
 
             let streak = 0;
