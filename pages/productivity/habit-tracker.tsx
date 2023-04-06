@@ -202,7 +202,7 @@ export default function HabitTrackerPage({ profileId, initialHabits }: any) {
                                     )
                                 )
                                 .sort(
-                                    (a: any, b: any) => a.completed
+                                    (a: any, b: any) => a.timestamp.localeCompare(b.timestamp)
                                 )
                                 .map((habit, index) => (
                                     <Flex
